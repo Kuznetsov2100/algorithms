@@ -2,26 +2,33 @@ package arraystack
 
 import "errors"
 
+// The Stack represents a last-in-first-out (LIFO) stack of generic items.
+// This implementation uses a slice.
 type Stack struct {
 	item []interface{}
 }
 
+// Initialize a stack.
 func New() *Stack {
 	return &Stack{}
 }
 
+// Is this stack empty?
 func (s *Stack) IsEmpty() bool {
 	return len(s.item) == 0
 }
 
+// Returns the number of items in the stack.
 func (s *Stack) Size() int {
 	return len(s.item)
 }
 
+// Adds the item to this stack.
 func (s *Stack) Push(element interface{}) {
 	s.item = append(s.item, element)
 }
 
+// Removes and returns the item most recently added to this stack.
 func (s *Stack) Pop() (interface{}, error) {
 	if s.IsEmpty() {
 		return -1, errors.New("Stack underflow")
@@ -31,6 +38,7 @@ func (s *Stack) Pop() (interface{}, error) {
 	return element, nil
 }
 
+// Returns (but does not remove) the item most recently added to this stack.
 func (s *Stack) Peek() (interface{}, error) {
 	if s.IsEmpty() {
 		return -1, errors.New("Stack underflow")
