@@ -1,5 +1,8 @@
 package sort
 
+// BubbleSort sorts Comparable type using bubble sort.
+// This implementation has a worst-case and average complexity of О(n^2),
+// where n is the number of items being sorted.
 func BubbleSort(data Comparable) {
 	n := data.Len()
 	for i := 0; i < n-1; i++ {
