@@ -1,6 +1,6 @@
 package linkedbag
 
-// A generic bag, implemented using a singly linked list.
+// Bag implemented using a singly linked list.
 type Bag struct {
 	first *node
 	n     int
