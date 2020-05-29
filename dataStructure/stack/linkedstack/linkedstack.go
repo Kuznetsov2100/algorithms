@@ -14,22 +14,22 @@ type node struct {
 	next *node
 }
 
-// Initialize a stack.
+// New initialize a stack.
 func New() *Stack {
 	return &Stack{}
 }
 
-// Is this stack empty?
+// IsEmpty check whether the stack is empty.
 func (ls *Stack) IsEmpty() bool {
 	return ls.first == nil
 }
 
-// Returns the number of items in the stack.
+// Size returns the number of items in the stack.
 func (ls *Stack) Size() int {
 	return ls.n
 }
 
-// Adds the item to this stack.
+// Push adds the item to this stack.
 func (ls *Stack) Push(element interface{}) {
 	var oldfirst *node = ls.first
 	ls.first = &node{}
@@ -38,7 +38,7 @@ func (ls *Stack) Push(element interface{}) {
 	ls.n++
 }
 
-// Removes and returns the item most recently added to this stack.
+// Pop removes and returns the item most recently added to this stack.
 func (ls *Stack) Pop() (interface{}, error) {
 	if ls.IsEmpty() {
 		return -1, errors.New("Stack underflow")
@@ -49,7 +49,7 @@ func (ls *Stack) Pop() (interface{}, error) {
 	return item, nil
 }
 
-// Returns (but does not remove) the item most recently added to this stack.
+// Peek returns (but does not remove) the item most recently added to this stack.
 func (ls *Stack) Peek() (interface{}, error) {
 	if ls.IsEmpty() {
 		return -1, errors.New("Stack underflow")

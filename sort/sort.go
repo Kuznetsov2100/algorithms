@@ -1,6 +1,6 @@
 package sort
 
-// sorting Comparable type using insertion sort.
+// InsertionSort sorts Comparable type using insertion sort.
 // In the worst case, this implementation makes ~ 1/2*n^2 compares
 // and ~ 1/2*n^2 exchanges to sort an array of length n.
 // So, it is not suitable for sorting large arbitrary arrays.
@@ -14,7 +14,7 @@ func InsertionSort(data Comparable) {
 	}
 }
 
-// sorting Comparable type using selection sort.
+// SelectionSort sorts Comparable type using selection sort.
 // This implementation makes ~ 1/2*n^2 compares to sort any array of length n,
 // So it is not suitable for sorting large arrays. It performs exactly n exchanges.
 // This sorting algorithm is not stable. It uses Θ(1) extra memory (not including the input array).
@@ -31,7 +31,7 @@ func SelectionSort(data Comparable) {
 	}
 }
 
-// sorting Comparable type using shell sort.
+// ShellSort sorts Comparable type using shell sort.
 // In the worst case, this implementation makes O(n^3/2) compares and exchanges to sort an array of length n.
 // This sorting algorithm is not stable. It uses Θ(1) extra memory (not including the input array).
 func ShellSort(data Comparable) {
