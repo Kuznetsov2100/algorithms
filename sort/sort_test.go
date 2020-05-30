@@ -28,11 +28,7 @@ func (s class) Swap(i, j int) {
 }
 
 func (s class) Shuffle() {
-	n := s.Len()
-	rand.Seed(time.Now().Unix())
-	for i := 0; i < n; i++ {
-		s.Swap(i, rand.Intn(n))
-	}
+	rand.Shuffle(s.Len(), s.Swap)
 }
 
 // type IntSlice implement Len(), Less(), Swap() Shuffle() for Comparable interface
@@ -51,12 +47,7 @@ func (p IntSlice) Swap(i, j int) {
 }
 
 func (p IntSlice) Shuffle() {
-	n := p.Len()
-	rand.Seed(time.Now().Unix())
-	for i := 0; i < n; i++ {
-		p.Swap(i, rand.Intn(n))
-	}
-
+	rand.Shuffle(p.Len(), p.Swap)
 }
 
 func Test_BubbleSort(t *testing.T) {
@@ -76,8 +67,13 @@ func Test_BubbleSort(t *testing.T) {
 	}
 
 	// to test ischanged = false
-	numbers := IntSlice{1, 2, 3, 4, 5, 6, 7, 8, 9}
-	BubbleSort(numbers)
+	sortedNumbers := IntSlice{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	BubbleSort(sortedNumbers)
+	if !IsSorted(sortedNumbers) {
+		t.Errorf("expect true, got %t", IsSorted(sortedNumbers))
+	}
+	numbers := createNumbers(100)
+	QuickSort(numbers)
 	if !IsSorted(numbers) {
 		t.Errorf("expect true, got %t", IsSorted(numbers))
 	}
@@ -99,6 +95,12 @@ func Test_InsertionSort(t *testing.T) {
 		t.Errorf("expect true, got %t", IsSorted(s))
 	}
 
+	numbers := createNumbers(100)
+	InsertionSort(numbers)
+	if !IsSorted(numbers) {
+		t.Errorf("expect true, got %t", IsSorted(numbers))
+	}
+
 }
 
 func Test_SelectionSort(t *testing.T) {
@@ -115,6 +117,12 @@ func Test_SelectionSort(t *testing.T) {
 	SelectionSort(s)
 	if !IsSorted(s) {
 		t.Errorf("expect true, got %t", IsSorted(s))
+	}
+
+	numbers := createNumbers(100)
+	SelectionSort(numbers)
+	if !IsSorted(numbers) {
+		t.Errorf("expect true, got %t", IsSorted(numbers))
 	}
 
 }
@@ -135,6 +143,12 @@ func Test_ShellSort(t *testing.T) {
 		t.Errorf("expect true, got %t", IsSorted(s))
 	}
 
+	numbers := createNumbers(100)
+	ShellSort(numbers)
+	if !IsSorted(numbers) {
+		t.Errorf("expect true, got %t", IsSorted(numbers))
+	}
+
 }
 
 func Test_MergeSort(t *testing.T) {
@@ -153,8 +167,21 @@ func Test_MergeSort(t *testing.T) {
 		t.Errorf("expect true, got %t", IsSorted(s))
 	}
 
-}
+	numbers := createNumbers(100)
+	MergeSort(numbers)
+	if !IsSorted(numbers) {
+		t.Errorf("expect true, got %t", IsSorted(numbers))
+	}
 
+}
+func createNumbers(size int) IntSlice {
+	numbers := make(IntSlice, size)
+	rand.Seed(time.Now().Unix())
+	for i := 0; i < size; i++ {
+		numbers[i] = rand.Int()
+	}
+	return numbers
+}
 func Test_QuickSort(t *testing.T) {
 	s := class{
 		{"alan", 95},
@@ -170,69 +197,69 @@ func Test_QuickSort(t *testing.T) {
 	if !IsSorted(s) {
 		t.Errorf("expect true, got %t", IsSorted(s))
 	}
-}
 
-func Benchmark_BubbleSort(b *testing.B) {
-	b.StopTimer()
-	var numbers IntSlice
-	for i := 0; i < 10000; i++ {
-		numbers = append(numbers, rand.Int())
-	}
-	b.StartTimer()
-	BubbleSort(numbers)
-	b.StopTimer()
-}
-
-func Benchmark_InsertionSort(b *testing.B) {
-	b.StopTimer()
-	var numbers IntSlice
-	for i := 0; i < 10000; i++ {
-		numbers = append(numbers, rand.Int())
-	}
-	b.StartTimer()
-	InsertionSort(numbers)
-	b.StopTimer()
-}
-func Benchmark_SelectionSort(b *testing.B) {
-	b.StopTimer()
-	var numbers IntSlice
-	for i := 0; i < 10000; i++ {
-		numbers = append(numbers, rand.Int())
-	}
-	b.StartTimer()
-	SelectionSort(numbers)
-	b.StopTimer()
-}
-
-func Benchmark_ShellSort(b *testing.B) {
-	b.StopTimer()
-	var numbers IntSlice
-	for i := 0; i < 10000; i++ {
-		numbers = append(numbers, rand.Int())
-	}
-	b.StartTimer()
-	ShellSort(numbers)
-	b.StopTimer()
-}
-
-func Benchmark_MergeSort(b *testing.B) {
-	b.StopTimer()
-	var numbers IntSlice
-	for i := 0; i < 10000; i++ {
-		numbers = append(numbers, rand.Int())
-	}
-	b.StartTimer()
-	MergeSort(numbers)
-	b.StopTimer()
-}
-
-func Benchmark_QuickSort(b *testing.B) {
-	b.StopTimer()
-	var numbers IntSlice
-	for i := 0; i < 10000; i++ {
-		numbers = append(numbers, rand.Int())
-	}
-	b.StartTimer()
+	numbers := createNumbers(100)
 	QuickSort(numbers)
+	if !IsSorted(numbers) {
+		t.Errorf("expect true, got %t", IsSorted(numbers))
+	}
+}
+
+func Benchmark_BubbleSort_10k(b *testing.B) {
 	b.StopTimer()
+	for i := 0; i < b.N; i++ {
+		numbers := createNumbers(10000)
+		b.StartTimer()
+		BubbleSort(numbers)
+		b.StopTimer()
+	}
+}
+
+func Benchmark_InsertionSort_10k(b *testing.B) {
+	b.StopTimer()
+	for i := 0; i < b.N; i++ {
+		numbers := createNumbers(10000)
+		b.StartTimer()
+		InsertionSort(numbers)
+		b.StopTimer()
+	}
+}
+func Benchmark_SelectionSort_10k(b *testing.B) {
+	b.StopTimer()
+	for i := 0; i < b.N; i++ {
+		numbers := createNumbers(10000)
+		b.StartTimer()
+		SelectionSort(numbers)
+		b.StopTimer()
+	}
+}
+
+func Benchmark_ShellSort_10k(b *testing.B) {
+	b.StopTimer()
+	for i := 0; i < b.N; i++ {
+		numbers := createNumbers(10000)
+		b.StartTimer()
+		ShellSort(numbers)
+		b.StopTimer()
+	}
+}
+
+func Benchmark_MergeSort_10k(b *testing.B) {
+	b.StopTimer()
+	for i := 0; i < b.N; i++ {
+		numbers := createNumbers(10000)
+		b.StartTimer()
+		MergeSort(numbers)
+		b.StopTimer()
+	}
+}
+
+func Benchmark_QuickSort_10k(b *testing.B) {
+	b.StopTimer()
+	for i := 0; i < b.N; i++ {
+		numbers := createNumbers(10000)
+		b.StartTimer()
+		QuickSort(numbers)
+		b.StopTimer()
+	}
 }
