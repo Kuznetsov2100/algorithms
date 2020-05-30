@@ -70,6 +70,7 @@ func ShellSort(data Comparable) {
 // It makes between ~ 1/2*N*log2N and ~ 1*N*log2N compares.
 // This sorting algorithm is stable. It uses O(N) extra memory (not including the input array).
 func MergeSort(data Comparable) {
+	// aux's type should be Comparable
 	aux := make([]int, data.Len())
 	var sort func(data Comparable, low, high int)
 	merge := func(data Comparable, low, mid, high int) {
@@ -107,6 +108,43 @@ func MergeSort(data Comparable) {
 		merge(data, low, mid, high)
 	}
 	sort(data, 0, data.Len())
+}
+
+// QuickSort sorts Comparable type using quicksort.
+func QuickSort(data Comparable) {
+	var sort func(data Comparable, lo, hi int)
+	partition := func(data Comparable, lo, hi int) int {
+		pivot, i, j := lo, lo+1, hi
+		for {
+			for ; data.Less(i, pivot); i++ {
+				if i == hi {
+					break
+				}
+			}
+
+			for ; data.Less(pivot, j); j-- {
+				if j == lo {
+					break
+				}
+			}
+			if i >= j {
+				break
+			}
+			data.Swap(i, j)
+		}
+		data.Swap(lo, j)
+		return j
+	}
+	sort = func(data Comparable, lo, hi int) {
+		if hi <= lo {
+			return
+		}
+		j := partition(data, lo, hi)
+		sort(data, lo, j-1)
+		sort(data, j+1, hi)
+	}
+	data.Shuffle()
+	sort(data, 0, data.Len()-1)
 }
 
 // IsSorted reports whether data is sorted.

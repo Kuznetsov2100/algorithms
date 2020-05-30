@@ -3,9 +3,10 @@ package sort
 import (
 	"math/rand"
 	"testing"
+	"time"
 )
 
-// type class implement Len(), Less(), Swap() for Comparable interface
+// type class implement Len(), Less(), Swap() Shuffle() for Comparable interface
 type class []student
 
 type student struct {
@@ -26,7 +27,15 @@ func (s class) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
 
-// type IntSlice implement Len(), Less(), Swap() for Comparable interface
+func (s class) Shuffle() {
+	n := s.Len()
+	rand.Seed(time.Now().Unix())
+	for i := 0; i < n; i++ {
+		s.Swap(i, rand.Intn(n))
+	}
+}
+
+// type IntSlice implement Len(), Less(), Swap() Shuffle() for Comparable interface
 type IntSlice []int
 
 func (p IntSlice) Len() int {
@@ -39,6 +48,15 @@ func (p IntSlice) Less(i, j int) bool {
 
 func (p IntSlice) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
+}
+
+func (p IntSlice) Shuffle() {
+	n := p.Len()
+	rand.Seed(time.Now().Unix())
+	for i := 0; i < n; i++ {
+		p.Swap(i, rand.Intn(n))
+	}
+
 }
 
 func Test_BubbleSort(t *testing.T) {
@@ -137,6 +155,23 @@ func Test_MergeSort(t *testing.T) {
 
 }
 
+func Test_QuickSort(t *testing.T) {
+	s := class{
+		{"alan", 95},
+		{"hikerell", 91},
+		{"acmfly", 96},
+		{"leao", 90},
+	}
+
+	if IsSorted(s) {
+		t.Errorf("expect false, got %t", IsSorted(s))
+	}
+	QuickSort(s)
+	if !IsSorted(s) {
+		t.Errorf("expect true, got %t", IsSorted(s))
+	}
+}
+
 func Benchmark_BubbleSort(b *testing.B) {
 	b.StopTimer()
 	var numbers IntSlice
@@ -188,5 +223,16 @@ func Benchmark_MergeSort(b *testing.B) {
 	}
 	b.StartTimer()
 	MergeSort(numbers)
+	b.StopTimer()
+}
+
+func Benchmark_QuickSort(b *testing.B) {
+	b.StopTimer()
+	var numbers IntSlice
+	for i := 0; i < 10000; i++ {
+		numbers = append(numbers, rand.Int())
+	}
+	b.StartTimer()
+	QuickSort(numbers)
 	b.StopTimer()
 }
