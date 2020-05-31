@@ -33,6 +33,14 @@ func InsertionSort(data Comparable) {
 	}
 }
 
+func insertionSortA2B(data Comparable, a, b int) {
+	for i := a + 1; i < b; i++ {
+		for j := i; j > a && data.Less(j, j-1); j-- {
+			data.Swap(j, j-1)
+		}
+	}
+}
+
 // SelectionSort sorts Comparable type using selection sort.
 // This implementation makes ~ 1/2*n^2 compares to sort any array of length n,
 // So it is not suitable for sorting large arrays. It performs exactly n exchanges.
@@ -147,6 +155,122 @@ func QuickSort(data Comparable) {
 		j := partition(data, lo, hi)
 		sort(data, lo, j-1)
 		sort(data, j+1, hi)
+	}
+	data.Shuffle()
+	sort(data, 0, data.Len()-1)
+}
+
+func median3(data Comparable, i, j, k int) int {
+	if data.Less(i, j) {
+		if data.Less(j, k) {
+			return j
+		} else {
+			if data.Less(i, k) {
+				return k
+			} else {
+				return i
+			}
+		}
+	} else {
+		if data.Less(k, j) {
+			return j
+		} else {
+			if data.Less(k, i) {
+				return k
+			} else {
+				return i
+			}
+		}
+	}
+}
+
+// QuickSort2Way sorts Comparable type uses the Hoare's 2-way partitioning scheme, chooses the partitioning
+// element using median-of-3, and cuts off to insertion sort.
+func QuickSort2Way(data Comparable) {
+	const INSERTION_SORT_CUTOFF = 8
+	var sort func(data Comparable, lo, hi int)
+	partition := func(data Comparable, lo, hi int) int {
+		n := hi - lo + 1
+		m := median3(data, lo, lo+n/2, hi)
+		data.Swap(m, lo)
+		pivot, i, j := lo, lo+1, hi
+
+		for ; data.Less(i, pivot); i++ {
+			if i == hi {
+				data.Swap(lo, hi)
+				return hi
+			}
+		}
+
+		for ; data.Less(pivot, j); j-- {
+			if j == lo+1 {
+				return lo
+			}
+		}
+
+		for i < j {
+			data.Swap(i, j)
+			for data.Less(i, pivot) {
+				i++
+			}
+			for data.Less(pivot, j) {
+				j--
+			}
+		}
+		data.Swap(lo, j)
+		return j
+	}
+
+	sort = func(data Comparable, lo, hi int) {
+
+		if hi <= lo {
+			return
+		}
+		n := hi - lo + 1
+		if n <= INSERTION_SORT_CUTOFF {
+			insertionSortA2B(data, lo, hi+1)
+			return
+		}
+
+		j := partition(data, lo, hi)
+		sort(data, lo, j-1)
+		sort(data, j+1, hi)
+	}
+
+	data.Shuffle()
+	sort(data, 0, data.Len()-1)
+
+}
+
+func QuickSort3Way(data Comparable) {
+	const INSERTION_SORT_CUTOFF = 8
+	var sort func(data Comparable, lo, hi int)
+	sort = func(data Comparable, lo, hi int) {
+		if hi <= lo {
+			return
+		}
+		n := hi - lo + 1
+		if n <= INSERTION_SORT_CUTOFF {
+			insertionSortA2B(data, lo, hi+1)
+			return
+		}
+		m := median3(data, lo, lo+n/2, hi)
+		data.Swap(m, lo)
+		i, lt, gt := lo+1, lo, hi
+		for i <= gt {
+			if data.Less(i, lt) {
+				data.Swap(lt, i)
+				lt++
+				i++
+			} else if data.Less(lt, i) {
+				data.Swap(i, gt)
+				gt--
+			} else {
+				i--
+			}
+		}
+		sort(data, lo, lt-1)
+		sort(data, gt+1, hi)
 	}
 	data.Shuffle()
 	sort(data, 0, data.Len()-1)
