@@ -2,79 +2,78 @@ package priorityqueue
 
 import "errors"
 
-// MinPQ represents a priority queue of generic keys.
+// MaxPQ represents a priority queue of generic keys.
 // This implementation uses a binary heap.
-// The insert and delete-the-minimum operations take O(log n) amortized time,
+// The insert and delete-the-maximum operations take O(log n) amortized time,
 // where n is the number of elements in the priority queue.
-type MinPQ struct {
+type MaxPQ struct {
 	n    int
 	item []Key
 }
 
-// NewMinPQ initialize a min priority queue
-func NewMinPQ() *MinPQ {
-	return &MinPQ{
+// NewMaxPQ initialize a max priority queue
+func NewMaxPQ() *MaxPQ {
+	return &MaxPQ{
 		n:    0,
 		item: make([]Key, 1),
 	}
 }
 
 // IsEmpty check whether the priority queue is empty
-func (pq *MinPQ) IsEmpty() bool {
+func (pq *MaxPQ) IsEmpty() bool {
 	return pq.n == 0
 }
 
 // Size returns the number of keys on this priority queue
-func (pq *MinPQ) Size() int {
+func (pq *MaxPQ) Size() int {
 	return pq.n
 }
 
 // Insert adds a new key to this priority queue
-func (pq *MinPQ) Insert(x Key) {
+func (pq *MaxPQ) Insert(x Key) {
 	pq.n++
 	// pq.item has type []Key, which is a slice,
 	// so we can use append() to add element,
 	// and can omit resize array operation
 	pq.item = append(pq.item, x)
 	pq.swim(pq.n)
-
 }
 
-// DelMin removes and returns a smallest key on this priority queue
-func (pq *MinPQ) DelMin() (Key, error) {
+// DelMax removes and returns a largest key on this priority queue
+func (pq *MaxPQ) DelMax() (Key, error) {
 	if pq.IsEmpty() {
 		return nil, errors.New("priority queue underflow")
 	}
-	// pq.item[1] is the minimum key in the min priority queue
-	min := pq.item[1]
+	max := pq.item[1]
 	pq.swap(1, pq.n)
 	pq.n--
 	pq.sink(1)
-	return min, nil
+	return max, nil
 }
 
-func (pq *MinPQ) less(i, j int) bool {
+func (pq *MaxPQ) less(i, j int) bool {
 	return pq.item[i].CompareTo(pq.item[j]) < 0
 }
 
 // Bottom-up reheapify
-func (pq *MinPQ) swim(k int) {
+func (pq *MaxPQ) swim(k int) {
 	// In a heap, the parent of the node in position k is in position k/2
-	for k > 1 && pq.less(k, k/2) {
-		pq.swap(k, k/2)
+	for k > 1 && pq.less(k/2, k) {
+		pq.swap(k/2, k)
 		k = k / 2
 	}
 }
 
 // Top-down heapify
-func (pq *MinPQ) sink(k int) {
+func (pq *MaxPQ) sink(k int) {
 	// the two children of the node in position k are in positions 2k and 2k + 1
 	for 2*k <= pq.n {
 		j := 2 * k
-		if j < pq.n && pq.less(j+1, j) {
+		if j < pq.n && pq.less(j, j+1) {
 			j++
 		}
-		if !pq.less(j, k) {
+
+		if !pq.less(k, j) {
 			break
 		}
 		pq.swap(k, j)
@@ -82,6 +81,6 @@ func (pq *MinPQ) sink(k int) {
 	}
 }
 
-func (pq *MinPQ) swap(i, j int) {
+func (pq *MaxPQ) swap(i, j int) {
 	pq.item[i], pq.item[j] = pq.item[j], pq.item[i]
 }

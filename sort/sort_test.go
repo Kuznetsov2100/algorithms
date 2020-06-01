@@ -31,27 +31,27 @@ func (s class) Shuffle() {
 	rand.Shuffle(s.Len(), s.Swap)
 }
 
-// type IntSlice implement Len(), Less(), Swap() Shuffle() for Comparable interface
-type IntSlice []int
+// type intSlice implement Len(), Less(), Swap() Shuffle() for Comparable interface
+type intSlice []int
 
-func (p IntSlice) Len() int {
+func (p intSlice) Len() int {
 	return len(p)
 }
 
-func (p IntSlice) Less(i, j int) bool {
+func (p intSlice) Less(i, j int) bool {
 	return p[i] < p[j]
 }
 
-func (p IntSlice) Swap(i, j int) {
+func (p intSlice) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }
 
-func (p IntSlice) Shuffle() {
+func (p intSlice) Shuffle() {
 	rand.Shuffle(p.Len(), p.Swap)
 }
 
-func createNumbers(size int) IntSlice {
-	numbers := make(IntSlice, size)
+func createNumbers(size int) intSlice {
+	numbers := make(intSlice, size)
 	rand.Seed(time.Now().Unix())
 	for i := 0; i < size; i++ {
 		numbers[i] = rand.Int()
@@ -76,7 +76,7 @@ func Test_BubbleSort(t *testing.T) {
 	}
 
 	// to test ischanged = false
-	sortedNumbers := IntSlice{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	sortedNumbers := intSlice{1, 2, 3, 4, 5, 6, 7, 8, 9}
 	BubbleSort(sortedNumbers)
 	if !IsSorted(sortedNumbers) {
 		t.Errorf("expect true, got %t", IsSorted(sortedNumbers))
