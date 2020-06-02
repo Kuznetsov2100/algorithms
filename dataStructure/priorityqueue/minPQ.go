@@ -48,6 +48,7 @@ func (pq *MinPQ) DelMin() (Key, error) {
 	// pq.item[1] is the minimum key in the min priority queue
 	min := pq.item[1]
 	pq.swap(1, pq.n)
+	pq.item = pq.item[:len(pq.item)-1]
 	pq.n--
 	pq.sink(1)
 	return min, nil

@@ -46,6 +46,7 @@ func (pq *MaxPQ) DelMax() (Key, error) {
 	}
 	max := pq.item[1]
 	pq.swap(1, pq.n)
+	pq.item = pq.item[:len(pq.item)-1]
 	pq.n--
 	pq.sink(1)
 	return max, nil
