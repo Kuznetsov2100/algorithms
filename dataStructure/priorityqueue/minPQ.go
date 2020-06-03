@@ -54,14 +54,14 @@ func (pq *MinPQ) DelMin() (Key, error) {
 	return min, nil
 }
 
-func (pq *MinPQ) less(i, j int) bool {
-	return pq.item[i].CompareTo(pq.item[j]) < 0
+func (pq *MinPQ) greater(i, j int) bool {
+	return pq.item[i].CompareTo(pq.item[j]) > 0
 }
 
 // Bottom-up reheapify
 func (pq *MinPQ) swim(k int) {
 	// In a heap, the parent of the node in position k is in position k/2
-	for k > 1 && pq.less(k, k/2) {
+	for k > 1 && pq.greater(k/2, k) {
 		pq.swap(k, k/2)
 		k = k / 2
 	}
@@ -72,10 +72,10 @@ func (pq *MinPQ) sink(k int) {
 	// the two children of the node in position k are in positions 2k and 2k + 1
 	for 2*k <= pq.n {
 		j := 2 * k
-		if j < pq.n && pq.less(j+1, j) {
+		if j < pq.n && pq.greater(j, j+1) {
 			j++
 		}
-		if !pq.less(j, k) {
+		if !pq.greater(k, j) {
 			break
 		}
 		pq.swap(k, j)
