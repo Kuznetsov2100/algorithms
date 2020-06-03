@@ -54,7 +54,7 @@ func TestIndexMinPQ_NewIndexMinPQ(t *testing.T) {
 }
 
 func TestIndexMinPQ_Insert(t *testing.T) {
-	defer testPanic(t, "index ilegal")
+	defer testPanic(t, "index illegal")
 	strings := []words{"it", "was", "the", "best", "of", "times", "it", "was", "the", "worst"}
 	pq := NewIndexMinPQ(len(strings))
 	if _, err := pq.MinKey(); err == nil {
@@ -108,7 +108,7 @@ func TestIndexMinPQ_DelMin(t *testing.T) {
 }
 
 func TestIndexMinPQ_DecreaseKey(t *testing.T) {
-	defer testPanic(t, "index ilegal")
+	defer testPanic(t, "index illegal")
 
 	strings := wordslist{"it", "was", "the", "best", "of", "times", "it", "was", "the", "worst"}
 	pq := NewIndexMinPQ(len(strings) + 1)
@@ -136,7 +136,7 @@ func TestIndexMinPQ_DecreaseKey(t *testing.T) {
 }
 
 func TestIndexMinPQ_IncreaseKey(t *testing.T) {
-	defer testPanic(t, "index ilegal")
+	defer testPanic(t, "index illegal")
 
 	strings := wordslist{"it", "was", "the", "best", "of", "times", "it", "was", "the", "worst"}
 	pq := NewIndexMinPQ(len(strings) + 1)
@@ -164,7 +164,7 @@ func TestIndexMinPQ_IncreaseKey(t *testing.T) {
 }
 
 func TestIndexMinPQ_ChangeKey(t *testing.T) {
-	defer testPanic(t, "index ilegal")
+	defer testPanic(t, "index illegal")
 
 	strings := wordslist{"it", "was", "the", "best", "of", "times", "it", "was", "the", "worst"}
 	pq := NewIndexMinPQ(len(strings) + 1)
@@ -186,7 +186,7 @@ func TestIndexMinPQ_ChangeKey(t *testing.T) {
 }
 
 func TestIndexMinPQ_Delete(t *testing.T) {
-	defer testPanic(t, "index ilegal")
+	defer testPanic(t, "index illegal")
 
 	strings := wordslist{"it", "was", "the", "best", "of", "times", "it", "was", "the", "worst"}
 	pq := NewIndexMinPQ(len(strings) + 1)
@@ -229,7 +229,7 @@ func TestIndexMinPQ_MinIndex(t *testing.T) {
 }
 
 func TestIndexMinPQ_KeyOf(t *testing.T) {
-	defer testPanic(t, "index ilegal")
+	defer testPanic(t, "index illegal")
 
 	strings := wordslist{"it", "was", "the", "best", "of", "times", "it", "was", "the", "worst"}
 	pq := NewIndexMinPQ(len(strings) + 1)

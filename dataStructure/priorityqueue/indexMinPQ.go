@@ -195,6 +195,6 @@ func (queue *IndexMinPQ) greater(i, j int) bool {
 
 func (queue *IndexMinPQ) validateIndex(i int) {
 	if i < 0 || i >= queue.maxN {
-		panic("index ilegal")
+		panic("index illegal")
 	}
 }
