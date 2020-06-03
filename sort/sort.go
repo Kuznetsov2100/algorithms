@@ -272,6 +272,35 @@ func QuickSort3Way(data Comparable) {
 	sort(data, 0, data.Len()-1)
 }
 
+// HeapSort sorts comparable type using heapsort.HeapSort
+// This implementation takes O(n*logN) time to sort any array of length n (assuming comparisons take constant time).
+// It makes at most 2*n*log2N compares.
+// This sorting algorithm is not stable. It uses O(1) extra memory (not including the input array).
+func HeapSort(data Comparable) {
+	sink := func(data Comparable, k, N int) {
+		for 2*k <= N {
+			j := 2 * k
+			if j < N && data.Less(j-1, j) {
+				j++
+			}
+			if !data.Less(k-1, j-1) {
+				break
+			}
+			data.Swap(k-1, j-1)
+			k = j
+		}
+	}
+	N := data.Len()
+	for k := N / 2; k >= 1; k-- {
+		sink(data, k, N)
+	}
+	for i := N; i > 1; {
+		data.Swap(0, i-1)
+		i--
+		sink(data, 1, i)
+	}
+}
+
 // IsSorted reports whether data is sorted.
 func IsSorted(data Comparable) bool {
 	n := data.Len()

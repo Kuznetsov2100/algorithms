@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// type class implement Len(), Less(), Swap() Shuffle() for Comparable interface
+// type class implement Len(), Less(), Swap(), Shuffle() for Comparable interface
 type class []student
 
 type student struct {
@@ -253,6 +253,29 @@ func Test_QuickSort3Way(t *testing.T) {
 	}
 }
 
+func Test_HeapSort(t *testing.T) {
+	s := class{
+		{"alan", 95},
+		{"hikerell", 91},
+		{"acmfly", 96},
+		{"leao", 90},
+	}
+
+	if IsSorted(s) {
+		t.Errorf("expect false, got %t", IsSorted(s))
+	}
+	HeapSort(s)
+	if !IsSorted(s) {
+		t.Errorf("expect true, got %t", IsSorted(s))
+	}
+
+	numbers := createNumbers(100)
+	HeapSort(numbers)
+	if !IsSorted(numbers) {
+		t.Errorf("expect true, got %t", IsSorted(numbers))
+	}
+}
+
 func Benchmark_BubbleSort_10k(b *testing.B) {
 	b.StopTimer()
 	for i := 0; i < b.N; i++ {
@@ -328,6 +351,16 @@ func Benchmark_QuickSort3Way_10k(b *testing.B) {
 		numbers := createNumbers(10000)
 		b.StartTimer()
 		QuickSort3Way(numbers)
+		b.StopTimer()
+	}
+}
+
+func Benchmark_HeapSort_10k(b *testing.B) {
+	b.StopTimer()
+	for i := 0; i < b.N; i++ {
+		numbers := createNumbers(10000)
+		b.StartTimer()
+		HeapSort(numbers)
 		b.StopTimer()
 	}
 }
