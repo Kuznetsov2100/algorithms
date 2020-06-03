@@ -164,24 +164,19 @@ func median3(data Comparable, i, j, k int) int {
 	if data.Less(i, j) {
 		if data.Less(j, k) {
 			return j
-		} else {
-			if data.Less(i, k) {
-				return k
-			} else {
-				return i
-			}
 		}
-	} else {
-		if data.Less(k, j) {
-			return j
-		} else {
-			if data.Less(k, i) {
-				return k
-			} else {
-				return i
-			}
+		if data.Less(i, k) {
+			return k
 		}
+		return i
 	}
+	if data.Less(k, j) {
+		return j
+	}
+	if data.Less(k, i) {
+		return k
+	}
+	return i
 }
 
 // QuickSort2Way sorts Comparable type uses the Hoare's 2-way partitioning scheme, chooses the partitioning
@@ -242,6 +237,7 @@ func QuickSort2Way(data Comparable) {
 
 }
 
+// QuickSort3Way sorts Comparable type uses the 3-way partitioning scheme.
 func QuickSort3Way(data Comparable) {
 	const INSERTION_SORT_CUTOFF = 8
 	var sort func(data Comparable, lo, hi int)
