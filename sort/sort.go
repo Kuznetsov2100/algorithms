@@ -3,6 +3,7 @@ package sort
 // BubbleSort sorts Comparable type using bubble sort.
 // This implementation has a worst-case and average complexity of О(n^2),
 // where n is the number of items being sorted.
+// This sorting algorithm is stable.
 func BubbleSort(data Comparable) {
 	n := data.Len()
 	for i := 0; i < n-1; i++ {
@@ -118,6 +119,7 @@ func MergeSort(data Comparable) {
 }
 
 // QuickSort sorts Comparable type using quicksort.
+// This sorting algorithm is not stable.
 func QuickSort(data Comparable) {
 	var sort func(data Comparable, lo, hi int)
 	// partition the subarray a[lo..hi] so that a[lo..j-1] <= a[j] <= a[j+1..hi]
@@ -181,6 +183,7 @@ func median3(data Comparable, i, j, k int) int {
 
 // QuickSort2Way sorts Comparable type uses the Hoare's 2-way partitioning scheme, chooses the partitioning
 // element using median-of-3, and cuts off to insertion sort.
+// This sorting algorithm is not stable.
 func QuickSort2Way(data Comparable) {
 	const INSERTION_SORT_CUTOFF = 8
 	var sort func(data Comparable, lo, hi int)
@@ -238,6 +241,7 @@ func QuickSort2Way(data Comparable) {
 }
 
 // QuickSort3Way sorts Comparable type uses the 3-way partitioning scheme.
+// This sorting algorithm is not stable.
 func QuickSort3Way(data Comparable) {
 	const INSERTION_SORT_CUTOFF = 8
 	var sort func(data Comparable, lo, hi int)
