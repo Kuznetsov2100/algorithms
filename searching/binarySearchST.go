@@ -54,7 +54,7 @@ func (bst *BinarySearchST) Get(key Key) (Value, error) {
 		return nil, nil
 	}
 	if i, _ := bst.Rank(key); i < bst.n && bst.keys[i].CompareTo(key) == 0 {
-		return bst.vals[i], nil
+		return bst.vals[i], nil // the key is in the symbol table
 	}
 	return nil, nil
 }
@@ -90,9 +90,10 @@ func (bst *BinarySearchST) Put(key Key, val Value) error {
 	}
 	i, _ := bst.Rank(key)
 	if i < bst.n && bst.keys[i].CompareTo(key) == 0 {
-		bst.vals[i] = val
+		bst.vals[i] = val // the key is in the symbol table
 		return nil
 	}
+	// the key is not in the symbol table
 	bst.keys = append(bst.keys[:i+1], bst.keys[i:]...)
 	bst.vals = append(bst.vals[:i+1], bst.vals[i:]...)
 	bst.keys[i], bst.vals[i] = key, val
@@ -110,7 +111,7 @@ func (bst *BinarySearchST) Delete(key Key) error {
 	}
 	i, _ := bst.Rank(key)
 	if i == bst.n || bst.keys[i].CompareTo(key) != 0 {
-		return nil
+		return nil // the key is not in the symbol table
 	}
 	bst.keys = append(bst.keys[:i], bst.keys[i+1:]...)
 	bst.vals = append(bst.vals[:i], bst.vals[i+1:]...)
@@ -132,7 +133,7 @@ func (bst *BinarySearchST) DeleteMin() error {
 // DeleteMax removes the largest key and associated value from this symbol table.
 func (bst *BinarySearchST) DeleteMax() error {
 	if bst.IsEmpty() {
-		return errors.New("symbol table undeflow")
+		return errors.New("symbol table underflow")
 	}
 	k, _ := bst.Max()
 	//nolint:errcheck
@@ -171,10 +172,10 @@ func (bst *BinarySearchST) Floor(key Key) (Key, error) {
 	}
 	i, _ := bst.Rank(key)
 	if i < bst.n && key.CompareTo(bst.keys[i]) == 0 {
-		return bst.keys[i], nil
+		return key, nil // the key is in the symbol table
 	}
 	if i == 0 {
-		return nil, nil
+		return nil, nil // all keys in the symbol are strictly greater than the key.
 	}
 	return bst.keys[i-1], nil
 }
@@ -186,7 +187,7 @@ func (bst *BinarySearchST) Ceiling(key Key) (Key, error) {
 	}
 	i, _ := bst.Rank(key)
 	if i == bst.n {
-		return nil, nil
+		return nil, nil // all keys in the symbol table are strictly less than the key.
 	}
 	return bst.keys[i], nil
 }
