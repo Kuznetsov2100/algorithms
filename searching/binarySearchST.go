@@ -203,11 +203,11 @@ func (bst *BinarySearchST) SizeOf(lo, hi Key) (int, error) {
 		return 0, nil
 	}
 	if ok, _ := bst.Contains(hi); ok {
-		count_hi, _ := bst.Rank(hi)
-		count_lo, _ := bst.Rank(lo)
-		return count_hi - count_lo + 1, nil
+		high, _ := bst.Rank(hi)
+		low, _ := bst.Rank(lo)
+		return high - low + 1, nil
 	}
-	count_hi, _ := bst.Rank(hi)
-	count_lo, _ := bst.Rank(lo)
-	return count_hi - count_lo, nil
+	high, _ := bst.Rank(hi)
+	low, _ := bst.Rank(lo)
+	return high - low, nil
 }
