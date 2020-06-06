@@ -1,5 +1,18 @@
 package main
 
+//    Read in a list of words from standard input and print out
+//    the most frequently occurring word that has length greater than
+//    a given threshold.
+//
+//    % go run main.go 1  < tinyTale.txt
+//    it 10
+//
+//    % go run main.go  8 < tale.txt
+//    business 122
+//
+//    % go run main.go 10 < leipzig1M.txt
+//    government 24763
+
 import (
 	"fmt"
 	"os"
@@ -23,6 +36,7 @@ func (w words) CompareTo(k searching.Key) int {
 }
 
 func main() {
+	distinct, wordscount := 0, 0
 	minLen, _ := strconv.Atoi(os.Args[1])
 	st := searching.NewBinarySearchST()
 	stdin := stdin.NewStdIn()
@@ -31,17 +45,19 @@ func main() {
 		if len(word) < minLen {
 			continue
 		}
-		wordKey := words(word)
-		if ok, _ := st.Contains(wordKey); !ok {
+		wordscount++
+		if ok, _ := st.Contains(words(word)); !ok {
 			//nolint:errcheck
-			st.Put(wordKey, 1)
+			st.Put(words(word), 1)
+			distinct++
 		} else {
-			val, _ := st.Get(wordKey)
+			val, _ := st.Get(words(word))
 			//nolint:errcheck
-			st.Put(wordKey, val.(int)+1)
+			st.Put(words(word), val.(int)+1)
 		}
 	}
 
+	// find a key with the highest frequency count
 	max := words("")
 	//nolint:errcheck
 	st.Put(max, 0)
@@ -59,5 +75,7 @@ func main() {
 		}
 	}
 	val, _ := st.Get(max)
-	fmt.Printf("%s %d\n", max, val.(int))
+	fmt.Println(max, "  ", val.(int))
+	fmt.Println("distinct = ", distinct)
+	fmt.Println("words   = ", wordscount)
 }
