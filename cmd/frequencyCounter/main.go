@@ -64,12 +64,6 @@ func main() {
 	for _, word := range st.Keys() {
 		m, _ := st.Get(word)
 		n, _ := st.Get(max)
-		if m == nil {
-			m = 0
-		}
-		if n == nil {
-			n = 0
-		}
 		if m.(int) > n.(int) {
 			max = word.(words)
 		}
