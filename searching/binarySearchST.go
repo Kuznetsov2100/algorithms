@@ -212,3 +212,7 @@ func (bst *BinarySearchST) SizeOf(lo, hi Key) (int, error) {
 	low, _ := bst.Rank(lo)
 	return high - low, nil
 }
+
+func (bst *BinarySearchST) Keys() []Key {
+	return bst.keys
+}
