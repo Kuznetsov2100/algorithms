@@ -226,3 +226,19 @@ func TestBinarySearchST_SizeOf(t *testing.T) {
 		t.Errorf("expect 1, got %d", i)
 	}
 }
+
+func TestBinarySearchST_Keys(t *testing.T) {
+	tinyST := []words{"A", "B", "C"}
+	bst := NewBinarySearchST()
+	for i := 0; i < len(tinyST); i++ {
+		//nolint:errcheck
+		bst.Put(tinyST[i], i)
+	}
+
+	keys := bst.Keys()
+	for index, k := range keys {
+		if k.(words) != tinyST[index] {
+			t.Errorf("expect %s, got %s", tinyST[index], k.(words))
+		}
+	}
+}

@@ -213,6 +213,7 @@ func (bst *BinarySearchST) SizeOf(lo, hi Key) (int, error) {
 	return high - low, nil
 }
 
+// Keys return all of the keys in the symbol table.
 func (bst *BinarySearchST) Keys() []Key {
-	return bst.keys
+	return bst.keys[:bst.n]
 }
