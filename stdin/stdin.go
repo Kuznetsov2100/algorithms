@@ -5,12 +5,12 @@ import (
 	"os"
 )
 
-// StdIn
+// StdIn wraps the scanner
 type StdIn struct {
 	scanner *bufio.Scanner
 }
 
-// NewStdIn
+// NewStdIn initialize Stdin
 func NewStdIn() *StdIn {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanWords)
