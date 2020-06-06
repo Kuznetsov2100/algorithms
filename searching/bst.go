@@ -116,7 +116,7 @@ func (b *BST) deleteMin(x *node) *node {
 
 func (b *BST) DeleteMax() error {
 	if b.IsEmpty() {
-		return errors.New("sybol table underflow")
+		return errors.New("symbol table underflow")
 	}
 	b.root = b.deleteMax(b.root)
 	return nil
@@ -165,7 +165,7 @@ func (b *BST) delete(x *node, key Key) *node {
 
 func (b *BST) Min() (Key, error) {
 	if b.IsEmpty() {
-		return nil, errors.New("calls Min() wit empty symbol table")
+		return nil, errors.New("calls Min() with empty symbol table")
 	}
 	return b.min(b.root).key, nil
 }
