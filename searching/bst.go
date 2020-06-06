@@ -1,6 +1,10 @@
 package searching
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
+)
 
 type BST struct {
 	root *node
@@ -15,9 +19,7 @@ type node struct {
 }
 
 func NewBST() *BST {
-	return &BST{
-		root: &node{},
-	}
+	return &BST{}
 }
 
 func (b *BST) IsEmpty() bool {
@@ -309,5 +311,38 @@ func (b *BST) rank(key Key, x *node) int {
 		return 1 + b.size(x.left) + b.rank(key, x.right)
 	} else {
 		return b.size(x.left)
+	}
+}
+
+func (b *BST) Keys() []Key {
+	min, _ := b.Min()
+	max, _ := b.Max()
+	return b.keys(min, max)
+}
+
+func (b *BST) keys(lo, hi Key) (keys []Key) {
+	queue := arrayqueue.New()
+	b.nodeKeys(b.root, queue, lo, hi)
+	for !queue.IsEmpty() {
+		val, _ := queue.Dequeue()
+		keys = append(keys, val.(Key))
+	}
+	return keys
+}
+
+func (b *BST) nodeKeys(x *node, queue *arrayqueue.Queue, lo, hi Key) {
+	if x == nil {
+		return
+	}
+	cmplo := lo.CompareTo(x.key)
+	cmphi := hi.CompareTo(x.key)
+	if cmplo < 0 {
+		b.nodeKeys(x.left, queue, lo, hi)
+	}
+	if cmplo <= 0 && cmphi >= 0 {
+		queue.Enqueue(x.key)
+	}
+	if cmphi > 0 {
+		b.nodeKeys(x.right, queue, lo, hi)
 	}
 }
