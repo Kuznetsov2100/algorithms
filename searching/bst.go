@@ -372,9 +372,8 @@ func (b *BST) Keys() []Key {
 func (b *BST) keys(lo, hi Key) (keys []Key) {
 	queue := arrayqueue.New()
 	b.keysOf(b.root, queue, lo, hi)
-	for !queue.IsEmpty() {
-		val, _ := queue.Dequeue()
-		keys = append(keys, val.(Key))
+	for _, x := range queue.Values() {
+		keys = append(keys, x.(Key))
 	}
 	return keys
 }

@@ -45,3 +45,12 @@ func (s *Stack) Peek() (interface{}, error) {
 	}
 	return s.item[len(s.item)-1], nil
 }
+
+func (s *Stack) Values() []interface{} {
+	v := make([]interface{}, s.Size())
+	copy(v, s.item)
+	for i, j := 0, s.Size()-1; i < j; i, j = i+1, j-1 {
+		v[i], v[j] = v[j], v[i]
+	}
+	return v
+}

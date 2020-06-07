@@ -65,3 +65,10 @@ func (q *Queue) Peek() (interface{}, error) {
 	}
 	return q.first.item, nil
 }
+
+func (q *Queue) Values() (v []interface{}) {
+	for x := q.first; x != nil; x = x.next {
+		v = append(v, x.item)
+	}
+	return v
+}

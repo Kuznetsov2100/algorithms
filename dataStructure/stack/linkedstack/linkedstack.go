@@ -56,3 +56,10 @@ func (ls *Stack) Peek() (interface{}, error) {
 	}
 	return ls.first.item, nil
 }
+
+func (ls *Stack) Values() (v []interface{}) {
+	for x := ls.first; x != nil; x = x.next {
+		v = append(v, x.item)
+	}
+	return v
+}

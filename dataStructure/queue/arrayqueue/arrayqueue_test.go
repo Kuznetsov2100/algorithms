@@ -1,6 +1,9 @@
 package arrayqueue
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestQueue_Enqueue(t *testing.T) {
 	q := New()
@@ -60,6 +63,16 @@ func TestQueue_Peek(t *testing.T) {
 	q.Dequeue()
 	if _, err := q.Peek(); err == nil {
 		t.Error("should throw error when peek an empty queue!")
+	}
+}
+
+func TestQueue_Values(t *testing.T) {
+	q := New()
+	for i := 1; i <= 3; i++ {
+		q.Enqueue(i)
+	}
+	if got := q.Values(); !reflect.DeepEqual(got, q.item) {
+		t.Errorf("Expect: %+v, Got: %+v", q.item, got)
 	}
 }
 

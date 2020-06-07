@@ -1,6 +1,9 @@
 package linkedqueue
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestQueue_Enqueue(t *testing.T) {
 	q := New()
@@ -60,6 +63,21 @@ func TestQueue_Peek(t *testing.T) {
 	q.Dequeue()
 	if _, err := q.Peek(); err == nil {
 		t.Error("should throw error when peek an empty queue!")
+	}
+}
+func TestQueue_Values(t *testing.T) {
+	q := New()
+	for i := 1; i <= 3; i++ {
+		q.Enqueue(i)
+	}
+	got := q.Values()
+	var expect []interface{}
+	for !q.IsEmpty() {
+		val, _ := q.Dequeue()
+		expect = append(expect, val)
+	}
+	if !reflect.DeepEqual(got, expect) {
+		t.Errorf("Expect: %v, Got: %v", expect, got)
 	}
 }
 

@@ -1,6 +1,7 @@
 package linkedstack
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -67,6 +68,22 @@ func TestStack_Peek(t *testing.T) {
 		t.Error("should throw error when peek an empty stack!")
 	}
 
+}
+
+func TestStack_Values(t *testing.T) {
+	s := New()
+	for i := 1; i <= 3; i++ {
+		s.Push(i)
+	}
+	got := s.Values()
+	var expect []interface{}
+	for !s.IsEmpty() {
+		val, _ := s.Pop()
+		expect = append(expect, val)
+	}
+	if !reflect.DeepEqual(got, expect) {
+		t.Errorf("Expect: %v, Got: %v", expect, got)
+	}
 }
 
 func benchmarkPush(b *testing.B, stack *Stack, size int) {

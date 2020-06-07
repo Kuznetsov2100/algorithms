@@ -45,3 +45,7 @@ func (q *Queue) Peek() (interface{}, error) {
 	}
 	return q.item[0], nil
 }
+
+func (q *Queue) Values() (v []interface{}) {
+	return q.item
+}
