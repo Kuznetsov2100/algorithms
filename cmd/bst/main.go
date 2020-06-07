@@ -51,8 +51,10 @@ func main() {
 			bst.Put(words(word), 1)
 			distinct++
 		} else {
+
+			val, _ := bst.Get(words(word))
 			//nolint:errcheck
-			bst.Put(words(word), bst.Get(words(word)).(int)+1)
+			bst.Put(words(word), val.(int)+1)
 		}
 	}
 
@@ -61,11 +63,14 @@ func main() {
 	//nolint:errcheck
 	bst.Put(max, 0)
 	for _, word := range bst.Keys() {
-		if bst.Get(word).(int) > bst.Get(max).(int) {
+		m, _ := bst.Get(word)
+		n, _ := bst.Get(max)
+		if m.(int) > n.(int) {
 			max = word.(words)
 		}
 	}
-	fmt.Println(max, "  ", bst.Get(max).(int))
+	maxfrequency, _ := bst.Get(max)
+	fmt.Println(max, "  ", maxfrequency.(int))
 	fmt.Println("distinct = ", distinct)
 	fmt.Println("words   = ", wordscount)
 }
