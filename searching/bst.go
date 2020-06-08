@@ -79,7 +79,8 @@ func (b *BST) get(x *node, key Key) Value {
 	}
 }
 
-// Put inserts the specified key-value pair into the symbol table, overwriting the old value with the new value if the symbol table already contains the specified key.
+// Put inserts the specified key-value pair into the symbol table,
+// overwriting the old value with the new value if the symbol table already contains the specified key.
 func (b *BST) Put(key Key, val Value) error {
 	if key == nil {
 		return errors.New("calls Put() with a nil key")
