@@ -66,6 +66,7 @@ func (q *Queue) Peek() (interface{}, error) {
 	return q.first.item, nil
 }
 
+// Values return all of the values in the queue as a slice.
 func (q *Queue) Values() (v []interface{}) {
 	for x := q.first; x != nil; x = x.next {
 		v = append(v, x.item)

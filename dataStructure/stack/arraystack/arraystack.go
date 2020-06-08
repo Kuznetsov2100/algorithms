@@ -46,6 +46,7 @@ func (s *Stack) Peek() (interface{}, error) {
 	return s.item[len(s.item)-1], nil
 }
 
+// Values return all of the values in the stack as a slice.
 func (s *Stack) Values() []interface{} {
 	v := make([]interface{}, s.Size())
 	copy(v, s.item)

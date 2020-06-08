@@ -57,6 +57,7 @@ func (ls *Stack) Peek() (interface{}, error) {
 	return ls.first.item, nil
 }
 
+// Values return all of the values in the stack as a slice.
 func (ls *Stack) Values() (v []interface{}) {
 	for x := ls.first; x != nil; x = x.next {
 		v = append(v, x.item)
