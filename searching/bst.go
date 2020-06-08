@@ -65,6 +65,9 @@ func (b *BST) Get(key Key) (Value, error) {
 	return b.get(b.root, key), nil
 }
 
+// If the tree is empty, we have a search miss;
+// if the search key is equal to the key at the root, we have a search hit.
+// Otherwise, we search (recursively) in the appropriate subtree.
 func (b *BST) get(x *node, key Key) Value {
 	if x == nil {
 		return nil
@@ -94,6 +97,10 @@ func (b *BST) Put(key Key, val Value) error {
 	return nil
 }
 
+// If the tree is empty, we return a new node containing the key and value;
+// if the search key is less than the key at the root,
+// we set the left link to the result of inserting the key into the left subtree;
+// otherwise, we set the right link to the result of inserting the key into the right subtree.
 func (b *BST) put(x *node, key Key, val Value) *node {
 	if x == nil {
 		return &node{
@@ -122,7 +129,9 @@ func (b *BST) DeleteMin() error {
 	return nil
 }
 
-// DeleteMin removes the smallest key and associated value from this symbol table.
+// For delete the minimum,
+// we go left until finding a node that that has a null left link
+// and then replace the link to that node by its right link.
 func (b *BST) deleteMin(x *node) *node {
 	if x.left == nil {
 		return x.right
@@ -141,6 +150,9 @@ func (b *BST) DeleteMax() error {
 	return nil
 }
 
+//  For delete the maximum,
+//  we go right until finding a node that that has a null right link
+//  and then replace the link to that node by its left link.
 func (b *BST) deleteMax(x *node) *node {
 	if x.right == nil {
 		return x.left
@@ -159,6 +171,10 @@ func (b *BST) Delete(key Key) error {
 	return nil
 }
 
+// 1.Save a link to the node to be deleted in t
+// 2.Set x to point to its successor min(t.right).
+// 3.Set the right link of x (which is supposed to point to the BST containing all the keys larger than x.key) to deleteMin(t.right), the link to the BST containing all the keys that are larger than x.key after the deletion.
+// 4.Set the left link of x (which was null) to t.left (all the keys that are less than both the deleted key and its successor).
 func (b *BST) delete(x *node, key Key) *node {
 	if x == nil {
 		return nil
@@ -191,6 +207,9 @@ func (b *BST) Min() (Key, error) {
 	return b.min(b.root).key, nil
 }
 
+// If the left link of the root is null, the smallest key in a BST is the key at the root;
+// if the left link is not null, the smallest key in the BST is the smallest key in the subtree
+// rooted at the node referenced by the left link.
 func (b *BST) min(x *node) *node {
 	if x.left == nil {
 		return x
@@ -206,6 +225,9 @@ func (b *BST) Max() (Key, error) {
 	return b.max(b.root).key, nil
 }
 
+// If the right link of the root is null, the largest key in a BST is the key at the root;
+// if the right link is not null, the largest key in the BST is the largest key in the subtree
+// rooted at the node referenced by the right link.
 func (b *BST) max(x *node) *node {
 	if x.right == nil {
 		return x
@@ -228,6 +250,11 @@ func (b *BST) Floor(key Key) (Key, error) {
 	}
 }
 
+// If a given key is less than the key at the root of a BST,
+// then the floor of key (the largest key in the BST less than or equal to key) must be in the left subtree.
+// If key is greater than the key at the root, then the floor of key could be in the right subtree,
+// but only if there is a key smaller than or equal to key in the right subtree;
+// if not (or if key is equal to the key at the root) then the key at the root is the floor of key.
 func (b *BST) floor(x *node, key Key) *node {
 	if x == nil {
 		return nil
@@ -287,6 +314,11 @@ func (b *BST) Ceiling(key Key) (Key, error) {
 	}
 }
 
+// If a given key is greater than the key at the root of a BST,
+// then the ceiling of key (the smallest key in the BST greater than or equal to key) must be in the right subtree.
+// If key is less than the key at the root, then the ceiling of key could be in the left subtree,
+// but only if there is a key greater than or equal to key in the left subtree;
+// if not (or if key is equal to the key at the root) then the key at the root is the ceiling of key.
 func (b *BST) ceiling(x *node, key Key) *node {
 	if x == nil {
 		return nil
@@ -311,6 +343,11 @@ func (b *BST) Select(rank int) (Key, error) {
 	return b.select1(b.root, rank), nil
 }
 
+// If the number of keys leftsize in the left subtree is larger than k,
+// we look (recursively) for the key of rank k in the left subtree;
+// if leftsize is equal to k, we return the key at the root;
+// and if leftsize is smaller than k,
+// we look (recursively) for the key of rank k - leftsizes - 1 in the right subtree.
 func (b *BST) select1(x *node, rank int) Key {
 	if leftSize := b.size(x.left); leftSize > rank {
 		return b.select1(x.left, rank)
@@ -329,6 +366,12 @@ func (b *BST) Rank(key Key) (int, error) {
 	return b.rank(key, b.root), nil
 }
 
+// If the given key is equal to the key at the root,
+// we return the number of keys t in the left subtree;
+// if the given key is less than the key at the root,
+// we return the rank of the key in the left subtree;
+// and if the given key is larger than the key at the root,
+// we return t plus one (to count the key at the root) plus the rank of the key in the right subtree.
 func (b *BST) rank(key Key, x *node) int {
 	if x == nil {
 		return 0
