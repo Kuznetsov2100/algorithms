@@ -6,7 +6,10 @@ import (
 	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 )
 
+// RED represents the red color
 const RED bool = true
+
+// BLACK represents the black color
 const BLACK bool = false
 
 // The RedBlackBST struct represents an ordered symbol table of generic key-value pairs.
