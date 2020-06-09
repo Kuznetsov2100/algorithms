@@ -176,33 +176,6 @@ func TestRedBlackBST_Floor(t *testing.T) {
 	}
 }
 
-func TestRedBlackBST_Floor2(t *testing.T) {
-	tinyST := []words{"R", "C", "H"}
-	bst := NewRedBlackBST()
-	if _, err := bst.Floor2(words("R")); err == nil {
-		t.Error("should throw error: calls Floor() with empty symbol table")
-	}
-	for i := 0; i < len(tinyST); i++ {
-		//nolint:errcheck
-		bst.Put(tinyST[i], i)
-	}
-	if _, err := bst.Floor2(nil); err == nil {
-		t.Error("should throw error: argument to Floor2() is nil")
-	}
-	if k, _ := bst.Floor2(words("C")); k.CompareTo(words("C")) != 0 {
-		t.Errorf("expect key:\"C\", got %s", k.(words))
-	}
-	if _, err := bst.Floor2(words("B")); err == nil {
-		t.Errorf("should throw error: argument to Floor2() is too small")
-	}
-	if k, _ := bst.Floor2(words("D")); k.CompareTo(words("C")) != 0 {
-		t.Errorf("expect key:\"C\", got %s", k.(words))
-	}
-	if k, _ := bst.Floor2(words("H")); k.CompareTo(words("H")) != 0 {
-		t.Errorf("expect key:\"H\", got %s", k.(words))
-	}
-}
-
 func TestRedBlackBST_Ceiling(t *testing.T) {
 	tinyST := []words{"R", "C", "H"}
 	bst := NewRedBlackBST()

@@ -343,34 +343,6 @@ func (b *RedBlackBST) floor(x *rbnode, key Key) *rbnode {
 	}
 }
 
-// Floor2 returns the largest key in this symbol table less than or equal to key.
-func (b *RedBlackBST) Floor2(key Key) (Key, error) {
-	if key == nil {
-		return nil, errors.New("argument to Floor2() is nil key")
-	}
-	if b.IsEmpty() {
-		return nil, errors.New("calls Floor() with empty symbol table")
-	}
-	if x := b.floor2(b.root, key, nil); x == nil {
-		return nil, errors.New("argument to Floor2() is too small")
-	} else {
-		return x, nil
-	}
-}
-
-func (b *RedBlackBST) floor2(x *rbnode, key Key, best Key) Key {
-	if x == nil {
-		return best
-	}
-	if cmp := key.CompareTo(x.key); cmp < 0 {
-		return b.floor2(x.left, key, best)
-	} else if cmp > 0 {
-		return b.floor2(x.right, key, x.key)
-	} else {
-		return x.key
-	}
-}
-
 // Ceiling returns the smallest key in this symbol table greater than or equal to key.
 func (b *RedBlackBST) Ceiling(key Key) (Key, error) {
 	if key == nil {
