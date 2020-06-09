@@ -89,12 +89,7 @@ func (b *RedBlackBST) Put(key Key, val Value) error {
 
 func (b *RedBlackBST) put(h *rbnode, key Key, val Value) *rbnode {
 	if h == nil {
-		return &rbnode{
-			key:   key,
-			val:   val,
-			color: RED,
-			size:  1,
-		}
+		return &rbnode{key: key, val: val, color: RED, size: 1}
 	}
 	if cmp := key.CompareTo(h.key); cmp < 0 {
 		h.left = b.put(h.left, key, val)
