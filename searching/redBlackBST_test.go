@@ -236,9 +236,21 @@ func TestRedBlackBST_SizeOf(t *testing.T) {
 }
 
 func TestRedBlackBST_Rank(t *testing.T) {
+	tinyST := []words{"S", "E", "A", "R", "C", "H", "E", "X", "A", "M", "P", "L", "E"}
 	bst := NewRedBlackBST()
 	if _, err := bst.Rank(nil); err == nil {
 		t.Error("should throw error: argument to Rank() is nil")
+	}
+	for i := 0; i < len(tinyST); i++ {
+		//nolint:errcheck
+		bst.Put(tinyST[i], i)
+	}
+	if r, err := bst.Rank(words("R")); err != nil {
+		t.Error(err)
+	} else {
+		if r != 7 {
+			t.Errorf("expect 7, got %d", r)
+		}
 	}
 }
 

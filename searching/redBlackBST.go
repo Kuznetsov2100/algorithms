@@ -9,19 +9,27 @@ import (
 const RED bool = true
 const BLACK bool = false
 
+// The RedBlackBST struct represents an ordered symbol table of generic key-value pairs.
+// This implementation uses a left-leaning red-black BST.
+// The put, get, contains, remove, minimum, maximum, ceiling, floor, rank, and select operations
+// each take O(log n) time in the worst case, where n is the number of key-value pairs in the symbol table.
+// The size, and is-empty operations take O(1) time.
+// The Keys method take O(log n + m) time, where m is the number of keys returned by the method.
+// Construction takes O(1) time.
 type RedBlackBST struct {
 	root *rbnode
 }
 
 type rbnode struct {
-	key   Key
-	val   Value
-	left  *rbnode
-	right *rbnode
-	color bool
-	size  int
+	key   Key     // key
+	val   Value   // associated data
+	left  *rbnode // link to  left subtrees
+	right *rbnode // link to right subtrees
+	color bool    // color of parent link
+	size  int     // subtree count
 }
 
+// NewRedBlackBST initializes an empty symbol table.
 func NewRedBlackBST() *RedBlackBST {
 	return &RedBlackBST{}
 }
@@ -33,10 +41,12 @@ func (b *RedBlackBST) isRed(x *rbnode) bool {
 	return x.color
 }
 
+// Size returns the number of key-value pairs in this symbol table.
 func (b *RedBlackBST) Size() int {
 	return b.size(b.root)
 }
 
+// number of node in subtree rooted at x; 0 if x is null
 func (b *RedBlackBST) size(x *rbnode) int {
 	if x == nil {
 		return 0
@@ -44,10 +54,13 @@ func (b *RedBlackBST) size(x *rbnode) int {
 	return x.size
 }
 
+// IsEmpty returns true if this symbol table is empty and false otherwise
 func (b *RedBlackBST) IsEmpty() bool {
 	return b.root == nil
 }
 
+// Get returns the value associated with the given key.
+// the Get() method uses the standard BST search.
 func (b *RedBlackBST) Get(key Key) (Value, error) {
 	if key == nil {
 		return nil, errors.New("argument to Get() is nil key")
@@ -68,11 +81,14 @@ func (b *RedBlackBST) get(x *rbnode, key Key) Value {
 	return nil
 }
 
+// Contains check whether the symbol table contain the given key.
 func (b *RedBlackBST) Contains(key Key) bool {
 	val, _ := b.Get(key)
 	return val != nil
 }
 
+// Put inserts the specified key-value pair into the symbol table,
+// overwriting the old value with the new value if the symbol table already contains the specified key.
 func (b *RedBlackBST) Put(key Key, val Value) error {
 	if key == nil {
 		return errors.New("first argument to Put() is nil key")
@@ -88,6 +104,7 @@ func (b *RedBlackBST) Put(key Key, val Value) error {
 }
 
 func (b *RedBlackBST) put(h *rbnode, key Key, val Value) *rbnode {
+	// Do standard insert, with red link to parent.
 	if h == nil {
 		return &rbnode{key: key, val: val, color: RED, size: 1}
 	}
@@ -99,12 +116,15 @@ func (b *RedBlackBST) put(h *rbnode, key Key, val Value) *rbnode {
 		h.val = val
 	}
 	// fix-up any right-leaning links
+	// rotates left any right-leaning 3-node (or a right-leaning red link at the bottom of a temporary 4-node)
 	if b.isRed(h.right) && !b.isRed(h.left) {
 		h = b.rotateLeft(h)
 	}
+	// rotates right the top link in a temporary 4-node with two left-leaning red links
 	if b.isRed(h.left) && b.isRed(h.left.left) {
 		h = b.rotateRight(h)
 	}
+	// flips colors to pass a red link up the tree
 	if b.isRed(h.left) && b.isRed(h.right) {
 		b.flipColors(h)
 	}
@@ -112,6 +132,7 @@ func (b *RedBlackBST) put(h *rbnode, key Key, val Value) *rbnode {
 	return h
 }
 
+// DeleteMin removes the smallest key and associated value from the symbol table.
 func (b *RedBlackBST) DeleteMin() error {
 	if b.IsEmpty() {
 		return errors.New("RedBlackBST underflow")
@@ -138,6 +159,7 @@ func (b *RedBlackBST) deleteMin(h *rbnode) *rbnode {
 	return b.balance(h)
 }
 
+// DeleteMax removes the largest key and associated value from this symbol table.
 func (b *RedBlackBST) DeleteMax() error {
 	if b.IsEmpty() {
 		return errors.New("RedBlackBST underflow")
@@ -167,6 +189,7 @@ func (b *RedBlackBST) deleteMax(h *rbnode) *rbnode {
 	return b.balance(h)
 }
 
+// Delete removes the specified key and associated value from this symbol table (if the key is in the symbol table).
 func (b *RedBlackBST) Delete(key Key) error {
 	if key == nil {
 		return errors.New("argument to Delete() is nil key")
@@ -213,6 +236,7 @@ func (b *RedBlackBST) delete(h *rbnode, key Key) *rbnode {
 	return b.balance(h)
 }
 
+// make a left-leaning link lean to the right
 func (b *RedBlackBST) rotateRight(h *rbnode) *rbnode {
 	var x *rbnode = h.left
 	h.left = x.right
@@ -224,6 +248,7 @@ func (b *RedBlackBST) rotateRight(h *rbnode) *rbnode {
 	return x
 }
 
+// make a right-leaning link lean to the left
 func (b *RedBlackBST) rotateLeft(h *rbnode) *rbnode {
 	var x *rbnode = h.right
 	h.right = x.left
@@ -235,12 +260,15 @@ func (b *RedBlackBST) rotateLeft(h *rbnode) *rbnode {
 	return x
 }
 
+// flip the colors of a node and its two children
 func (b *RedBlackBST) flipColors(h *rbnode) {
 	h.color = !h.color
 	h.left.color = !h.left.color
 	h.right.color = !h.right.color
 }
 
+// Assuming that h is red and both h.left and h.left.left
+// are black, make h.left or one of its children red.
 func (b *RedBlackBST) moveRedLeft(h *rbnode) *rbnode {
 	b.flipColors(h)
 	if b.isRed(h.right.left) {
@@ -251,6 +279,8 @@ func (b *RedBlackBST) moveRedLeft(h *rbnode) *rbnode {
 	return h
 }
 
+// Assuming that h is red and both h.right and h.right.left
+// are black, make h.right or one of its children red.
 func (b *RedBlackBST) moveRedRight(h *rbnode) *rbnode {
 	b.flipColors(h)
 	if b.isRed(h.left.left) {
@@ -260,6 +290,7 @@ func (b *RedBlackBST) moveRedRight(h *rbnode) *rbnode {
 	return h
 }
 
+// restore red-black tree invariant
 func (b *RedBlackBST) balance(h *rbnode) *rbnode {
 	if b.isRed(h.right) {
 		h = b.rotateLeft(h)
@@ -274,6 +305,7 @@ func (b *RedBlackBST) balance(h *rbnode) *rbnode {
 	return h
 }
 
+// Min returns the smallest key in this symbol table.
 func (b *RedBlackBST) Min() (Key, error) {
 	if b.IsEmpty() {
 		return nil, errors.New("calls Min() with empty symbol table")
@@ -288,6 +320,7 @@ func (b *RedBlackBST) min(x *rbnode) *rbnode {
 	return b.min(x.left)
 }
 
+// Max returns the largest key in this symbol table.
 func (b *RedBlackBST) Max() (Key, error) {
 	if b.IsEmpty() {
 		return nil, errors.New("calls Max() with empty symbol table")
