@@ -1,6 +1,7 @@
 package searching
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -62,7 +63,7 @@ func TestRedBlackBST_Get(t *testing.T) {
 }
 
 func TestRedBlackBST_Delete(t *testing.T) {
-	tinyST := []words{"S", "E", "A", "R", "C", "H", "E", "X", "A", "M", "P", "L", "E"}
+	tinyST := []words{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 	bst := NewRedBlackBST()
 	if err := bst.Delete(words("A")); err != nil {
 		t.Error(err)
@@ -75,6 +76,9 @@ func TestRedBlackBST_Delete(t *testing.T) {
 		t.Error("should throw error: argument to Delete() is nil")
 	}
 
+	rand.Shuffle(26, func(i int, j int) {
+		tinyST[i], tinyST[j] = tinyST[j], tinyST[i]
+	})
 	for i := 0; i < len(tinyST); i++ {
 		//nolint:errcheck
 		bst.Delete(tinyST[i])
@@ -146,11 +150,18 @@ func TestRedBlackBST_Select(t *testing.T) {
 			t.Errorf("expect key:\"C\", got %s", k.(words))
 		}
 	}
+	if k, err := bst.Select(7); err != nil {
+		t.Error(err)
+	} else {
+		if k.CompareTo(words("R")) != 0 {
+			t.Errorf("expect key:\"R\", got %s", k.(words))
+		}
+	}
 
 }
 
 func TestRedBlackBST_Floor(t *testing.T) {
-	tinyST := []words{"R", "C", "H"}
+	tinyST := []words{"S", "E", "A", "R", "C", "H", "E", "X", "A", "M", "P", "L", "E"}
 	bst := NewRedBlackBST()
 	if _, err := bst.Floor(words("R")); err == nil {
 		t.Error("should throw error: calls Floor() with empty symbol table")
@@ -165,7 +176,7 @@ func TestRedBlackBST_Floor(t *testing.T) {
 	if k, _ := bst.Floor(words("C")); k.CompareTo(words("C")) != 0 {
 		t.Errorf("expect key:\"C\", got %s", k.(words))
 	}
-	if k, _ := bst.Floor(words("B")); k != nil {
+	if k, _ := bst.Floor(words("1")); k != nil {
 		t.Errorf("expect nil, got %s", k.(words))
 	}
 	if k, _ := bst.Floor(words("D")); k.CompareTo(words("C")) != 0 {
