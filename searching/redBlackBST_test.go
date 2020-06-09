@@ -75,7 +75,7 @@ func TestRedBlackBST_Delete(t *testing.T) {
 	if err := bst.Delete(nil); err == nil {
 		t.Error("should throw error: argument to Delete() is nil")
 	}
-
+	rand.Seed(100)
 	rand.Shuffle(26, func(i int, j int) {
 		tinyST[i], tinyST[j] = tinyST[j], tinyST[i]
 	})
