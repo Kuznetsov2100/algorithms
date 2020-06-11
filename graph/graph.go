@@ -4,24 +4,23 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/handane123/algorithms/dataStructure/bag"
 	"github.com/handane123/algorithms/stdin"
-
-	linkedbag "github.com/handane123/algorithms/dataStructure/bag"
 )
 
 type Graph struct {
 	v   int
 	e   int
-	adj []*linkedbag.Bag
+	adj []*bag.Bag
 }
 
 func NewGraph(V int) *Graph {
 	if V < 0 {
 		panic("Number of vertices must be non negative")
 	}
-	adj := make([]*linkedbag.Bag, V)
+	adj := make([]*bag.Bag, V)
 	for i := 0; i < V; i++ {
-		adj[i] = linkedbag.New()
+		adj[i] = bag.New()
 	}
 	return &Graph{v: V, e: 0, adj: adj}
 }
@@ -38,9 +37,9 @@ func NewGraphIn(in *stdin.In) (*Graph, error) {
 	if E < 0 {
 		return nil, errors.New("number of edges in a Graph must be non negative")
 	}
-	adj := make([]*linkedbag.Bag, V)
+	adj := make([]*bag.Bag, V)
 	for i := 0; i < V; i++ {
-		adj[i] = linkedbag.New()
+		adj[i] = bag.New()
 	}
 	g := &Graph{e: E, v: V, adj: adj}
 	for i := 0; i < E; i++ {

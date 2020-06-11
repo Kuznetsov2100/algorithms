@@ -1,4 +1,4 @@
-package linkedbag
+package bag
 
 // Bag implemented using a singly linked list.
 type Bag struct {

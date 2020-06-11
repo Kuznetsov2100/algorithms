@@ -1,4 +1,4 @@
-package linkedbag
+package bag
 
 import (
 	"reflect"
