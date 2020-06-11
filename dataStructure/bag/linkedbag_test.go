@@ -1,6 +1,9 @@
 package linkedbag
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestBag_Add(t *testing.T) {
 	b := New()
@@ -15,6 +18,18 @@ func TestBag_Add(t *testing.T) {
 		t.Errorf("expect 10, got %d", b.Size())
 	}
 
+}
+func TestBag_Values(t *testing.T) {
+	s := New()
+	for i := 1; i <= 3; i++ {
+		s.Add(i)
+	}
+	got := s.Values()
+	expect := []interface{}{3, 2, 1}
+
+	if !reflect.DeepEqual(got, expect) {
+		t.Errorf("Expect: %v, Got: %v", expect, got)
+	}
 }
 
 func benchmarkAdd(b *testing.B, bag *Bag, size int) {

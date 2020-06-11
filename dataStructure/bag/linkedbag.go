@@ -34,3 +34,11 @@ func (b *Bag) IsEmpty() bool {
 func (b *Bag) Size() int {
 	return b.n
 }
+
+// Values return all of the values in the Bag as a slice.
+func (b *Bag) Values() (v []interface{}) {
+	for x := b.first; x != nil; x = x.next {
+		v = append(v, x.item)
+	}
+	return v
+}
