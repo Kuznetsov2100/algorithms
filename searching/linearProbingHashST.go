@@ -2,6 +2,11 @@ package searching
 
 import "errors"
 
+// LinearProbingHashST struct represents a symbol table of generic key-value pairs.
+// This implementation uses a linear probing hash table.
+// It requires that the key type implements the CompareTo() and HashCode() methods.
+// The expected time per put, contains, or remove operation is constant,
+// subject to the uniform hashing assumption. The size, and is-empty operations take constant time. Construction takes constant time.
 type LinearProbingHashST struct {
 	n    int
 	m    int
@@ -9,6 +14,7 @@ type LinearProbingHashST struct {
 	vals []Value
 }
 
+// NewLineaarProbingHashST initializes an empty symbol table with the specified initial capacity.
 func NewLinearProbingHashST(capacity int) *LinearProbingHashST {
 	if capacity < 0 {
 		panic("capacity should be non negative value")
@@ -24,14 +30,17 @@ func NewLinearProbingHashST(capacity int) *LinearProbingHashST {
 	}
 }
 
+// Size returns the number of key-value pairs in this symbol table.
 func (lp *LinearProbingHashST) Size() int {
 	return lp.n
 }
 
+// IsEmpty returns true if this symbol table is empty.
 func (lp *LinearProbingHashST) IsEmpty() bool {
 	return lp.Size() == 0
 }
 
+// Contains returns true if this symbol table contains the specified key.
 func (lp *LinearProbingHashST) Contains(key HashKey) (bool, error) {
 	if key == nil {
 		return false, errors.New("argument to Contains() is nil key")
@@ -40,10 +49,13 @@ func (lp *LinearProbingHashST) Contains(key HashKey) (bool, error) {
 	return val != nil, nil
 }
 
+// hash value between 0 and m-1
 func (lp *LinearProbingHashST) hash(key HashKey) int {
 	return (key.HashCode() & 0x7fffffff) % lp.m
 }
 
+// resize the hash table to have the given number of chains,
+// rehashing all of the keys
 func (lp *LinearProbingHashST) resize(capacity int) {
 	temp := NewLinearProbingHashST(capacity)
 	for i := 0; i < lp.m; i++ {
@@ -57,6 +69,8 @@ func (lp *LinearProbingHashST) resize(capacity int) {
 	lp.m = temp.m
 }
 
+// Put Inserts the specified key-value pair into the symbol table,
+// overwriting the old value with the new value if the symbol table already contains the specified key.
 func (lp *LinearProbingHashST) Put(key HashKey, val Value) error {
 	if key == nil {
 		return errors.New("first argument to Put() is nil key")
@@ -81,6 +95,7 @@ func (lp *LinearProbingHashST) Put(key HashKey, val Value) error {
 	return nil
 }
 
+// Get returns the value associated with the specified key in this symbol table.
 func (lp *LinearProbingHashST) Get(key HashKey) (Value, error) {
 	if key == nil {
 		return nil, errors.New("argument to Get() is nil key")
@@ -93,6 +108,7 @@ func (lp *LinearProbingHashST) Get(key HashKey) (Value, error) {
 	return nil, nil
 }
 
+// Delete removes the specified key and its associated value from this symbol table (if the key is in this symbol table).
 func (lp *LinearProbingHashST) Delete(key HashKey) error {
 	if key == nil {
 		return errors.New("argument to Delete() is nil key")
@@ -125,6 +141,7 @@ func (lp *LinearProbingHashST) Delete(key HashKey) error {
 	return nil
 }
 
+// Keys return all of the keys in the symbol table.
 func (lp *LinearProbingHashST) Keys() (keys []HashKey) {
 	for i := 0; i < lp.m; i++ {
 		if lp.keys[i] != nil {
