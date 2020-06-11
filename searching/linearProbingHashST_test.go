@@ -82,8 +82,11 @@ func TestLinearProbingHashST_Get(t *testing.T) {
 }
 
 func TestLinearProbingHashST_Delete(t *testing.T) {
-	//tinyST := []StringHashKey{"S", "E", "A", "R", "C", "H", "E", "X", "A", "M", "P", "L", "E"}
 	tinyST := []StringHashKey{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+	rand.Seed(1)
+	rand.Shuffle(len(tinyST), func(i int, j int) {
+		tinyST[i], tinyST[j] = tinyST[j], tinyST[i]
+	})
 	bst := NewLinearProbingHashST(0)
 	if err := bst.Delete(StringHashKey("A")); err != nil {
 		t.Error(err)
@@ -96,9 +99,6 @@ func TestLinearProbingHashST_Delete(t *testing.T) {
 		t.Error("should throw error: argument to Delete() is nil")
 	}
 
-	rand.Shuffle(len(tinyST), func(i int, j int) {
-		tinyST[i], tinyST[j] = tinyST[j], tinyST[i]
-	})
 	for i := 0; i < len(tinyST); i++ {
 		//nolint:errcheck
 		bst.Delete(tinyST[i])
