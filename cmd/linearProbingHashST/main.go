@@ -27,7 +27,7 @@ type stringHashKey = searching.StringHashKey
 func main() {
 	distinct, wordscount := 0, 0
 	minLen, _ := strconv.Atoi(os.Args[1])
-	bst := searching.NewSeparateChainingHashST(1667)
+	bst := searching.NewLinearProbingHashST(0)
 	stdin := stdin.NewStdIn()
 	for !stdin.IsEmpty() {
 		word := stdin.ReadString()
