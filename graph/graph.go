@@ -88,7 +88,7 @@ func (g *Graph) AddEdge(v, w int) {
 	g.adj[w].Add(v)
 }
 
-// returns the degree of vertex v.
+// Degree returns the degree of vertex v.
 func (g *Graph) Degree(v int) int {
 	g.validateVertex(v)
 	return g.adj[v].Size()
