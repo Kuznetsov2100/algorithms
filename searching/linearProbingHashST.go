@@ -51,6 +51,7 @@ func (lp *LinearProbingHashST) Contains(key HashKey) (bool, error) {
 
 // hash value between 0 and m-1
 func (lp *LinearProbingHashST) hash(key HashKey) int {
+	// key.HashCode() & 0x7fffffff to keep the value always non negative(aka:bitwise mask)
 	return (key.HashCode() & 0x7fffffff) % lp.m
 }
 
