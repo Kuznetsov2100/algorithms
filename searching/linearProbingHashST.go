@@ -8,10 +8,10 @@ import "errors"
 // The expected time per put, contains, or remove operation is constant,
 // subject to the uniform hashing assumption. The size, and is-empty operations take constant time. Construction takes constant time.
 type LinearProbingHashST struct {
-	n    int
-	m    int
-	keys []HashKey
-	vals []Value
+	n    int       // number of key-value pairs in the symbol table
+	m    int       // size of linear probing table
+	keys []HashKey // the keys
+	vals []Value   // the values
 }
 
 // NewLineaarProbingHashST initializes an empty symbol table with the specified initial capacity.
@@ -79,6 +79,7 @@ func (lp *LinearProbingHashST) Put(key HashKey, val Value) error {
 		//nolint:errcheck
 		lp.Delete(key)
 	}
+	// double table size if 50% full
 	if lp.n >= lp.m/2 {
 		lp.resize(2 * lp.m)
 	}
@@ -116,15 +117,17 @@ func (lp *LinearProbingHashST) Delete(key HashKey) error {
 	if ok, _ := lp.Contains(key); !ok {
 		return nil
 	}
-
+	// find position i of key
 	i := lp.hash(key)
 	for lp.keys[i].CompareTo(key) != 0 {
 		i = (i + 1) % lp.m
 	}
 	lp.keys[i] = nil
 	lp.vals[i] = nil
+	// rehash all keys in same cluster
 	i = (i + 1) % lp.m
 	for lp.keys[i] != nil {
+		// delete keys[i] an vals[i] and reinsert
 		keyToRehash := lp.keys[i]
 		valToRehash := lp.vals[i]
 		lp.keys[i] = nil
@@ -135,6 +138,7 @@ func (lp *LinearProbingHashST) Delete(key HashKey) error {
 		i = (i + 1) % lp.m
 	}
 	lp.n--
+	// halves size of array if it's 12.5% full or less
 	if lp.n > 0 && lp.n <= lp.m/8 {
 		lp.resize(lp.m / 2)
 	}
