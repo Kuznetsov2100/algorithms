@@ -38,7 +38,7 @@ func (st *SequentialSearchST) IsEmpty() bool {
 // Contains returns true if this symbol table contains the specified key.
 func (st *SequentialSearchST) Contains(key Key) (bool, error) {
 	if key == nil {
-		return false, errors.New("arugment to Contains() is nil key")
+		return false, errors.New("argument to Contains() is nil key")
 	}
 	val, _ := st.Get(key)
 	return val != nil, nil

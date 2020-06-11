@@ -14,7 +14,7 @@ type LinearProbingHashST struct {
 	vals []Value   // the values
 }
 
-// NewLineaarProbingHashST initializes an empty symbol table with the specified initial capacity.
+// NewLinearProbingHashST initializes an empty symbol table with the specified initial capacity.
 func NewLinearProbingHashST(capacity int) *LinearProbingHashST {
 	if capacity < 0 {
 		panic("capacity should be non negative value")
