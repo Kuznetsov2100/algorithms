@@ -23,7 +23,7 @@ func TestGraph_NewGraph(t *testing.T) {
 }
 
 func TestGraph_NewGraphIn(t *testing.T) {
-	buf := strings.NewReader("2 1 0 1")
+	buf := strings.NewReader("2\n" + "1\n" + "0 1\n")
 	s := bufio.NewScanner(buf)
 	s.Split(bufio.ScanWords)
 	in := &stdin.In{Scanner: s}
@@ -40,14 +40,14 @@ func TestGraph_NewGraphIn(t *testing.T) {
 	if _, err := NewGraphIn(nil); err == nil {
 		t.Error("should throw error: argument is nil")
 	}
-	buf1 := strings.NewReader("-1 1 0 1")
+	buf1 := strings.NewReader("-1\n" + "1\n" + "0 1\n")
 	s1 := bufio.NewScanner(buf1)
 	s1.Split(bufio.ScanWords)
 	in1 := &stdin.In{Scanner: s1}
 	if _, err := NewGraphIn(in1); err == nil {
 		t.Error("should throw error: number of vertices in a Graph must be non negative")
 	}
-	buf2 := strings.NewReader("1 -2 0 1")
+	buf2 := strings.NewReader("2\n" + "-2\n" + "0 1\n")
 	s2 := bufio.NewScanner(buf2)
 	s2.Split(bufio.ScanWords)
 	in2 := &stdin.In{Scanner: s2}
