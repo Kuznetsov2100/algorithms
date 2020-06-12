@@ -104,7 +104,7 @@ func (g *Graph) Adj(v int) (vertices []int) {
 }
 
 // ToString returns a string representation of this graph.
-func (g *Graph) ToString() string {
+func (g *Graph) String() string {
 	var s strings.Builder
 	fmt.Fprintf(&s, "%d vertices, %d edges \n", g.v, g.e)
 	for i := 0; i < g.v; i++ {

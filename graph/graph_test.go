@@ -83,11 +83,11 @@ func TestGraph_Adj(t *testing.T) {
 	}
 }
 
-func TestGraph_ToString(t *testing.T) {
+func TestGraph_String(t *testing.T) {
 	g := NewGraph(3)
 	g.AddEdge(0, 1)
 	g.AddEdge(0, 2)
-	if s := g.ToString(); s != "3 vertices, 2 edges \n"+"0:  2 1\n"+"1:  0\n"+"2:  0\n" {
+	if s := g.String(); s != "3 vertices, 2 edges \n"+"0:  2 1\n"+"1:  0\n"+"2:  0\n" {
 		t.Errorf("expect fuck, got %s", s)
 	}
 }
