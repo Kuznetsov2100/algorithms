@@ -3,6 +3,7 @@ package graph
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/handane123/algorithms/dataStructure/bag"
 	"github.com/handane123/algorithms/stdin"
@@ -104,13 +105,14 @@ func (g *Graph) Adj(v int) (vertices []int) {
 
 // ToString returns a string representation of this graph.
 func (g *Graph) ToString() string {
-	s := fmt.Sprintf("%d vertices, %d edges \n", g.v, g.e)
+	var s strings.Builder
+	fmt.Fprintf(&s, "%d vertices, %d edges \n", g.v, g.e)
 	for i := 0; i < g.v; i++ {
-		adjs := ""
+		var adjs strings.Builder
 		for _, w := range g.Adj(i) {
-			adjs = adjs + fmt.Sprintf(" %d", w)
+			fmt.Fprintf(&adjs, " %d", w)
 		}
-		s += fmt.Sprintf("%d: %s\n", i, adjs)
+		fmt.Fprintf(&s, "%d: %s\n", i, adjs.String())
 	}
-	return s
+	return s.String()
 }
