@@ -95,7 +95,7 @@ func CompleteBipartite(V1, V2 int) *Graph {
 	return g
 }
 
-// Biparite returns a random simple bipartite graph on V1 and V2 vertices with E edges.
+// Bipartite returns a random simple bipartite graph on V1 and V2 vertices with E edges.
 func Bipartite(V1, V2, E int) (*Graph, error) {
 	if E > V1*V2 {
 		return nil, errors.New("too many edges")
@@ -269,11 +269,11 @@ func Regular(V, k int) (*Graph, error) {
 
 type vkey int
 
-func (this vkey) CompareTo(k priorityqueue.Key) int {
+func (v vkey) CompareTo(k priorityqueue.Key) int {
 	that := k.(vkey)
-	if this < that {
+	if v < that {
 		return -1
-	} else if this > that {
+	} else if v > that {
 		return 1
 	} else {
 		return 0
