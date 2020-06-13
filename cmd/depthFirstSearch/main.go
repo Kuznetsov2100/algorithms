@@ -3,11 +3,11 @@ package main
 //  Run depth first search on an undirected graph.
 //  Runs in O(E + V) time.
 //
-//  % java DepthFirstSearch tinyG.txt 0
+//  % go run main.go tinyG.txt 0
 //  0 1 2 3 4 5 6
 //  NOT connected
 //
-//  % java DepthFirstSearch tinyG.txt 9
+//  % go run main.go tinyG.txt 9
 //  9 10 11 12
 //  NOT connected
 
