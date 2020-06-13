@@ -9,6 +9,10 @@ import (
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
 )
 
+type comparable interface {
+	compareTo(c comparable) int
+}
+
 type edge struct {
 	v int
 	w int
@@ -22,7 +26,7 @@ func newEdge(v, w int) *edge {
 
 }
 
-func (e *edge) CompareTo(c Comparable) int {
+func (e *edge) compareTo(c comparable) int {
 	that := c.(*edge)
 	if e.v < that.v {
 		return -1
@@ -39,6 +43,7 @@ func (e *edge) CompareTo(c Comparable) int {
 	return 0
 }
 
+// Simple returns a random simple graph containing V vertices and E edges.
 func Simple(V, E int) (*Graph, error) {
 	if E > V*(V-1)/2 {
 		return nil, errors.New("too many edges")
@@ -61,6 +66,7 @@ func Simple(V, E int) (*Graph, error) {
 	return G, nil
 }
 
+// SimpleP returns a random simple graph on V vertices, with an edge between any two vertices with probability p.
 func SimpleP(V int, p float64) (*Graph, error) {
 	if p < 0.0 || p > 1.0 {
 		return nil, errors.New("probability must be between 0 and 1")
@@ -77,16 +83,19 @@ func SimpleP(V int, p float64) (*Graph, error) {
 	return G, nil
 }
 
+// Complete returns the complete graph on V vertices.
 func Complete(V int) *Graph {
 	g, _ := SimpleP(V, 1.0)
 	return g
 }
 
+// CompleteBipartite returns a complete bipartite graph on V1 and V2 vertices.
 func CompleteBipartite(V1, V2 int) *Graph {
 	g, _ := Bipartite(V1, V2, V1*V2)
 	return g
 }
 
+// Biparite returns a random simple bipartite graph on V1 and V2 vertices with E edges.
 func Bipartite(V1, V2, E int) (*Graph, error) {
 	if E > V1*V2 {
 		return nil, errors.New("too many edges")
@@ -110,6 +119,7 @@ func Bipartite(V1, V2, E int) (*Graph, error) {
 	return G, nil
 }
 
+// BipartiteP returns a random simple bipartite graph on V1 and V2 vertices, containing each possible edge with probability p.
 func BipartiteP(V1, V2 int, p float64) (*Graph, error) {
 	if p < 0.0 || p > 1.0 {
 		return nil, errors.New("probability must be between 0 and 1")
@@ -127,6 +137,7 @@ func BipartiteP(V1, V2 int, p float64) (*Graph, error) {
 	return G, nil
 }
 
+// Path returns a path graph on V vertices.
 func Path(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
@@ -136,6 +147,7 @@ func Path(V int) *Graph {
 	return G
 }
 
+// BinaryTree returns a complete binary tree graph on V vertices.
 func BinaryTree(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
@@ -145,6 +157,7 @@ func BinaryTree(V int) *Graph {
 	return G
 }
 
+// Cycle returns a cycle graph on V vertices.
 func Cycle(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
@@ -155,6 +168,7 @@ func Cycle(V int) *Graph {
 	return G
 }
 
+// EulerianCycle returns an Eulerian cycle graph on V vertices.
 func EulerianCycle(V, E int) (*Graph, error) {
 	if E <= 0 {
 		return nil, errors.New("an Eulerian cycle must have at least one edge")
@@ -175,6 +189,7 @@ func EulerianCycle(V, E int) (*Graph, error) {
 	return G, nil
 }
 
+// EulerianPath returns an Eulerian path graph on V vertices.
 func EulerianPath(V, E int) (*Graph, error) {
 	if E < 0 {
 		return nil, errors.New("negative number of edges")
@@ -194,6 +209,7 @@ func EulerianPath(V, E int) (*Graph, error) {
 	return G, nil
 }
 
+// Wheel returns a wheel graph on V vertices.
 func Wheel(V int) (*Graph, error) {
 	if V <= 1 {
 		return nil, errors.New("number of vertices must be at least 2")
@@ -214,6 +230,7 @@ func Wheel(V int) (*Graph, error) {
 	return G, nil
 }
 
+// Star returns a star graph on V vertices.
 func Star(V int) (*Graph, error) {
 	if V <= 0 {
 		return nil, errors.New("number of vertices must be at least 1")
@@ -228,6 +245,7 @@ func Star(V int) (*Graph, error) {
 	return G, nil
 }
 
+// Regular returns a uniformly random k-regular graph on V vertices (not necessarily simple).
 func Regular(V, k int) (*Graph, error) {
 	if V*k%2 != 0 {
 		return nil, errors.New("number of vertices * k must be even")
@@ -262,6 +280,8 @@ func (this vkey) CompareTo(k priorityqueue.Key) int {
 	}
 
 }
+
+// Tree returns a uniformly random tree on V vertices.
 func Tree(V int) *Graph {
 	G := NewGraph(V)
 	if V == 1 {
