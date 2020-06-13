@@ -12,15 +12,16 @@ type In struct {
 	Scanner *bufio.Scanner
 }
 
-// NewInFileName initializes an input stream from a local filename
-func NewInFileName(path string) *In {
-	inFile, err := os.Open(path)
+// NewInFileWords initializes an input stream from a local filename
+func NewInFileWords(filename string) *In {
+	File, err := os.Open(filename)
 	if err != nil {
 		fmt.Println(err)
-		panic("can not open file: " + path)
+		panic(fmt.Sprintf("can not open file: %s", filename))
 	}
-	scanner := bufio.NewScanner(inFile) // default SplitFunc: Scanlines
-	return &In{scanner}
+	scanner := bufio.NewScanner(File)
+	scanner.Split(bufio.ScanWords)
+	return &In{Scanner: scanner}
 }
 
 // IsEmpty reports if the In is empty
