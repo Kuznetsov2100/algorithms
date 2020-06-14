@@ -1,5 +1,12 @@
 package main
 
+//   %  go run main.go tinyCG.txt 0
+//   0 to 0 (0):  0
+//   0 to 1 (1):  0-1
+//   0 to 2 (1):  0-2
+//   0 to 3 (2):  0-2-3
+//   0 to 4 (2):  0-2-4
+//   0 to 5 (1):  0-5
 import (
 	"fmt"
 	"os"
