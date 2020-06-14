@@ -5,11 +5,12 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 	"github.com/handane123/algorithms/stdin"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDepthFirstSearch(t *testing.T) {
+func TestCC(t *testing.T) {
 	assert := assert.New(t)
 	tinyG := "13\n" +
 		"13\n" +
@@ -26,7 +27,6 @@ func TestDepthFirstSearch(t *testing.T) {
 		"7 8\n" +
 		"9 11\n" +
 		"5 3\n"
-
 	buf := strings.NewReader(tinyG)
 	scanner := bufio.NewScanner(buf)
 	scanner.Split(bufio.ScanWords)
@@ -34,15 +34,19 @@ func TestDepthFirstSearch(t *testing.T) {
 	g, err := NewGraphIn(in)
 	assert.Nil(err)
 
-	search := NewDepthFirstSearch(g, 0)
-	for v := 0; v < g.V(); v++ {
-		if v <= 6 {
-			assert.True(search.IsMarked(v))
-		} else {
-			assert.False(search.IsMarked(v))
-		}
+	cc := NewCC(g)
+
+	m := cc.Count()
+	components := make([]*arrayqueue.Queue, m)
+	for i := 0; i < m; i++ {
+		components[i] = arrayqueue.New()
 	}
 
-	assert.NotEqual(search.Count(), g.V())
-	assert.Panics(func() { NewDepthFirstSearch(g, 13) })
+	for v := 0; v < g.V(); v++ {
+		components[cc.Id(v)].Enqueue(v)
+	}
+
+	assert.Equal([]interface{}{0, 1, 2, 3, 4, 5, 6}, components[0].Values())
+	assert.Equal([]interface{}{7, 8}, components[1].Values())
+	assert.Equal([]interface{}{9, 10, 11, 12}, components[2].Values())
 }
