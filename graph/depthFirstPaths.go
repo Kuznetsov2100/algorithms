@@ -13,9 +13,9 @@ import (
 // where V is the number of vertices and E is the number of edges.
 // Each instance method takes O(1) time. It uses O(V) extra space (not including the graph).
 type DepthFirstPaths struct {
-	marked []bool
-	edgeTo []int
-	source int
+	marked []bool // marked[v] = is there an s-v path?
+	edgeTo []int  // edgeTo[v] = last edge on s-v path
+	source int    // source vertex
 }
 
 // NewDepthFirstPaths computes a path between s and every other vertex in graph G.

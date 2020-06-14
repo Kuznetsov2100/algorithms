@@ -17,9 +17,9 @@ const infinity = math.MaxInt64
 // where V is the number of vertices and E is the number of edges.
 // Each instance method takes O(1) time. It uses O(V) extra space (not including the graph).
 type BreadthFirstPaths struct {
-	marked []bool
-	edgeTo []int
-	distTo []int
+	marked []bool // marked[v] = is there an s-v path
+	edgeTo []int  // edgeTo[v] = previous edge on shortest s-v path
+	distTo []int  // distTo[v] = number of edges shortest s-v path
 }
 
 // NewBreadthFirstPaths computes the shortest path between the source vertex s and every other vertex in the graph G.
