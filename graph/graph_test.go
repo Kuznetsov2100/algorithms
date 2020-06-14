@@ -23,8 +23,8 @@ func TestGraph_NewGraphIn(t *testing.T) {
 	g, err := NewGraphIn(in)
 	assert.Nil(err)
 
-	assert.Equal(g.E(), 1)
-	assert.Equal(g.V(), 2)
+	assert.Equal(1, g.E())
+	assert.Equal(2, g.V())
 
 	g1, err1 := NewGraphIn(nil)
 	assert.Nil(g1)
@@ -53,9 +53,9 @@ func TestGraph_Degree(t *testing.T) {
 	g.AddEdge(0, 1)
 	g.AddEdge(0, 2)
 
-	assert.Equal(g.Degree(0), 2)
-	assert.Equal(g.E(), 2)
-	assert.Equal(g.V(), 3)
+	assert.Equal(2, g.Degree(0))
+	assert.Equal(2, g.E())
+	assert.Equal(3, g.V())
 
 	assert.Panics(func() { g.AddEdge(0, 4) })
 }
@@ -65,7 +65,7 @@ func TestGraph_Adj(t *testing.T) {
 	g := NewGraph(3)
 	g.AddEdge(0, 1)
 	g.AddEdge(0, 2)
-	assert.Equal(g.Adj(0), []int{2, 1})
+	assert.Equal([]int{2, 1}, g.Adj(0))
 }
 
 func TestGraph_String(t *testing.T) {
@@ -73,5 +73,5 @@ func TestGraph_String(t *testing.T) {
 	g := NewGraph(3)
 	g.AddEdge(0, 1)
 	g.AddEdge(0, 2)
-	assert.Equal(g.String(), "3 vertices, 2 edges \n"+"0:  2 1\n"+"1:  0\n"+"2:  0\n")
+	assert.Equal("3 vertices, 2 edges \n"+"0:  2 1\n"+"1:  0\n"+"2:  0\n", g.String())
 }

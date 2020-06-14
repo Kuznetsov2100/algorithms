@@ -20,7 +20,7 @@ func TestGraphGenerator_Simple(t *testing.T) {
 
 	rand.Seed(time.Now().Unix())
 	V := rand.Intn(10)
-	E := rand.Intn(V + 1)
+	E := rand.Intn(V*(V-1)/2 + 1)
 	g2, err2 := Simple(V, E)
 	assert.Nil(err2)
 
@@ -60,7 +60,7 @@ func TestGraphGenerator_Complete(t *testing.T) {
 	V := rand.Intn(10)
 	g := Complete(V)
 	for i := 0; i < V; i++ {
-		assert.Equal(g.Degree(i), V-1)
+		assert.Equal(V-1, g.Degree(i))
 	}
 }
 
