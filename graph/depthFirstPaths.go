@@ -13,11 +13,11 @@ type DepthFirstPaths struct {
 }
 
 func NewDepthFirstPaths(G *Graph, s int) *DepthFirstPaths {
-	G.validateVertex(s)
 	dfp := &DepthFirstPaths{
 		marked: make([]bool, G.V()),
 		edgeTo: make([]int, G.V()),
 		source: s}
+	dfp.validateVertex(s)
 	dfp.dfs(G, s)
 	return dfp
 }

@@ -5,13 +5,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/dropbox/godropbox/container/set"
+	"github.com/emirpasic/gods/sets/treeset"
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
 )
-
-type comparable interface {
-	compareTo(c comparable) int
-}
 
 type edge struct {
 	v int
@@ -26,24 +22,26 @@ func newEdge(v, w int) *edge {
 
 }
 
-func (e *edge) compareTo(c comparable) int {
-	that := c.(*edge)
-	if e.v < that.v {
+func comparator(a, b interface{}) int {
+	a1 := a.(*edge)
+	b1 := b.(*edge)
+	if a1.v < b1.v {
 		return -1
 	}
-	if e.v > that.v {
+	if a1.v > b1.v {
 		return 1
 	}
-	if e.w < that.w {
+	if a1.w < b1.w {
 		return -1
 	}
-	if e.w > that.w {
+	if a1.w > b1.w {
 		return 1
 	}
 	return 0
 }
 
 // Simple returns a random simple graph containing V vertices and E edges.
+// A simple graph is a graph with no self-loops and parallel edges.
 func Simple(V, E int) (*Graph, error) {
 	if E > V*(V-1)/2 {
 		return nil, errors.New("too many edges")
@@ -53,7 +51,7 @@ func Simple(V, E int) (*Graph, error) {
 	}
 	rand.Seed(time.Now().Unix())
 	G := NewGraph(V)
-	set := set.NewSet()
+	set := treeset.NewWith(comparator)
 	for G.E() < E {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
@@ -84,6 +82,7 @@ func SimpleP(V int, p float64) (*Graph, error) {
 }
 
 // Complete returns the complete graph on V vertices.
+// A complete graph is a simple undirected graph in which every pair of distinct vertices is connected by a unique edge.
 func Complete(V int) *Graph {
 	g, _ := SimpleP(V, 1.0)
 	return g
@@ -106,7 +105,7 @@ func Bipartite(V1, V2, E int) (*Graph, error) {
 	rand.Seed(time.Now().Unix())
 	G := NewGraph(V1 + V2)
 	vertices := createVertices(V1 + V2)
-	set := set.NewSet()
+	set := treeset.NewWith(comparator)
 	for G.E() < E {
 		i := rand.Intn(V1)
 		j := V1 + rand.Intn(V2)

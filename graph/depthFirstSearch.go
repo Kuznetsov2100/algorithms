@@ -8,8 +8,8 @@ type DepthFirstSearch struct {
 }
 
 func NewDepthFirstSearch(G *Graph, s int) *DepthFirstSearch {
-	G.validateVertex(s)
 	search := &DepthFirstSearch{marked: make([]bool, G.V())}
+	search.validateVertex(s)
 	search.dfs(G, s)
 	return search
 }
