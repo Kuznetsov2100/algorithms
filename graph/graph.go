@@ -122,7 +122,7 @@ func (g *Graph) Adj(v int) (vertices []int) {
 	return vertices
 }
 
-// ToString returns a string representation of this graph.
+// String returns a string representation of this graph.
 func (g *Graph) String() string {
 	var s strings.Builder
 	fmt.Fprintf(&s, "%d vertices, %d edges \n", g.v, g.e)
