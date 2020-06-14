@@ -13,7 +13,7 @@ func main() {
 	in := stdin.NewInFileWords(os.Args[1])
 	G, _ := graph.NewGraphIn(in)
 	s, _ := strconv.Atoi(os.Args[2])
-	bfp := graph.NewBreadFirstPaths(G, s)
+	bfp := graph.NewBreadthFirstPaths(G, s)
 
 	for v := 0; v < G.V(); v++ {
 		if bfp.HasPathTo(v) {

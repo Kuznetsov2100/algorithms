@@ -1,9 +1,7 @@
 package graph
 
 import (
-	"math/rand"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,9 +16,8 @@ func TestGraphGenerator_Simple(t *testing.T) {
 	assert.Nil(g1)
 	assert.Error(err1)
 
-	rand.Seed(time.Now().Unix())
-	V := rand.Intn(10)
-	E := rand.Intn(V*(V-1)/2 + 1)
+	V := 20
+	E := 30
 	g2, err2 := Simple(V, E)
 	assert.Nil(err2)
 
@@ -39,9 +36,8 @@ func TestGraphGenerator_SimpleP(t *testing.T) {
 	assert.Nil(g)
 	assert.Error(err)
 
-	rand.Seed(time.Now().Unix())
-	V := rand.Intn(10)
-	p := rand.Float64()
+	V := 5
+	p := 0.769283
 	g1, err1 := SimpleP(V, p)
 	assert.Nil(err1)
 
@@ -56,11 +52,11 @@ func TestGraphGenerator_SimpleP(t *testing.T) {
 
 func TestGraphGenerator_Complete(t *testing.T) {
 	assert := assert.New(t)
-	rand.Seed(time.Now().Unix())
-	V := rand.Intn(10)
+
+	V := 3
 	g := Complete(V)
 	for i := 0; i < V; i++ {
-		assert.Equal(V-1, g.Degree(i))
+		assert.Equal(2, g.Degree(i))
 	}
 }
 

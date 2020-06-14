@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBreadFirstPaths(t *testing.T) {
+func TestBreadthFirstPaths(t *testing.T) {
 	assert := assert.New(t)
 	tinyCG := "8\n" +
 		"9\n" +
@@ -30,7 +30,7 @@ func TestBreadFirstPaths(t *testing.T) {
 	in := &stdin.In{Scanner: scanner}
 	g, err := NewGraphIn(in)
 	assert.Nil(err)
-	bfp := NewBreadFirstPaths(g, 0)
+	bfp := NewBreadthFirstPaths(g, 0)
 	assert.Equal([]int{0}, bfp.PathTo(0))
 	assert.Equal(0, bfp.DistTo(0))
 	assert.Equal([]int{0, 1}, bfp.PathTo(1))
@@ -48,5 +48,5 @@ func TestBreadFirstPaths(t *testing.T) {
 	assert.Equal([]int(nil), bfp.PathTo(7))
 	assert.Equal(math.MaxInt64, bfp.DistTo(7))
 
-	assert.Panics(func() { NewBreadFirstPaths(g, 8) })
+	assert.Panics(func() { NewBreadthFirstPaths(g, 8) })
 }

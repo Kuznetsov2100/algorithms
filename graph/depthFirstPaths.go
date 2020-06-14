@@ -6,12 +6,19 @@ import (
 	"github.com/handane123/algorithms/dataStructure/stack/arraystack"
 )
 
+// DepthFirstPaths struct represents a data type for finding paths
+// from a source vertex s to every other vertex in an undirected graph.
+// This implementation uses depth-first search.
+// The constructor takes O(V + E) time in the worst case,
+// where V is the number of vertices and E is the number of edges.
+// Each instance method takes O(1) time. It uses O(V) extra space (not including the graph).
 type DepthFirstPaths struct {
 	marked []bool
 	edgeTo []int
 	source int
 }
 
+// NewDepthFirstPaths computes a path between s and every other vertex in graph G.
 func NewDepthFirstPaths(G *Graph, s int) *DepthFirstPaths {
 	dfp := &DepthFirstPaths{
 		marked: make([]bool, G.V()),
@@ -32,11 +39,13 @@ func (dfp *DepthFirstPaths) dfs(G *Graph, v int) {
 	}
 }
 
+// HasPathTo returns true if there is a path between the source vertex s and vertex v
 func (dfp *DepthFirstPaths) HasPathTo(v int) bool {
 	dfp.validateVertex(v)
 	return dfp.marked[v]
 }
 
+// PathTo returns a path between the source vertex s and vertex v, or nil if no such path.
 func (dfp *DepthFirstPaths) PathTo(v int) (p []int) {
 	dfp.validateVertex(v)
 	if !dfp.HasPathTo(v) {
