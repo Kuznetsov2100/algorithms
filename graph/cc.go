@@ -46,7 +46,7 @@ func (cc *CC) Id(v int) int {
 	return cc.id[v]
 }
 
-// Size returns the component id of the connected component containing vertex v.
+// Size returns the number of vertices in the connected component containing vertex v.
 func (cc *CC) Size(v int) int {
 	cc.validateVertex(v)
 	return cc.size[cc.id[v]]

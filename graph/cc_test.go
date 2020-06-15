@@ -49,8 +49,14 @@ func TestCC(t *testing.T) {
 	assert.Equal([]interface{}{0, 1, 2, 3, 4, 5, 6}, components[0].Values())
 	assert.Equal([]interface{}{7, 8}, components[1].Values())
 	assert.Equal([]interface{}{9, 10, 11, 12}, components[2].Values())
+
 	assert.Equal(7, cc.Size(0))
+	assert.Equal(2, cc.Size(7))
+	assert.Equal(4, cc.Size(9))
+
 	assert.True(cc.Connected(0, 1))
+	assert.False(cc.Connected(6, 7))
+	assert.False(cc.Connected(8, 9))
 
 	assert.Panics(func() { cc.Size(13) })
 }
