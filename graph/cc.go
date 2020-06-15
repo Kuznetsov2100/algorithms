@@ -2,13 +2,18 @@ package graph
 
 import "fmt"
 
+// The CC struct represents a data type for determining the connected components in an undirected graph.
+// This implementation uses depth-first search. The constructor takes O(V + E) time,
+// where V is the number of vertices and E is the number of edges. Each instance method takes O(1) time.
+// It uses O(V) extra space (not including the graph).
 type CC struct {
-	marked []bool
-	id     []int
-	size   []int
-	count  int
+	marked []bool // marked[v] = has vertex v been marked?
+	id     []int  // id[v] = id of connected component containing v
+	size   []int  // size[id] = number of vertices in given component
+	count  int    // number of connected components
 }
 
+// NewCC computes the connected components of the undirected graph G
 func NewCC(G *Graph) *CC {
 	cc := &CC{
 		marked: make([]bool, G.V()),
@@ -35,20 +40,24 @@ func (cc *CC) dfs(G *Graph, v int) {
 	}
 }
 
+// Id returns the component id of the connected component containing vertex v.
 func (cc *CC) Id(v int) int {
 	cc.validateVertex(v)
 	return cc.id[v]
 }
 
+// Size returns the component id of the connected component containing vertex v.
 func (cc *CC) Size(v int) int {
 	cc.validateVertex(v)
 	return cc.size[cc.id[v]]
 }
 
+// Count returns the number of connected components in the graph G.
 func (cc *CC) Count() int {
 	return cc.count
 }
 
+// Connected returns true if vertices v and w are in the same connected component.
 func (cc *CC) Connected(v, w int) bool {
 	cc.validateVertex(v)
 	cc.validateVertex(w)
