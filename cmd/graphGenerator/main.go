@@ -44,7 +44,7 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("cycle")
-	fmt.Println(graph.Cycle(V))
+	fmt.Println(graph.CycleGraph(V))
 	fmt.Println()
 
 	fmt.Println("binary tree")

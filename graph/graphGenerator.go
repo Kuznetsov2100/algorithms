@@ -156,8 +156,8 @@ func BinaryTree(V int) *Graph {
 	return G
 }
 
-// Cycle returns a cycle graph on V vertices.
-func Cycle(V int) *Graph {
+// CycleGraph returns a cycle graph on V vertices.
+func CycleGraph(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V-1; i++ {
