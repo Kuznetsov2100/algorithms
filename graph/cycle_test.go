@@ -35,7 +35,7 @@ func TestCycle(t *testing.T) {
 
 	finder := NewCycle(g)
 	assert.True(finder.HasCycle())
-	assert.Equal([]int{3, 4, 5, 3}, finder.Cycles())
+	assert.Equal([]int{3, 4, 5, 3}, finder.GetCycle())
 
 }
 
@@ -51,7 +51,7 @@ func TestCycle_NewCycle(t *testing.T) {
 
 	finder := NewCycle(g)
 	assert.True(finder.HasCycle())
-	assert.Equal([]int{0, 0}, finder.Cycles())
+	assert.Equal([]int{0, 0}, finder.GetCycle())
 
 	tinyG1 := "2\n" + "2\n" + "0 1\n" + "1 0\n"
 	buf1 := strings.NewReader(tinyG1)
@@ -63,5 +63,5 @@ func TestCycle_NewCycle(t *testing.T) {
 
 	finder1 := NewCycle(g1)
 	assert.True(finder1.HasCycle())
-	assert.Equal([]int{0, 1, 0}, finder1.Cycles())
+	assert.Equal([]int{0, 1, 0}, finder1.GetCycle())
 }

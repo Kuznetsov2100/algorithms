@@ -14,7 +14,7 @@ func main() {
 	finder := graph.NewCycle(G)
 
 	if finder.HasCycle() {
-		for _, v := range finder.Cycles() {
+		for _, v := range finder.GetCycle() {
 			fmt.Print(v, " ")
 		}
 		fmt.Println()
