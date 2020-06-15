@@ -21,13 +21,10 @@ func TestGraphGenerator_Simple(t *testing.T) {
 	g2, err2 := Simple(V, E)
 	assert.Nil(err2)
 
-	for i := 0; i < V; i++ {
-		for _, x := range g2.Adj(i) {
-			if i == x {
-				assert.Fail("not a simple graph")
-			}
-		}
-	}
+	// a simple graph has no self-loop and no parallel edges.
+	finder := NewCycle(g2)
+	assert.False(finder.hasParallelEdges(g2))
+	assert.False(finder.hasSelfLoop(g2))
 }
 
 func TestGraphGenerator_SimpleP(t *testing.T) {
@@ -41,13 +38,9 @@ func TestGraphGenerator_SimpleP(t *testing.T) {
 	g1, err1 := SimpleP(V, p)
 	assert.Nil(err1)
 
-	for i := 0; i < V; i++ {
-		for _, x := range g1.Adj(i) {
-			if i == x {
-				assert.Fail("not a simple graph")
-			}
-		}
-	}
+	finder := NewCycle(g1)
+	assert.False(finder.hasParallelEdges(g1))
+	assert.False(finder.hasSelfLoop(g1))
 }
 
 func TestGraphGenerator_Complete(t *testing.T) {

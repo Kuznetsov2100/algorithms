@@ -26,7 +26,7 @@ func NewCycle(G *Graph) *Cycle {
 	c.edgeTo = make([]int, G.V())
 	for v := 0; v < G.V(); v++ {
 		if !c.marked[v] {
-			c.dfs(G, -1, v)
+			c.dfs(G, -1, v) // -1 as no parent of starting vertex
 		}
 	}
 	return c
@@ -45,16 +45,17 @@ func (c *Cycle) GetCycle() (cy []int) {
 	return cy
 }
 
-func (c *Cycle) dfs(G *Graph, u, v int) {
+func (c *Cycle) dfs(G *Graph, parent, v int) {
 	c.marked[v] = true
 	for _, w := range G.Adj(v) {
+		// short circuit if cycle already found
 		if c.cycle != nil {
 			return
 		}
 		if !c.marked[w] {
 			c.edgeTo[w] = v
 			c.dfs(G, v, w)
-		} else if w != u {
+		} else if w != parent {
 			c.cycle = arraystack.New()
 			for x := v; x != w; x = c.edgeTo[x] {
 				c.cycle.Push(x)
@@ -67,8 +68,8 @@ func (c *Cycle) dfs(G *Graph, u, v int) {
 
 func (c *Cycle) hasParallelEdges(G *Graph) bool {
 	c.marked = make([]bool, G.V())
-
 	for v := 0; v < G.V(); v++ {
+		// check for parallel edges incident to v
 		for _, w := range G.Adj(v) {
 			if c.marked[w] {
 				c.cycle = arraystack.New()
@@ -79,7 +80,7 @@ func (c *Cycle) hasParallelEdges(G *Graph) bool {
 			}
 			c.marked[w] = true
 		}
-
+		// reset so marked[v] = false for all v
 		for _, w := range G.Adj(v) {
 			c.marked[w] = false
 		}
