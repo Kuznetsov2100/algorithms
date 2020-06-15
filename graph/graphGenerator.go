@@ -90,12 +90,12 @@ func Complete(V int) *Graph {
 
 // CompleteBipartite returns a complete bipartite graph on V1 and V2 vertices.
 func CompleteBipartite(V1, V2 int) *Graph {
-	g, _ := Bipartite(V1, V2, V1*V2)
+	g, _ := BipartiteGraph(V1, V2, V1*V2)
 	return g
 }
 
-// Bipartite returns a random simple bipartite graph on V1 and V2 vertices with E edges.
-func Bipartite(V1, V2, E int) (*Graph, error) {
+// BipartiteGraph returns a random simple bipartite graph on V1 and V2 vertices with E edges.
+func BipartiteGraph(V1, V2, E int) (*Graph, error) {
 	if E > V1*V2 {
 		return nil, errors.New("too many edges")
 	}
@@ -129,7 +129,7 @@ func BipartiteP(V1, V2 int, p float64) (*Graph, error) {
 	for i := 0; i < V1; i++ {
 		for j := 0; j < V2; j++ {
 			if rand.Float64() < p {
-				G.AddEdge(vertices[i], vertices[j])
+				G.AddEdge(vertices[i], vertices[V1+j])
 			}
 		}
 	}

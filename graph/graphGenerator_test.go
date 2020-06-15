@@ -45,7 +45,6 @@ func TestGraphGenerator_SimpleP(t *testing.T) {
 
 func TestGraphGenerator_Complete(t *testing.T) {
 	assert := assert.New(t)
-
 	V := 3
 	g := Complete(V)
 	for i := 0; i < V; i++ {
@@ -54,5 +53,46 @@ func TestGraphGenerator_Complete(t *testing.T) {
 }
 
 func TestGraphGenerator_Bipartite(t *testing.T) {
+	assert := assert.New(t)
+	V1, V2, E := 10, 5, 8
+	G, err := BipartiteGraph(V1, V2, E)
+	assert.Nil(err)
+	b := NewBipartite(G)
+	assert.True(b.IsBipartite())
 
+	// too many edges
+	G1, err1 := BipartiteGraph(7, 3, 30)
+	assert.Nil(G1)
+	assert.EqualError(err1, "too many edges")
+
+	// too few edges
+	G2, err2 := BipartiteGraph(7, 3, -1)
+	assert.Nil(G2)
+	assert.EqualError(err2, "too few edges")
+}
+
+func TestGraphGenerator_BipartiteP(t *testing.T) {
+	assert := assert.New(t)
+	V1, V2, p := 10, 5, 0.5732
+	G, err := BipartiteP(V1, V2, p)
+	assert.Nil(err)
+	b := NewBipartite(G)
+	assert.True(b.IsBipartite())
+
+	// invalid probability
+	G1, err1 := BipartiteP(10, 5, 1.2)
+	assert.Nil(G1)
+	assert.EqualError(err1, "probability must be between 0 and 1")
+}
+
+func TestGraphGenerator_CompleteBipartite(t *testing.T) {
+	assert := assert.New(t)
+
+	V1, V2 := 5, 3
+	G := CompleteBipartite(V1, V2)
+
+	b := NewBipartite(G)
+	assert.True(b.IsBipartite())
+	assert.Equal(V1+V2, G.V())
+	assert.Equal(V1*V2, G.E())
 }

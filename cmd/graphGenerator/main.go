@@ -31,7 +31,7 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("bipartite")
-	fmt.Println(graph.Bipartite(V1, V2, E))
+	fmt.Println(graph.BipartiteGraph(V1, V2, E))
 	fmt.Println()
 
 	fmt.Println("Erdos Renyi bipartite")
