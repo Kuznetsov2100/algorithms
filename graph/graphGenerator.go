@@ -167,8 +167,8 @@ func CycleGraph(V int) *Graph {
 	return G
 }
 
-// EulerianCycle returns an Eulerian cycle graph on V vertices.
-func EulerianCycle(V, E int) (*Graph, error) {
+// EulerianCycleGraph returns an Eulerian cycle graph on V vertices.
+func EulerianCycleGraph(V, E int) (*Graph, error) {
 	if E <= 0 {
 		return nil, errors.New("an Eulerian cycle must have at least one edge")
 	}
