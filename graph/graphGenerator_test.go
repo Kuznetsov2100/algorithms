@@ -97,6 +97,15 @@ func TestGraphGenerator_CompleteBipartite(t *testing.T) {
 	assert.Equal(V1*V2, G.E())
 }
 
+func TestGraphGenerator_CycleGraph(t *testing.T) {
+	assert := assert.New(t)
+
+	V := 7
+	g := CycleGraph(V)
+	finder := NewCycle(g)
+	assert.True(finder.HasCycle())
+}
+
 func TestGraphGenerator_EulerianCycleGraph(t *testing.T) {
 	assert := assert.New(t)
 
@@ -115,4 +124,25 @@ func TestGraphGenerator_EulerianCycleGraph(t *testing.T) {
 	g2, err2 := EulerianCycleGraph(-3, 4)
 	assert.Nil(g2)
 	assert.EqualError(err2, "an Eulerian cycle must have at least one vertex")
+}
+
+func TestGraphGenerator_EulerianPathGraph(t *testing.T) {
+	assert := assert.New(t)
+
+	V, E := 7, 4
+	g, err := EulerianPathGraph(V, E)
+	assert.Nil(err)
+	ec := NewEulerianPath(g)
+	assert.True(ec.HasEulerianPath())
+
+	// E < 0
+	g1, err1 := EulerianPathGraph(5, -1)
+	assert.Nil(g1)
+	assert.EqualError(err1, "negative number of edges")
+
+	// V < 0
+	g2, err2 := EulerianPathGraph(-3, 4)
+	assert.Nil(g2)
+	assert.EqualError(err2, "an Eulerian path must have at least one vertex")
+
 }

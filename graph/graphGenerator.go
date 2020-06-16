@@ -188,8 +188,8 @@ func EulerianCycleGraph(V, E int) (*Graph, error) {
 	return G, nil
 }
 
-// EulerianPath returns an Eulerian path graph on V vertices.
-func EulerianPath(V, E int) (*Graph, error) {
+// EulerianPathGraph returns an Eulerian path graph on V vertices.
+func EulerianPathGraph(V, E int) (*Graph, error) {
 	if E < 0 {
 		return nil, errors.New("negative number of edges")
 	}
