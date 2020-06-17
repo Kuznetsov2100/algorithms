@@ -19,10 +19,10 @@ func main() {
 	for !stdin.IsEmpty() {
 		source := strings.Trim(stdin.ReadString(), " ")
 		if ok, err := sg.Contains(source); err != nil {
-			fmt.Println(err)
+			fmt.Printf("%+v\n", err)
 		} else if ok {
 			if s, err := sg.IndexOf(source); err != nil {
-				fmt.Println(err)
+				fmt.Printf("%+v\n", err)
 			} else {
 				for _, v := range g.Adj(s) {
 					fmt.Println(" ", sg.NameOf(v))

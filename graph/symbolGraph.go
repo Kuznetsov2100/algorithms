@@ -38,7 +38,7 @@ func NewSymbolGraph(filename, delimiter string) *SymbolGraph {
 		a := strings.Split(in.ReadString(), delimiter)
 		for index := range a {
 			if ok, err := sg.st.Contains(key(a[index])); err != nil {
-				fmt.Println(err)
+				fmt.Printf("%+v\n", err)
 			} else if !ok {
 				//nolint:errcheck
 				sg.st.Put(key(a[index]), sg.st.Size())
