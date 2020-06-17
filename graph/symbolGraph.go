@@ -37,9 +37,7 @@ func NewSymbolGraph(filename, delimiter string) *SymbolGraph {
 	for !in.IsEmpty() {
 		a := strings.Split(in.ReadString(), delimiter)
 		for index := range a {
-			if ok, err := sg.st.Contains(key(a[index])); err != nil {
-				fmt.Printf("%+v\n", err)
-			} else if !ok {
+			if ok, _ := sg.st.Contains(key(a[index])); !ok {
 				//nolint:errcheck
 				sg.st.Put(key(a[index]), sg.st.Size())
 			}
@@ -71,10 +69,10 @@ func (sg *SymbolGraph) Contains(s string) (bool, error) {
 }
 
 func (sg *SymbolGraph) IndexOf(s string) (int, error) {
-	if val, err := sg.st.Get(key(s)); err != nil {
-		return -1, err
-	} else {
+	if val, _ := sg.st.Get(key(s)); val != nil {
 		return val.(int), nil
+	} else {
+		return -1, nil
 	}
 }
 
