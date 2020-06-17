@@ -27,7 +27,7 @@ func (s key) CompareTo(k searching.Key) int {
 	}
 }
 
-func NewSymbolGraph(filename string, delimiter string) *SymbolGraph {
+func NewSymbolGraph(filename, delimiter string) *SymbolGraph {
 	sg := &SymbolGraph{st: searching.NewST(func(a, b interface{}) int {
 		a1, b1 := a.(key), b.(key)
 		return a1.CompareTo(b1)
