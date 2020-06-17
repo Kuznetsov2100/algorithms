@@ -1,6 +1,6 @@
 package priorityqueue
 
-import "errors"
+import "github.com/pkg/errors"
 
 // IndexMinPQ struct represents an indexed priority queue of generic keys.
 // This implementation uses a binary heap along with an array

@@ -1,7 +1,7 @@
 package searching
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 )
 
 // SequentialSearchST struct represents an (unordered) symbol table of generic key-value pairs.

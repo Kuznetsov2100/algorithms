@@ -1,9 +1,10 @@
 package graph
 
 import (
-	"errors"
 	"math/rand"
 	"time"
+
+	"github.com/pkg/errors"
 
 	"github.com/emirpasic/gods/sets/treeset"
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"

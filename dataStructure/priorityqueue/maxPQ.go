@@ -1,6 +1,6 @@
 package priorityqueue
 
-import "errors"
+import "github.com/pkg/errors"
 
 // MaxPQ represents a priority queue of generic keys.
 // This implementation uses a binary heap.

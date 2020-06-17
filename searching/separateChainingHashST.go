@@ -1,7 +1,7 @@
 package searching
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 )
 
 // HashKey describes the requirements for the type using SeparateChainingHashST in this package.

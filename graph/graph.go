@@ -20,9 +20,10 @@ package graph
 // A bipartite graph is a graph whose vertices we can divide into two sets such that all edges connect a vertex in one set with a vertex in the other set.
 
 import (
-	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/handane123/algorithms/dataStructure/bag"
 	"github.com/handane123/algorithms/stdin"

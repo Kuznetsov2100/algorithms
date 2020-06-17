@@ -1,6 +1,6 @@
 package searching
 
-import "errors"
+import "github.com/pkg/errors"
 
 // LinearProbingHashST struct represents a symbol table of generic key-value pairs.
 // This implementation uses a linear probing hash table.

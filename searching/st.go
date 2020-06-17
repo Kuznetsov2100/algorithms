@@ -1,7 +1,7 @@
 package searching
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 
 	"github.com/emirpasic/gods/maps/treemap"
 	"github.com/emirpasic/gods/utils"

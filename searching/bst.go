@@ -1,7 +1,7 @@
 package searching
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 
 	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 )

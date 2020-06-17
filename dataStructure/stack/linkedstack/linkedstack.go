@@ -1,6 +1,6 @@
 package linkedstack
 
-import "errors"
+import "github.com/pkg/errors"
 
 // The Stack represents a last-in-first-out (LIFO) stack of generic items.
 // This implementation uses a singly linked list.

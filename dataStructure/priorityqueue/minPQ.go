@@ -1,6 +1,6 @@
 package priorityqueue
 
-import "errors"
+import "github.com/pkg/errors"
 
 // MinPQ represents a priority queue of generic keys.
 // This implementation uses a binary heap.

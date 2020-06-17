@@ -1,6 +1,6 @@
 package linkedqueue
 
-import "errors"
+import "github.com/pkg/errors"
 
 // The Queue represents a first-in-first-out (FIFO) queue of generic items,
 // This implementation using a singly linked list.

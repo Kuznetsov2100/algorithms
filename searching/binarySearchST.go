@@ -1,6 +1,6 @@
 package searching
 
-import "errors"
+import "github.com/pkg/errors"
 
 // Value type is a generic type.
 type Value interface{}
