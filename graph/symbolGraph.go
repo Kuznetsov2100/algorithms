@@ -27,19 +27,11 @@ func (s key) CompareTo(k searching.Key) int {
 	}
 }
 
-func keyComparator(a, b interface{}) int {
-	a1 := a.(key)
-	b1 := b.(key)
-	if a1 < b1 {
-		return -1
-	} else if a1 > b1 {
-		return 1
-	} else {
-		return 0
-	}
-}
 func NewSymbolGraph(filename string, delimiter string) *SymbolGraph {
-	sg := &SymbolGraph{st: searching.NewST(keyComparator)}
+	sg := &SymbolGraph{st: searching.NewST(func(a, b interface{}) int {
+		a1, b1 := a.(key), b.(key)
+		return a1.CompareTo(b1)
+	})}
 	in := stdin.NewInFileLine(filename)
 
 	for !in.IsEmpty() {
