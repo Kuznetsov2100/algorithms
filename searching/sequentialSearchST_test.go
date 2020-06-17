@@ -21,13 +21,13 @@ func TestSequentialSearchST_Put(t *testing.T) {
 		t.Error("should throw error: argument to Put() is nil")
 	}
 	if err := bst.Put(words("L"), nil); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 	if err := bst.Put(words("S"), 2); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if val, err := bst.Get(words("S")); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		} else {
 			if val != 2 {
 				t.Errorf("expect 2, got %d", val)
@@ -42,7 +42,7 @@ func TestSequentialSearchST_Contains(t *testing.T) {
 		t.Error("should throw error: argument to Contains() is nil")
 	}
 	if ok, err := bst.Contains(words("W")); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if ok {
 			t.Errorf("expect false, got %t", ok)
@@ -70,7 +70,7 @@ func TestSequentialSearchST_Delete(t *testing.T) {
 	tinyST := []words{"S", "E", "A", "R", "C", "H", "E", "X", "A", "M", "P", "L", "E"}
 	bst := NewSequentialSearchST()
 	if err := bst.Delete(words("A")); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 	for i := 0; i < len(tinyST); i++ {
 		//nolint:errcheck

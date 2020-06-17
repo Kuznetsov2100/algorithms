@@ -29,7 +29,7 @@ func TestStack_Pop(t *testing.T) {
 
 	for i := 10; i >= 1; i-- {
 		if element, err := s.Pop(); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		} else {
 			if element != i {
 				t.Errorf("element = %d; want %d", element, i)
@@ -54,7 +54,7 @@ func TestStack_Peek(t *testing.T) {
 	s := New()
 	s.Push(1)
 	if element, err := s.Peek(); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if element != 1 {
 			t.Errorf("s.Peek() = %d; want 1", element)

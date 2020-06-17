@@ -62,14 +62,14 @@ func TestIndexMinPQ_Insert(t *testing.T) {
 	}
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 	if pq.Size() != len(strings) {
 		t.Errorf("expect %d, got %d", pq.Size(), len(strings))
 	}
 	if k, err := pq.MinKey(); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if key := k.(words); key != "best" {
 			t.Errorf("expect \"best\", got %s", key)
@@ -87,7 +87,7 @@ func TestIndexMinPQ_DelMin(t *testing.T) {
 	pq := NewIndexMinPQ(len(strings))
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 	sortedStrings := make(wordslist, len(strings))
@@ -95,7 +95,7 @@ func TestIndexMinPQ_DelMin(t *testing.T) {
 	sort.QuickSort(sortedStrings)
 	for j := 0; !pq.IsEmpty(); j++ {
 		if i, err := pq.DelMin(); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		} else {
 			if strings[i] != sortedStrings[j] {
 				t.Errorf("expect %s, got %s", sortedStrings[j], strings[i])
@@ -114,7 +114,7 @@ func TestIndexMinPQ_DecreaseKey(t *testing.T) {
 	pq := NewIndexMinPQ(len(strings) + 1)
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 
@@ -142,7 +142,7 @@ func TestIndexMinPQ_IncreaseKey(t *testing.T) {
 	pq := NewIndexMinPQ(len(strings) + 1)
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 
@@ -170,7 +170,7 @@ func TestIndexMinPQ_ChangeKey(t *testing.T) {
 	pq := NewIndexMinPQ(len(strings) + 1)
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 
@@ -192,7 +192,7 @@ func TestIndexMinPQ_Delete(t *testing.T) {
 	pq := NewIndexMinPQ(len(strings) + 1)
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 
@@ -215,11 +215,11 @@ func TestIndexMinPQ_MinIndex(t *testing.T) {
 	}
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 	if index, err := pq.MinIndex(); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if index != 3 {
 			t.Errorf("expect 3, got %d", index)
@@ -235,7 +235,7 @@ func TestIndexMinPQ_KeyOf(t *testing.T) {
 	pq := NewIndexMinPQ(len(strings) + 1)
 	for i := range strings {
 		if err := pq.Insert(i, strings[i]); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		}
 	}
 
@@ -243,7 +243,7 @@ func TestIndexMinPQ_KeyOf(t *testing.T) {
 		t.Error("should throw error: index is not in the priority queue")
 	}
 	if k, err := pq.KeyOf(9); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if key := k.(words); key != "worst" {
 			t.Errorf("expect \"worst\", got %s", key)

@@ -35,13 +35,13 @@ func TestSeparateChainingHashST_Put(t *testing.T) {
 		t.Error("should throw error: argument to Put() is nil")
 	}
 	if err := bst.Put(StringHashKey("L"), nil); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 	if err := bst.Put(StringHashKey("S"), 2); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if val, err := bst.Get(StringHashKey("S")); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		} else {
 			if val != 2 {
 				t.Errorf("expect 2, got %d", val)
@@ -56,7 +56,7 @@ func TestSeparateChainingHashST_Contains(t *testing.T) {
 		t.Error("should throw error: argument to Contains() is nil")
 	}
 	if ok, err := bst.Contains(StringHashKey("W")); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if ok {
 			t.Errorf("expect false, got %t", ok)
@@ -84,7 +84,7 @@ func TestSeparateChainingHashST_Delete(t *testing.T) {
 	tinyST := []StringHashKey{"S", "E", "A", "R", "C", "H", "E", "X", "A", "M", "P", "L", "E"}
 	bst := NewSeparateChainingHashST(5)
 	if err := bst.Delete(StringHashKey("A")); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 	for i := 0; i < len(tinyST); i++ {
 		//nolint:errcheck

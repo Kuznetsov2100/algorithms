@@ -27,7 +27,7 @@ func TestQueue_Dequeue(t *testing.T) {
 	}
 	for i := 1; i <= 10; i++ {
 		if element, err := q.Dequeue(); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		} else {
 			if element != i {
 				t.Errorf("expect %d, got %d", i, element)
@@ -53,7 +53,7 @@ func TestQueue_Peek(t *testing.T) {
 	q := New()
 	q.Enqueue(1)
 	if element, err := q.Peek(); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if element != 1 {
 			t.Errorf("expect 1, got %d", element)

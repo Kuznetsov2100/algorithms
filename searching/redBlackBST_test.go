@@ -19,13 +19,13 @@ func TestRedBlackBST_Put(t *testing.T) {
 		t.Error("should throw error: argument to Put() is nil")
 	}
 	if err := bst.Put(words("L"), nil); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 	if err := bst.Put(words("S"), 2); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if val, err := bst.Get(words("S")); err != nil {
-			t.Error(err)
+			t.Errorf("%+v\n", err)
 		} else {
 			if val != 2 {
 				t.Errorf("expect 2, got %d", val)
@@ -66,7 +66,7 @@ func TestRedBlackBST_Delete(t *testing.T) {
 	tinyST := []words{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 	bst := NewRedBlackBST()
 	if err := bst.Delete(words("A")); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 	for i := 0; i < len(tinyST); i++ {
 		//nolint:errcheck
@@ -99,7 +99,7 @@ func TestRedBlackBST_DeleteMin(t *testing.T) {
 		bst.Put(tinyST[i], i)
 	}
 	if err := bst.DeleteMin(); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 }
 
@@ -114,7 +114,7 @@ func TestRedBlackBST_DeleteMax(t *testing.T) {
 		bst.Put(tinyST[i], i)
 	}
 	if err := bst.DeleteMax(); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	}
 }
 
@@ -144,14 +144,14 @@ func TestRedBlackBST_Select(t *testing.T) {
 	}
 	// 0-indexed
 	if k, err := bst.Select(1); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if k.CompareTo(words("C")) != 0 {
 			t.Errorf("expect key:\"C\", got %s", k.(words))
 		}
 	}
 	if k, err := bst.Select(7); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if k.CompareTo(words("R")) != 0 {
 			t.Errorf("expect key:\"R\", got %s", k.(words))
@@ -246,7 +246,7 @@ func TestRedBlackBST_Rank(t *testing.T) {
 		bst.Put(tinyST[i], i)
 	}
 	if r, err := bst.Rank(words("R")); err != nil {
-		t.Error(err)
+		t.Errorf("%+v\n", err)
 	} else {
 		if r != 7 {
 			t.Errorf("expect 7, got %d", r)
