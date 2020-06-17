@@ -124,10 +124,12 @@ func (ec *EulerianCycle) HasEulerianCycle() bool {
 
 // returns any non-isolated vertex; -1 if no such vertex
 func nonIsolatedVertex(G *Graph) int {
+	vertex := -1
 	for v := 0; v < G.V(); v++ {
 		if G.Degree(v) > 0 {
-			return v
+			vertex = v
+			break
 		}
 	}
-	return -1
+	return vertex
 }
