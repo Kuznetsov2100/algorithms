@@ -17,6 +17,12 @@ func NewStdIn() *StdIn {
 	return &StdIn{scanner}
 }
 
+// NewStdInLine initialize Stdin
+func NewStdInLine() *StdIn {
+	scanner := bufio.NewScanner(os.Stdin)
+	return &StdIn{scanner}
+}
+
 // IsEmpty reports if the In is empty
 func (s *StdIn) IsEmpty() bool {
 	return !s.scanner.Scan()

@@ -24,6 +24,17 @@ func NewInFileWords(filename string) *In {
 	return &In{Scanner: scanner}
 }
 
+// NewInFileline initializes an input stream from a local filename
+func NewInFileLine(filename string) *In {
+	File, err := os.Open(filename)
+	if err != nil {
+		fmt.Println(err)
+		panic(fmt.Sprintf("can not open file: %s", filename))
+	}
+	scanner := bufio.NewScanner(File)
+	return &In{Scanner: scanner}
+}
+
 // IsEmpty reports if the In is empty
 func (in *In) IsEmpty() bool {
 	return !in.Scanner.Scan()
