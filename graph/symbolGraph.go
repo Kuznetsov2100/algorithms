@@ -58,8 +58,9 @@ func NewSymbolGraph(filename, delimiter string) *SymbolGraph {
 		val, _ := sg.st.Get(key(a[0]))
 		v := val.(int)
 		for i := 1; i < len(a); i++ {
-			w, _ := sg.st.Get(key(a[i]))
-			sg.graph.AddEdge(v, w.(int))
+			wval, _ := sg.st.Get(key(a[i]))
+			w := wval.(int)
+			sg.graph.AddEdge(v, w)
 		}
 	}
 	return sg
