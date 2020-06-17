@@ -15,6 +15,7 @@ func main() {
 	sg := graph.NewSymbolGraph(filename, delimiter)
 	g := sg.Graph()
 	stdin := stdin.NewStdInLine()
+	fmt.Println("Please input the source, use CTRL+D to cancel.")
 	for !stdin.IsEmpty() {
 		source := strings.Trim(stdin.ReadString(), " ")
 		if ok, err := sg.Contains(source); err != nil {
