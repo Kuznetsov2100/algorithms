@@ -101,7 +101,7 @@ func (sg *SymbolGraph) NameOf(v int) string {
 	return string(sg.keys[v])
 }
 
-// Graph returns the graph assoicated with the symbol graph.
+// Graph returns the graph associated with the symbol graph.
 func (sg *SymbolGraph) Graph() *Graph {
 	return sg.graph
 }
