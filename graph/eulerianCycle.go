@@ -103,6 +103,7 @@ func NewEulerianCycle(G *Graph) *EulerianCycle {
 		// push vertex with no more leaving edges to cycle
 		ec.cycle.Push(v)
 	}
+	// check if all edges are used
 	if ec.cycle.Size() != G.E()+1 {
 		ec.cycle = nil
 	}

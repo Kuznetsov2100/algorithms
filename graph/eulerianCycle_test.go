@@ -46,17 +46,4 @@ func TestEulerianCycle(t *testing.T) {
 	assert.Nil(err3)
 	ec3 := NewEulerianCycle(g3)
 	assert.Nil(ec3)
-
-	// graphdata4 := "1\n" +
-	// 	"1\n" +
-	// 	"0 0\n"
-	// buf4 := strings.NewReader(graphdata4)
-	// scanner4 := bufio.NewScanner(buf4)
-	// scanner4.Split(bufio.ScanWords)
-	// in4 := &stdin.In{Scanner: scanner4}
-	// g4, err4 := NewGraphIn(in4)
-	// assert.Nil(err4)
-	// ec4 := NewEulerianCycle(g4)
-	// assert.False(ec4.HasEulerianCycle())
-
 }
