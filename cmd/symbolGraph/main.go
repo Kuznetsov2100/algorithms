@@ -18,17 +18,12 @@ func main() {
 	fmt.Println("Please input the source, use CTRL+D to cancel.")
 	for !stdin.IsEmpty() {
 		source := strings.Trim(stdin.ReadString(), " ")
-		if ok, err := sg.Contains(source); err != nil {
-			fmt.Printf("%+v\n", err)
-		} else if ok {
-			if s, err := sg.IndexOf(source); err != nil {
-				fmt.Printf("%+v\n", err)
-			} else {
-				for _, v := range g.Adj(s) {
-					fmt.Println(" ", sg.NameOf(v))
-				}
-				fmt.Println()
+		if sg.Contains(source) {
+			s := sg.IndexOf(source)
+			for _, v := range g.Adj(s) {
+				fmt.Println(" ", sg.NameOf(v))
 			}
+			fmt.Println()
 		} else {
 			fmt.Printf("input not contain '%s'\n", source)
 		}

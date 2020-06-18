@@ -27,6 +27,7 @@ func TestSymbolGraph(t *testing.T) {
 		"ATL MCO\n" +
 		"HOU MCO\n" +
 		"LAS PHX\n"
+
 	content := []byte(routestring)
 	tmpfile, err := ioutil.TempFile("", "routes.*.txt")
 	if err != nil {
@@ -43,21 +44,16 @@ func TestSymbolGraph(t *testing.T) {
 	}
 	sg := NewSymbolGraph(tmpfile.Name(), " ")
 	assert := assert.New(t)
-	ok, err1 := sg.Contains("JFK")
-	assert.Nil(err1)
-	assert.True(ok)
+	assert.True(sg.Contains("JFK"))
 
-	s, err2 := sg.IndexOf("JFK")
+	s := sg.IndexOf("JFK")
 	names := []string{"ORD", "ATL", "MCO"}
-	assert.Nil(err2)
 
 	g := sg.Graph()
 	for i, v := range g.Adj(s) {
 		assert.Equal(names[i], sg.NameOf(v))
 	}
 
-	index, _ := sg.IndexOf("love")
-	assert.Equal(-1, index)
-
+	assert.Equal(-1, sg.IndexOf("love"))
 	assert.Panics(func() { sg.NameOf(20) })
 }

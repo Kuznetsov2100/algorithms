@@ -64,15 +64,16 @@ func NewSymbolGraph(filename, delimiter string) *SymbolGraph {
 	return sg
 }
 
-func (sg *SymbolGraph) Contains(s string) (bool, error) {
-	return sg.st.Contains(key(s))
+func (sg *SymbolGraph) Contains(s string) bool {
+	ok, _ := sg.st.Contains(key(s))
+	return ok
 }
 
-func (sg *SymbolGraph) IndexOf(s string) (int, error) {
+func (sg *SymbolGraph) IndexOf(s string) int {
 	if val, _ := sg.st.Get(key(s)); val != nil {
-		return val.(int), nil
+		return val.(int)
 	} else {
-		return -1, nil
+		return -1
 	}
 }
 
