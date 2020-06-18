@@ -12,7 +12,7 @@ import (
 // where E is the number of edges and V is the number of vertices Each instance method takes O(1) time.
 // It uses O(E + V) extra space in the worst case (not including the graph).
 type EulerianCycle struct {
-	cycle *arraystack.Stack
+	cycle *arraystack.Stack // Eulerian cycle; null if no such cycle
 }
 
 // an undirected edge, with a field to indicate whether the edge has already been used
@@ -56,7 +56,7 @@ func NewEulerianCycle(G *Graph) *EulerianCycle {
 	}
 
 	// create local view of adjacency lists, to iterate one vertex at a time
-	// the helper Edge data type is used to avoid exploring both copies of an edge v-w
+	// the helper ecEdge data type is used to avoid exploring both copies of an edge v-w
 	adj := make([]*arrayqueue.Queue, G.V())
 	for v := 0; v < G.V(); v++ {
 		adj[v] = arrayqueue.New()
