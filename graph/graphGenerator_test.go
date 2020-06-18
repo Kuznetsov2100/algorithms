@@ -124,6 +124,18 @@ func TestGraphGenerator_Path(t *testing.T) {
 	assert.Equal(1, degree2)
 }
 
+func TestGraphGenerator_BinaryTree(t *testing.T) {
+	assert := assert.New(t)
+
+	V := 15
+	g := BinaryTree(V)
+	finder := NewCycle(g)
+	search := NewDepthFirstSearch(g, 0)
+	assert.False(finder.HasCycle())
+	assert.Equal(V/2*2, g.E())
+	assert.Equal(g.V(), search.Count())
+}
+
 func TestGraphGenerator_EulerianCycleGraph(t *testing.T) {
 	assert := assert.New(t)
 
@@ -163,4 +175,71 @@ func TestGraphGenerator_EulerianPathGraph(t *testing.T) {
 	assert.Nil(g2)
 	assert.EqualError(err2, "an Eulerian path must have at least one vertex")
 
+}
+
+func TestGraphGenerator_Wheel(t *testing.T) {
+	assert := assert.New(t)
+
+	g1, err1 := Wheel(1)
+	assert.Nil(g1)
+	assert.Error(err1)
+
+	V := 8
+	g2, err2 := Wheel(V)
+	assert.Nil(err2)
+	assert.Equal(2*(V-1), g2.E())
+}
+
+func TestGraphGenerator_Star(t *testing.T) {
+	assert := assert.New(t)
+
+	g1, err1 := Star(0)
+	assert.Nil(g1)
+	assert.Error(err1)
+
+	V := 8
+	g2, err2 := Star(V)
+	assert.Nil(err2)
+	degree1count := 0
+	degreenMinus1Count := 0
+	for v := 0; v < g2.V(); v++ {
+		if g2.Degree(v) == 1 {
+			degree1count++
+		} else if g2.Degree(v) == V-1 {
+			degreenMinus1Count++
+		}
+	}
+	assert.Equal(V-1, degree1count)
+	assert.Equal(1, degreenMinus1Count)
+}
+
+func TestGraphGenerator_Regular(t *testing.T) {
+	assert := assert.New(t)
+
+	g1, err1 := Regular(5, 3)
+	assert.Nil(g1)
+	assert.Error(err1)
+
+	V, k := 5, 2
+	g2, err2 := Regular(V, k)
+	assert.Nil(err2)
+	for v := 0; v < g2.V()-1; v++ {
+		assert.Equal(g2.Degree(v), g2.Degree(v+1))
+	}
+}
+
+func TestGraphGenerator_Tree(t *testing.T) {
+	assert := assert.New(t)
+
+	g1 := Tree(1)
+	finder := NewCycle(g1)
+	search := NewDepthFirstSearch(g1, 0)
+	assert.False(finder.HasCycle())
+	assert.Equal(g1.V(), search.Count())
+
+	g2 := Tree(15)
+	finder2 := NewCycle(g2)
+	search2 := NewDepthFirstSearch(g2, 0)
+	assert.False(finder2.HasCycle())
+	assert.Equal(g2.V(), search2.Count())
 }
