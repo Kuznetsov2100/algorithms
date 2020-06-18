@@ -40,7 +40,7 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("path")
-	fmt.Println(graph.Path(V))
+	fmt.Println(graph.PathGraph(V))
 	fmt.Println()
 
 	fmt.Println("cycle")

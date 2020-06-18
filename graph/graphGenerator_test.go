@@ -106,6 +106,24 @@ func TestGraphGenerator_CycleGraph(t *testing.T) {
 	assert.True(finder.HasCycle())
 }
 
+func TestGraphGenerator_Path(t *testing.T) {
+	assert := assert.New(t)
+
+	V := 3
+	g := PathGraph(V)
+
+	degree1, degree2 := 0, 0
+	for v := 0; v < g.V(); v++ {
+		if g.Degree(v) == 1 {
+			degree1++
+		} else if g.Degree(v) == 2 {
+			degree2++
+		}
+	}
+	assert.Equal(2, degree1)
+	assert.Equal(1, degree2)
+}
+
 func TestGraphGenerator_EulerianCycleGraph(t *testing.T) {
 	assert := assert.New(t)
 

@@ -137,8 +137,8 @@ func BipartiteP(V1, V2 int, p float64) (*Graph, error) {
 	return G, nil
 }
 
-// Path returns a path graph on V vertices.
-func Path(V int) *Graph {
+// PathGraph returns a path graph on V vertices.
+func PathGraph(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V-1; i++ {
