@@ -24,7 +24,7 @@ func NewInFileWords(filename string) *In {
 	return &In{Scanner: scanner}
 }
 
-// NewInFileline initializes an input stream from a local filename
+// NewInFileLine initializes an input stream from a local filename
 func NewInFileLine(filename string) *In {
 	File, err := os.Open(filename)
 	if err != nil {

@@ -41,7 +41,7 @@ func (e *ecEdge) other(vertex int) int {
 	panic("Illegal endpoint")
 }
 
-// NewEuerianCycle computes an Eulerian cycle in the specified graph, if one exists
+// NewEulerianCycle computes an Eulerian cycle in the specified graph, if one exists
 func NewEulerianCycle(G *Graph) *EulerianCycle {
 	// must have at least one edge
 	if G.E() == 0 {
