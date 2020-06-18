@@ -15,7 +15,7 @@ func main() {
 	sg := graph.NewSymbolGraph(filename, delimiter)
 	g := sg.Graph()
 	stdin := stdin.NewStdInLine()
-	fmt.Println("Please input the source, use CTRL+D to cancel.")
+	fmt.Println("Please input the source, you will get the adjcent vertexs of the source, use CTRL+D to cancel.")
 	for !stdin.IsEmpty() {
 		source := strings.Trim(stdin.ReadString(), " ")
 		if sg.Contains(source) {
