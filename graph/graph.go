@@ -129,8 +129,8 @@ func (g *Graph) String() string {
 	fmt.Fprintf(&s, "%d vertices, %d edges \n", g.v, g.e)
 	for i := 0; i < g.v; i++ {
 		var adjs strings.Builder
-		for _, w := range g.Adj(i) {
-			fmt.Fprintf(&adjs, " %d", w)
+		for _, w := range g.adj[i].Values() {
+			fmt.Fprintf(&adjs, " %d", w.(int))
 		}
 		fmt.Fprintf(&s, "%d: %s\n", i, adjs.String())
 	}
