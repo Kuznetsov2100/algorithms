@@ -131,7 +131,7 @@ func Tournament(V int) *Digraph {
 	return G
 }
 
-// CompletedRootedInDAG returns a complete rooted-in DAG on V vertices.
+// CompleteRootedInDAG returns a complete rooted-in DAG on V vertices.
 func CompleteRootedInDAG(V int) *Digraph {
 	G := NewDigraph(V)
 	vertices := createVertices(V)
@@ -173,7 +173,7 @@ func RootedInDAG(V, E int) (*Digraph, error) {
 	return G, nil
 }
 
-// CompletedRootedOutDAG returns a complete rooted-out DAG on V vertices.
+// CompleteRootedOutDAG returns a complete rooted-out DAG on V vertices.
 func CompleteRootedOutDAG(V int) *Digraph {
 	G := NewDigraph(V)
 	vertices := createVertices(V)
