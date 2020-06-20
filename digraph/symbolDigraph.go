@@ -8,20 +8,20 @@ import (
 	"github.com/handane123/algorithms/stdin"
 )
 
-// SymbolDigraph struct represents an undirected graph,
+// SymbolDigraph struct represents an digraph,
 // where the vertex names are arbitrary strings.
 // By providing mappings between string vertex names and integers,
 // it serves as a wrapper around the Graph data type,
 // which assumes the vertex names are integers between 0 and V - 1.
-// It also supports initializing a symbol graph from a file.
+// It also supports initializing a symbol digraph from a file.
 // This implementation uses an ST to map from strings to integers,
-// an array to map from integers to strings, and a Graph to store the underlying graph.
+// an array to map from integers to strings, and a Graph to store the underlying digraph.
 // The indexOf and contains operations take time proportional to log V,
 // where V is the number of vertices. The nameOf operation takes constant time.
 type SymbolDigraph struct {
 	st    *searching.ST // string -> index
 	keys  []key         // index  -> string
-	graph *Digraph      // the underlying graph
+	graph *Digraph      // the underlying digraph
 }
 
 type key string
@@ -37,7 +37,7 @@ func (s key) CompareTo(k searching.Key) int {
 	}
 }
 
-// NewSymbolDigraph initializes a graph from a file using the specified delimiter.
+// NewSymbolDigraph initializes a digraph from a file using the specified delimiter.
 func NewSymbolDigraph(filename, delimiter string) *SymbolDigraph {
 	sg := &SymbolDigraph{st: searching.NewST(func(a, b interface{}) int {
 		a1, b1 := a.(key), b.(key)
@@ -80,7 +80,7 @@ func NewSymbolDigraph(filename, delimiter string) *SymbolDigraph {
 	return sg
 }
 
-// Contains returns ture if graph contain the vertex named s
+// Contains returns ture if the digraph contain the vertex named s
 func (sg *SymbolDigraph) Contains(s string) bool {
 	ok, _ := sg.st.Contains(key(s))
 	return ok
@@ -101,7 +101,7 @@ func (sg *SymbolDigraph) NameOf(v int) string {
 	return string(sg.keys[v])
 }
 
-// Graph returns the graph associated with the symbol graph.
+// Graph returns the digraph associated with the symbol digraph.
 func (sg *SymbolDigraph) Graph() *Digraph {
 	return sg.graph
 }
