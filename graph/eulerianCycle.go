@@ -43,15 +43,16 @@ func (e *ecEdge) other(vertex int) int {
 
 // NewEulerianCycle computes an Eulerian cycle in the specified graph, if one exists
 func NewEulerianCycle(G *Graph) *EulerianCycle {
+	ec := &EulerianCycle{}
 	// must have at least one edge
 	if G.E() == 0 {
-		return nil
+		return ec
 	}
 	// necessary condition: all vertices have even degree
 	// (this test is needed or it might find an Eulerian path instead of cycle)
 	for v := 0; v < G.V(); v++ {
 		if G.Degree(v)%2 != 0 {
-			return nil
+			return ec
 		}
 	}
 
@@ -86,7 +87,7 @@ func NewEulerianCycle(G *Graph) *EulerianCycle {
 	stack.Push(s)
 
 	// greedily search through edges in iterative DFS style
-	ec := &EulerianCycle{cycle: arraystack.New()}
+	ec.cycle = arraystack.New()
 	for !stack.IsEmpty() {
 		val, _ := stack.Pop()
 		v := val.(int)

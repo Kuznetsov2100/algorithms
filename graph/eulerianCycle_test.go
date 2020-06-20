@@ -31,7 +31,7 @@ func TestEulerianCycle(t *testing.T) {
 	// graph with zero edge
 	G2 := NewGraph(3)
 	ec2 := NewEulerianCycle(G2)
-	assert.Nil(ec2)
+	assert.False(ec2.HasEulerianCycle())
 
 	// not all vertices have even degree
 	graphdata3 := "3\n" +
@@ -45,5 +45,5 @@ func TestEulerianCycle(t *testing.T) {
 	g3, err3 := NewGraphIn(in3)
 	assert.Nil(err3)
 	ec3 := NewEulerianCycle(g3)
-	assert.Nil(ec3)
+	assert.False(ec3.HasEulerianCycle())
 }

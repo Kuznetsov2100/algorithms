@@ -54,6 +54,7 @@ func (e *epEdge) other(vertex int) int {
 
 // NewEulerianPath computes an Eulerian path in the specified graph, if one exists.
 func NewEulerianPath(G *Graph) *EulerianPath {
+	ep := &EulerianPath{}
 	oddDegreeVertices := 0
 	s := nonIsolatedVertex(G)
 	for v := 0; v < G.V(); v++ {
@@ -63,7 +64,7 @@ func NewEulerianPath(G *Graph) *EulerianPath {
 		}
 	}
 	if oddDegreeVertices > 2 {
-		return nil
+		return ep
 	}
 
 	// graph has no nonisolated vertex
@@ -95,7 +96,8 @@ func NewEulerianPath(G *Graph) *EulerianPath {
 
 	stack := arraystack.New()
 	stack.Push(s)
-	ep := &EulerianPath{path: arraystack.New()}
+
+	ep.path = arraystack.New()
 	// greedily search through edges in iterative DFS style
 	for !stack.IsEmpty() {
 		val, _ := stack.Pop()

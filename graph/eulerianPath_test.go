@@ -57,5 +57,5 @@ func TestEulerianPath(t *testing.T) {
 	g4, err4 := NewGraphIn(in4)
 	assert.Nil(err4)
 	ec4 := NewEulerianPath(g4)
-	assert.Nil(ec4)
+	assert.False(ec4.HasEulerianPath())
 }
