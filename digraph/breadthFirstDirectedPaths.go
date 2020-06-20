@@ -22,7 +22,8 @@ type BreadthFirstDirectedPaths struct {
 	distTo []int  // distTo[v] = number of edges shortest s-v path
 }
 
-// NewBreadthFirstDirectedPaths computes the shortest path between the source vertex s and every other vertex in the graph G.
+// NewBreadthFirstDirectedPaths computes the shortest path between
+// the source vertex s and every other vertex in the graph G.
 func NewBreadthFirstDirectedPaths(G *Digraph, s int) *BreadthFirstDirectedPaths {
 	bfp := &BreadthFirstDirectedPaths{
 		marked: make([]bool, G.V()),
@@ -37,6 +38,8 @@ func NewBreadthFirstDirectedPaths(G *Digraph, s int) *BreadthFirstDirectedPaths 
 	return bfp
 }
 
+// NewBreadthFirstDirectedPathSources computes the shortest path from any one of
+// the source vertices in sources to every other vertex in graph G.
 func NewBreadthFirstDirectedPathSources(G *Digraph, sources []int) *BreadthFirstDirectedPaths {
 	bfp := &BreadthFirstDirectedPaths{
 		marked: make([]bool, G.V()),

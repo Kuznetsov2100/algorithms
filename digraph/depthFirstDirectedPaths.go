@@ -17,7 +17,7 @@ type DepthFirstDirectedPaths struct {
 	source int    // source vertex
 }
 
-// NewDepthFirstPaths computes a directed path from s to every other vertex in digraph G.
+// NewDepthFirstDirectedPaths computes a directed path from s to every other vertex in digraph G.
 func NewDepthFirstDirectedPaths(G *Digraph, s int) *DepthFirstDirectedPaths {
 	dfp := &DepthFirstDirectedPaths{
 		marked: make([]bool, G.V()),
