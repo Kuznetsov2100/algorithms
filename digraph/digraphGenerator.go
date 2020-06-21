@@ -265,7 +265,7 @@ func EulerianCycleDigraph(V, E int) (*Digraph, error) {
 		return nil, errors.New("an Eulerian cycle must at least one edge")
 	}
 	if V <= 0 {
-		return nil, errors.New("an Eulerian cycle must have at least one vertex")
+		return nil, errors.New("an Eulerian cycle must at least one vertex")
 	}
 	G := NewDigraph(V)
 	rand.Seed(time.Now().Unix())
@@ -286,7 +286,7 @@ func EulerianPathDigraph(V, E int) (*Digraph, error) {
 		return nil, errors.New("negative number of edges")
 	}
 	if V <= 0 {
-		return nil, errors.New("an Eulerian cycle must have at least one vertex")
+		return nil, errors.New("an Eulerian path must have at least one vertex")
 	}
 	G := NewDigraph(V)
 	rand.Seed(time.Now().Unix())
