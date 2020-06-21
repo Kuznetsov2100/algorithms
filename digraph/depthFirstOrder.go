@@ -12,13 +12,13 @@ import (
 // where V is the number of vertices and E is the number of edges. Each instance method takes O(1) time.
 // It uses O(V) extra space (not including the digraph).
 type DepthFirstOrder struct {
-	marked      []bool
-	pre         []int
-	post        []int
-	preorder    *arrayqueue.Queue
-	postorder   *arrayqueue.Queue
-	preCounter  int
-	postCounter int
+	marked      []bool            // marked[v] = has v been marked in dfs?
+	pre         []int             // pre[v]    = preorder  number of v
+	post        []int             // post[v]   = postorder number of v
+	preorder    *arrayqueue.Queue // vertices in preorder
+	postorder   *arrayqueue.Queue // vertices in postorder
+	preCounter  int               // counter or preorder numbering
+	postCounter int               // counter for postorder numbering
 }
 
 // NewDepthFirstOrder determines a depth-first order for the digraph G.

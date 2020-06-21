@@ -1,5 +1,23 @@
 package main
 
+//   Compute topological ordering of a DAG or edge-weighted DAG.
+//    Runs in O(E + V) time.
+
+//    % go run main.go jobs.txt "/"
+//    Calculus
+//    Linear Algebra
+//    Introduction to CS
+//    Advanced Programming
+//    Algorithms
+//    Theoretical CS
+//    Artificial Intelligence
+//    Robotics
+//    Machine Learning
+//    Neural Networks
+//    Databases
+//    Scientific Computing
+//    Computational Biology
+
 import (
 	"fmt"
 	"os"
