@@ -49,7 +49,7 @@ func TestSymbolDigraph(t *testing.T) {
 	s := sg.IndexOf("JFK")
 	names := []string{"ORD", "ATL", "MCO"}
 
-	g := sg.Graph()
+	g := sg.Digraph()
 	for i, v := range g.Adj(s) {
 		assert.Equal(names[i], sg.NameOf(v))
 	}

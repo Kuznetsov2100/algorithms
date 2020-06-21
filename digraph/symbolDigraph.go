@@ -101,8 +101,8 @@ func (sg *SymbolDigraph) NameOf(v int) string {
 	return string(sg.keys[v])
 }
 
-// Graph returns the digraph associated with the symbol digraph.
-func (sg *SymbolDigraph) Graph() *Digraph {
+// Digraph returns the digraph associated with the symbol digraph.
+func (sg *SymbolDigraph) Digraph() *Digraph {
 	return sg.graph
 }
 

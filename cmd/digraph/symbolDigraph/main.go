@@ -43,7 +43,7 @@ func main() {
 	filename := os.Args[1]
 	delimiter := os.Args[2]
 	sg := digraph.NewSymbolDigraph(filename, delimiter)
-	g := sg.Graph()
+	g := sg.Digraph()
 	stdin := stdin.NewStdInLine()
 	fmt.Println("Please input the source, you will get the adjcent vertexs of the source, use CTRL+D to cancel.")
 	for !stdin.IsEmpty() {
