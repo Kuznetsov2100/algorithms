@@ -1,5 +1,18 @@
 package main
 
+//   Compute the strongly-connected components of a digraph using the
+//    Kosaraju-Sharir algorithm.
+
+//    Runs in O(E + V) time.
+
+//    % go run main.go tinyDG.txt
+//    5 strong components
+//    1
+//    0 2 3 4 5
+//    9 10 11 12
+//    6 8
+//    7
+
 import (
 	"fmt"
 	"os"
