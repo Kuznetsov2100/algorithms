@@ -48,9 +48,9 @@ func (dfo *DepthFirstOrder) dfs(G *Digraph, v int) {
 			dfo.dfs(G, w)
 		}
 	}
-	dfo.postorder.Enqueue(v)
 	dfo.post[v] = dfo.postCounter
 	dfo.postCounter++
+	dfo.postorder.Enqueue(v)
 }
 
 // Pre returns the preorder number of vertex v.
