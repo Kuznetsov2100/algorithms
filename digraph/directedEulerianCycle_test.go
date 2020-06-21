@@ -32,7 +32,7 @@ func TestEulerianCycle(t *testing.T) {
 	ec2 := NewDirectedEulerianCycle(G2)
 	assert.False(ec2.HasEulerianCycle())
 
-	// not all vertices have even degree
+	// indegree != outdegree
 	graphdata3 := "3\n" +
 		"2\n" +
 		"0 1\n" +
