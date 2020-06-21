@@ -6,6 +6,11 @@ import (
 	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 )
 
+// DepthFirstOrder struct represents a data type for determining depth-first search
+// ordering of the vertices in a digraph, including preorder, postorder, and reverse postorder.
+// This implementation uses depth-first search. Each constructor takes O(V + E) time,
+// where V is the number of vertices and E is the number of edges. Each instance method takes O(1) time.
+// It uses O(V) extra space (not including the digraph).
 type DepthFirstOrder struct {
 	marked      []bool
 	pre         []int
@@ -16,6 +21,7 @@ type DepthFirstOrder struct {
 	postCounter int
 }
 
+// NewDepthFirstOrder determines a depth-first order for the digraph G.
 func NewDepthFirstOrder(G *Digraph) *DepthFirstOrder {
 	dfo := &DepthFirstOrder{
 		marked:    make([]bool, G.V()),
@@ -47,16 +53,19 @@ func (dfo *DepthFirstOrder) dfs(G *Digraph, v int) {
 	dfo.postCounter++
 }
 
+// Pre returns the preorder number of vertex v.
 func (dfo *DepthFirstOrder) Pre(v int) int {
 	dfo.validateVertex(v)
 	return dfo.pre[v]
 }
 
+// Post returns the postorder number of vertex v.
 func (dfo *DepthFirstOrder) Post(v int) int {
 	dfo.validateVertex(v)
 	return dfo.post[v]
 }
 
+// PreOrder returns the vertices in preorder.
 func (dfo *DepthFirstOrder) PreOrder() (pre []int) {
 	for _, x := range dfo.preorder.Values() {
 		pre = append(pre, x.(int))
@@ -64,6 +73,7 @@ func (dfo *DepthFirstOrder) PreOrder() (pre []int) {
 	return pre
 }
 
+// PostOrder returns the vertices in postorder.
 func (dfo *DepthFirstOrder) PostOrder() (post []int) {
 	for _, x := range dfo.postorder.Values() {
 		post = append(post, x.(int))
@@ -71,6 +81,7 @@ func (dfo *DepthFirstOrder) PostOrder() (post []int) {
 	return post
 }
 
+// ReversePost returns the vertices in reverse postorder.
 func (dfo *DepthFirstOrder) ReversePost() (reverse []int) {
 	n := dfo.postorder.Size()
 	reverse = make([]int, n)
