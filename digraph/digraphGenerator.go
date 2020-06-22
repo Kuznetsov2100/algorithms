@@ -8,18 +8,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-type edge struct {
+type privateEdge struct {
 	v int
 	w int
 }
 
-func newEdge(v, w int) *edge {
-	return &edge{v: v, w: w}
+func newprivateEdge(v, w int) *privateEdge {
+	return &privateEdge{v: v, w: w}
 }
 
 func comparator(a, b interface{}) int {
-	a1 := a.(*edge)
-	b1 := b.(*edge)
+	a1 := a.(*privateEdge)
+	b1 := b.(*privateEdge)
 	if a1.v < b1.v {
 		return -1
 	}
@@ -50,7 +50,7 @@ func Simple(V, E int) (*Digraph, error) {
 	for G.E() < E {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
-		e := newEdge(v, w)
+		e := newprivateEdge(v, w)
 		if v != w && !set.Contains(e) {
 			set.Add(e)
 			G.AddEdge(v, w)
@@ -106,7 +106,7 @@ func Dag(V, E int) (*Digraph, error) {
 	for G.E() < E {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
-		e := newEdge(v, w)
+		e := newprivateEdge(v, w)
 		if v < w && !set.Contains(e) {
 			set.Add(e)
 			G.AddEdge(vertices[v], vertices[w])
@@ -157,14 +157,14 @@ func RootedInDAG(V, E int) (*Digraph, error) {
 	rand.Seed(time.Now().Unix())
 	for v := 0; v < V-1; v++ {
 		w := rand.Intn(V-v-1) + v + 1
-		e := newEdge(v, w)
+		e := newprivateEdge(v, w)
 		set.Add(e)
 		G.AddEdge(vertices[v], vertices[w])
 	}
 	for G.E() < E {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
-		e := newEdge(v, w)
+		e := newprivateEdge(v, w)
 		if v < w && !set.Contains(e) {
 			set.Add(e)
 			G.AddEdge(vertices[v], vertices[w])
@@ -202,14 +202,14 @@ func RootedOutDAG(V, E int) (*Digraph, error) {
 	// one edge pointing from each vertex, other than the root = vertices[V-1]
 	for v := 0; v < V-1; v++ {
 		w := rand.Intn(V-v-1) + v + 1
-		e := newEdge(w, v)
+		e := newprivateEdge(w, v)
 		set.Add(e)
 		G.AddEdge(vertices[w], vertices[v])
 	}
 	for G.E() < E {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
-		e := newEdge(w, v)
+		e := newprivateEdge(w, v)
 		if v < w && !set.Contains(e) {
 			set.Add(e)
 			G.AddEdge(vertices[w], vertices[v])
@@ -346,7 +346,7 @@ func StrongDigraph(V, E, c int) (*Digraph, error) {
 		// rooted-in tree with root = vertices[count-1]
 		for v := 0; v < count-1; v++ {
 			w := rand.Intn(count-v-1) + v + 1
-			e := newEdge(w, v)
+			e := newprivateEdge(w, v)
 			set.Add(e)
 			G.AddEdge(vertices[w], vertices[v])
 		}
@@ -354,7 +354,7 @@ func StrongDigraph(V, E, c int) (*Digraph, error) {
 		// rooted-out tree with root = vertices[count-1]
 		for v := 0; v < count-1; v++ {
 			w := rand.Intn(count-v-1) + v + 1
-			e := newEdge(v, w)
+			e := newprivateEdge(v, w)
 			set.Add(e)
 			G.AddEdge(vertices[v], vertices[w])
 		}
@@ -363,7 +363,7 @@ func StrongDigraph(V, E, c int) (*Digraph, error) {
 	for G.E() < E {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
-		e := newEdge(v, w)
+		e := newprivateEdge(v, w)
 		if !set.Contains(e) && v != w && label[v] <= label[w] {
 			set.Add(e)
 			G.AddEdge(v, w)
