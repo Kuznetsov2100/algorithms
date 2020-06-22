@@ -16,8 +16,11 @@ package graph
 // An acyclic graph is a graph with no cycles.
 // A tree is an acyclic connected graph.
 // A forest is a disjoint set of trees.
-// A spanning tree of a connected graph is a subgraph that contains all of that graph's vertices and is a single tree. A spanning forest of a graph is the union of the spanning trees of its connected components.
-// A bipartite graph is a graph whose vertices we can divide into two sets such that all edges connect a vertex in one set with a vertex in the other set.
+// A spanning tree of a connected graph is a subgraph that contains all of that graph's vertices
+// and is a single tree.
+// A spanning forest of a graph is the union of the spanning trees of its connected components.
+// A bipartite graph is a graph whose vertices we can divide into two sets such that all edges
+// connect a vertex in one set with a vertex in the other set.
 
 import (
 	"fmt"
