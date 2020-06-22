@@ -3,6 +3,8 @@ package digraph
 import (
 	"fmt"
 	"math"
+
+	"github.com/handane123/algorithms/dataStructure/priorityqueue"
 )
 
 // Edge struct represents a weighted edge in an EdgeWeightedGraph.
@@ -51,7 +53,8 @@ func (e *Edge) Other(vertex int) int {
 }
 
 // CompareTo compares two edges by weight.
-func (e *Edge) CompareTo(that *Edge) int {
+func (e *Edge) CompareTo(k priorityqueue.Key) int {
+	that := k.(*Edge)
 	if e.weight < that.weight {
 		return -1
 	} else if e.weight > that.weight {
