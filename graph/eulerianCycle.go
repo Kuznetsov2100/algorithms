@@ -67,7 +67,7 @@ func NewEulerianCycle(G *Graph) *EulerianCycle {
 		for _, w := range G.Adj(v) {
 			// careful with self loops
 			if v == w {
-				if selfLoops%2 == 0 {
+				if selfLoops%2 == 0 { // add only one copy of each self loop (self loops will be consecutive)
 					e := newecEdge(v, w)
 					adj[v].Enqueue(e)
 					adj[w].Enqueue(e)
