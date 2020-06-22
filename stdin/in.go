@@ -52,9 +52,9 @@ func (in *In) ReadInt() int {
 	return v
 }
 
-// ReadFloat32 reads the next token from this input stream, parses it as a float32, and returns the float32.
-func (in *In) ReadFloat32() float32 {
+// ReadFloat64 reads the next token from this input stream, parses it as a float64, and returns the float64.
+func (in *In) ReadFloat64() float64 {
 	in.Scanner.Scan()
-	v, _ := strconv.ParseFloat(in.Scanner.Text(), 32)
-	return float32(v)
+	v, _ := strconv.ParseFloat(in.Scanner.Text(), 64)
+	return v
 }
