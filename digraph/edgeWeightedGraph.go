@@ -38,7 +38,11 @@ func NewEdgeWeightedGraphVE(V, E int) *EdgeWeightedGraph {
 		panic("Number of edges must be non negative")
 	}
 	rand.Seed(time.Now().UnixNano())
-	wg := &EdgeWeightedGraph{v: V, e: 0}
+	adj := make([]*bag.Bag, V)
+	for i := 0; i < E; i++ {
+		adj[i] = bag.New()
+	}
+	wg := &EdgeWeightedGraph{v: V, e: 0, adj: adj}
 	for i := 0; i < E; i++ {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
@@ -133,7 +137,7 @@ func (wg *EdgeWeightedGraph) String() string {
 		fmt.Fprint(&s, i, ": ")
 		for _, e := range wg.adj[i].Values() {
 			edge := e.(*Edge)
-			fmt.Fprint(&s, edge, " ")
+			fmt.Fprint(&s, edge, "  ")
 		}
 		fmt.Fprintf(&s, "\n")
 	}
