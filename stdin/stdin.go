@@ -3,6 +3,7 @@ package stdin
 import (
 	"bufio"
 	"os"
+	"strconv"
 )
 
 // StdIn wraps the scanner
@@ -31,6 +32,12 @@ func (s *StdIn) IsEmpty() bool {
 // ReadString reads the next token and returns the string.
 func (s *StdIn) ReadString() string {
 	return s.scanner.Text()
+}
+
+// ReadInt reads the next token from this input stream, parses it as a int, and returns the int.
+func (s *StdIn) ReadInt() int {
+	v, _ := strconv.Atoi(s.scanner.Text())
+	return v
 }
 
 // ReadAllStrings reads all remaining tokens from standard input and returns them as a slice of strings.
