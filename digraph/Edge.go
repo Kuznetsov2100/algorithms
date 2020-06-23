@@ -17,7 +17,7 @@ type Edge struct {
 	weight float64
 }
 
-/// NewEdge initializes an edge between vertices v and w of the given weight.
+// NewEdge initializes an edge between vertices v and w of the given weight.
 func NewEdge(v, w int, weight float64) *Edge {
 	if v < 0 {
 		panic("vertex index must be non negative integer")

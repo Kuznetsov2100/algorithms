@@ -14,7 +14,7 @@ type Topological struct {
 	rank  []int // rank[v] = rank of vertex v in order
 }
 
-// NewToplogical determines whether the digraph G has a topological order and, if so,
+// NewTopological determines whether the digraph G has a topological order and, if so,
 // finds such a topological order.
 func NewTopological(G *Digraph) *Topological {
 	top := &Topological{rank: make([]int, G.V())}

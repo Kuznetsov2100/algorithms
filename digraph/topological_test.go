@@ -55,11 +55,11 @@ func TestToplogical(t *testing.T) {
 		"Computational Biology",
 	}
 	rank := []int{4, 5, 10, 11, 2, 3, 12, 6, 1, 0, 9, 7, 8}
-	toplogical := NewTopological(sg.Digraph())
-	assert.True(toplogical.HasOrder())
-	for i, v := range toplogical.Order() {
+	topological := NewTopological(sg.Digraph())
+	assert.True(topological.HasOrder())
+	for i, v := range topological.Order() {
 		assert.Equal(order[i], sg.NameOf(v))
-		assert.Equal(rank[i], toplogical.Rank(i))
+		assert.Equal(rank[i], topological.Rank(i))
 	}
 }
 
