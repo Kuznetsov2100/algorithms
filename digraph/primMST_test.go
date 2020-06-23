@@ -42,13 +42,13 @@ func TestPrimMST(t *testing.T) {
 	assert.Equal("1.81000", fmt.Sprintf("%.5f", mst.Weight()))
 
 	edges := []*Edge{
-		NewEdge(1, 7, 0.19000),
-		NewEdge(0, 2, 0.26000),
-		NewEdge(2, 3, 0.17000),
-		NewEdge(4, 5, 0.35000),
-		NewEdge(5, 7, 0.28000),
-		NewEdge(6, 2, 0.40000),
-		NewEdge(0, 7, 0.16000),
+		NewEdge(1, 7, 0.19),
+		NewEdge(0, 2, 0.26),
+		NewEdge(2, 3, 0.17),
+		NewEdge(4, 5, 0.35),
+		NewEdge(5, 7, 0.28),
+		NewEdge(6, 2, 0.40),
+		NewEdge(0, 7, 0.16),
 	}
 	assert.Equal(edges, mst.Edges())
 }
