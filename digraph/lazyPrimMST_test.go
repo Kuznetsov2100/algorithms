@@ -38,7 +38,7 @@ func TestLazyPrimMST(t *testing.T) {
 	G := NewEdgeWeightedGraphIn(in)
 
 	mst := NewLazyPrimMST(G)
-	assert.Equal(1.81000, mst.Weight())
+	assert.Equal(1.81, mst.Weight())
 
 	edges := []*Edge{
 		NewEdge(0, 7, 0.16),
