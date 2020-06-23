@@ -48,7 +48,7 @@ func (mst *PrimMST) prim(G *EdgeWeightedGraph, s int) {
 	//nolint:errcheck
 	mst.pq.Insert(s, mst.distTo[s])
 	for !mst.pq.IsEmpty() {
-		v, _ := mst.pq.DelMin()
+		v, _ := mst.pq.DelMin() // Add closest vertex to tree.
 		mst.scan(G, v)
 	}
 }
@@ -62,6 +62,7 @@ func (mst *PrimMST) scan(G *EdgeWeightedGraph, v int) {
 			continue // v-w is obsolete edge
 		}
 		if e.Weight() < float64(mst.distTo[w]) {
+			// Edge e is new best connection from tree to w.
 			mst.distTo[w] = double(e.Weight())
 			mst.edgeTo[w] = e
 			if mst.pq.Contains(w) {
