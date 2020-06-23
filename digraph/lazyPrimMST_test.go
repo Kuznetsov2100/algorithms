@@ -2,6 +2,8 @@ package digraph
 
 import (
 	"bufio"
+	"fmt"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -38,7 +40,8 @@ func TestLazyPrimMST(t *testing.T) {
 	G := NewEdgeWeightedGraphIn(in)
 
 	mst := NewLazyPrimMST(G)
-	assert.Equal(1.81, mst.Weight())
+	weight, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", mst.Weight()), 64)
+	assert.Equal(1.81, weight)
 
 	edges := []*Edge{
 		NewEdge(0, 7, 0.16),

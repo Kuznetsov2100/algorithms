@@ -3,6 +3,7 @@ package digraph
 import (
 	"bufio"
 	"fmt"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -39,7 +40,8 @@ func TestPrimMST(t *testing.T) {
 	G := NewEdgeWeightedGraphIn(in)
 
 	mst := NewPrimMST(G)
-	assert.Equal("1.81000", fmt.Sprintf("%.5f", mst.Weight()))
+	weight, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", mst.Weight()), 64)
+	assert.Equal(1.81, weight)
 
 	edges := []*Edge{
 		NewEdge(1, 7, 0.19),
