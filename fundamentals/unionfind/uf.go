@@ -2,12 +2,21 @@ package unionfind
 
 import "fmt"
 
+// UF struct represents a union–find data type (also known as the disjoint-sets data type).
+// It supports the classic union and find operations, along with a count operation that returns the
+// total number of sets.
+// This implementation uses weighted quick union by rank with path compression by halving.
+// The constructor takes O(n) time, where n is the number of elements. The union and find operations
+// take O(log n) time in the worst case. The count operation takes O(1) time. Moreover, starting from
+// an empty data structure with n sites, any intermixed sequence of m union and find operations takes
+// O(m α(n)) time, where α(n) is the inverse of Ackermann's function.
 type UF struct {
 	parent []int
 	rank   []int8
 	count  int
 }
 
+// NewUF initializes an empty union-find data structure with n elements 0 through n-1.
 func NewUF(n int) *UF {
 	if n < 0 {
 		panic("n should be non negative")
@@ -24,6 +33,7 @@ func NewUF(n int) *UF {
 	return uf
 }
 
+// Find returns the canonical element of the set containing element p.
 func (uf *UF) Find(p int) int {
 	uf.validate(p)
 	for p != uf.parent[p] {
@@ -33,10 +43,12 @@ func (uf *UF) Find(p int) int {
 	return p
 }
 
+// Count returns the number of sets.
 func (uf *UF) Count() int {
 	return uf.count
 }
 
+// Union merges the set containing element p with the the set containing element q.
 func (uf *UF) Union(p, q int) {
 	rootP := uf.Find(p)
 	rootQ := uf.Find(q)
