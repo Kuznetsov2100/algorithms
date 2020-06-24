@@ -29,6 +29,7 @@ func NewTopological(G *Digraph) *Topological {
 	return top
 }
 
+// Order returns a topological order if the digraph has a topologial order, and nil otherwise.
 func (top *Topological) Order() (order []int) {
 	order = make([]int, len(top.order))
 	copy(order, top.order)
