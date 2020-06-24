@@ -2,7 +2,6 @@ package digraph
 
 import (
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
-	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 )
 
 // LazyPrimMST struct represents a data type for computing a minimum spanning tree in an edge-weighted
@@ -16,7 +15,7 @@ import (
 // case (not including the edge-weighted graph).
 type LazyPrimMST struct {
 	weight float64              // total weight of MST
-	mst    *arrayqueue.Queue    // edges in the MST
+	mst    []*Edge              // edges in the MST
 	marked []bool               // marked[v] = true if v on tree
 	pq     *priorityqueue.MinPQ // edges with one endpoint in tree
 }
@@ -24,7 +23,6 @@ type LazyPrimMST struct {
 // NewLazyPrimMST compute a minimum spanning tree (or forest) of an edge-weighted graph.
 func NewLazyPrimMST(G *EdgeWeightedGraph) *LazyPrimMST {
 	lp := &LazyPrimMST{
-		mst:    arrayqueue.New(),
 		pq:     priorityqueue.NewMinPQ(),
 		marked: make([]bool, G.V()),
 	}
@@ -46,7 +44,7 @@ func (lp *LazyPrimMST) prim(G *EdgeWeightedGraph, s int) {
 		if lp.marked[v] && lp.marked[w] {
 			continue // lazy, both v and w already scanned
 		}
-		lp.mst.Enqueue(edge) // add e to MST
+		lp.mst = append(lp.mst, edge) // add e to MST
 		lp.weight += edge.Weight()
 		if !lp.marked[v] { // v becomes part of tree
 			lp.scan(G, v)
@@ -69,9 +67,8 @@ func (lp *LazyPrimMST) scan(G *EdgeWeightedGraph, v int) {
 
 // Edges returns the edges in a minimum spanning tree (or forest).
 func (lp *LazyPrimMST) Edges() (edges []*Edge) {
-	for _, x := range lp.mst.Values() {
-		edges = append(edges, x.(*Edge))
-	}
+	edges = make([]*Edge, len(lp.mst))
+	copy(edges, lp.mst)
 	return edges
 }
 

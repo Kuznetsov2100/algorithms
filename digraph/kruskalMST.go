@@ -2,33 +2,30 @@ package digraph
 
 import (
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
-	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 	"github.com/handane123/algorithms/fundamentals/unionfind"
 )
 
 type KruskalMST struct {
 	weight float64
-	mst    *arrayqueue.Queue
+	mst    []*Edge
 }
 
 func NewKruskalMST(G *EdgeWeightedGraph) *KruskalMST {
-	kr := &KruskalMST{
-		mst: arrayqueue.New(),
-	}
+	kr := &KruskalMST{}
 	pq := priorityqueue.NewMinPQ()
 	for _, e := range G.Edges() {
 		pq.Insert(e)
 	}
 
 	uf := unionfind.NewUF(G.V())
-	for !pq.IsEmpty() && kr.mst.Size() < (G.V()-1) {
+	for !pq.IsEmpty() && len(kr.mst) < (G.V()-1) {
 		e, _ := pq.DelMin()
 		edge := e.(*Edge)
 		v := edge.Either()
 		w := edge.Other(v)
 		if uf.Find(v) != uf.Find(w) {
 			uf.Union(v, w)
-			kr.mst.Enqueue(e)
+			kr.mst = append(kr.mst, edge)
 			kr.weight += edge.Weight()
 		}
 	}
@@ -37,9 +34,8 @@ func NewKruskalMST(G *EdgeWeightedGraph) *KruskalMST {
 }
 
 func (kr *KruskalMST) Edges() (edges []*Edge) {
-	for _, x := range kr.mst.Values() {
-		edges = append(edges, x.(*Edge))
-	}
+	edges = make([]*Edge, len(kr.mst))
+	copy(edges, kr.mst)
 	return edges
 }
 

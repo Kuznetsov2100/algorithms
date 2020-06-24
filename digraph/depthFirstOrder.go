@@ -2,8 +2,6 @@ package digraph
 
 import (
 	"fmt"
-
-	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 )
 
 // DepthFirstOrder struct represents a data type for determining depth-first search
@@ -12,23 +10,21 @@ import (
 // where V is the number of vertices and E is the number of edges. Each instance method takes O(1) time.
 // It uses O(V) extra space (not including the digraph).
 type DepthFirstOrder struct {
-	marked      []bool            // marked[v] = has v been marked in dfs?
-	pre         []int             // pre[v]    = preorder  number of v
-	post        []int             // post[v]   = postorder number of v
-	preorder    *arrayqueue.Queue // vertices in preorder
-	postorder   *arrayqueue.Queue // vertices in postorder
-	preCounter  int               // counter or preorder numbering
-	postCounter int               // counter for postorder numbering
+	marked      []bool // marked[v] = has v been marked in dfs?
+	pre         []int  // pre[v]    = preorder  number of v
+	post        []int  // post[v]   = postorder number of v
+	preorder    []int  // vertices in preorder
+	postorder   []int  // vertices in postorder
+	preCounter  int    // counter or preorder numbering
+	postCounter int    // counter for postorder numbering
 }
 
 // NewDepthFirstOrder determines a depth-first order for the digraph G.
 func NewDepthFirstOrder(G *Digraph) *DepthFirstOrder {
 	dfo := &DepthFirstOrder{
-		marked:    make([]bool, G.V()),
-		pre:       make([]int, G.V()),
-		post:      make([]int, G.V()),
-		preorder:  arrayqueue.New(),
-		postorder: arrayqueue.New(),
+		marked: make([]bool, G.V()),
+		pre:    make([]int, G.V()),
+		post:   make([]int, G.V()),
 	}
 	for v := 0; v < G.V(); v++ {
 		if !dfo.marked[v] {
@@ -42,7 +38,7 @@ func (dfo *DepthFirstOrder) dfs(G *Digraph, v int) {
 	dfo.marked[v] = true
 	dfo.pre[v] = dfo.preCounter
 	dfo.preCounter++
-	dfo.preorder.Enqueue(v)
+	dfo.preorder = append(dfo.preorder, v)
 	for _, w := range G.Adj(v) {
 		if !dfo.marked[w] {
 			dfo.dfs(G, w)
@@ -50,7 +46,7 @@ func (dfo *DepthFirstOrder) dfs(G *Digraph, v int) {
 	}
 	dfo.post[v] = dfo.postCounter
 	dfo.postCounter++
-	dfo.postorder.Enqueue(v)
+	dfo.postorder = append(dfo.postorder, v)
 }
 
 // Pre returns the preorder number of vertex v.
@@ -67,26 +63,24 @@ func (dfo *DepthFirstOrder) Post(v int) int {
 
 // PreOrder returns the vertices in preorder.
 func (dfo *DepthFirstOrder) PreOrder() (pre []int) {
-	for _, x := range dfo.preorder.Values() {
-		pre = append(pre, x.(int))
-	}
+	pre = make([]int, len(dfo.preorder))
+	copy(pre, dfo.preorder)
 	return pre
 }
 
 // PostOrder returns the vertices in postorder.
 func (dfo *DepthFirstOrder) PostOrder() (post []int) {
-	for _, x := range dfo.postorder.Values() {
-		post = append(post, x.(int))
-	}
+	post = make([]int, len(dfo.postorder))
+	copy(post, dfo.postorder)
 	return post
 }
 
 // ReversePost returns the vertices in reverse postorder.
 func (dfo *DepthFirstOrder) ReversePost() (reverse []int) {
-	n := dfo.postorder.Size()
+	n := len(dfo.postorder)
 	reverse = make([]int, n)
-	for i, x := range dfo.postorder.Values() {
-		reverse[n-i-1] = x.(int)
+	for i, x := range dfo.postorder {
+		reverse[n-i-1] = x
 	}
 	return reverse
 }
