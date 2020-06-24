@@ -124,9 +124,9 @@ func TestDigraphGenerator_StrongDigraph(t *testing.T) {
 	assert.EqualError(err3, "too many edges")
 
 	// strongDigraph
-	G4, err4 := StrongDigraph(9, 12, 4)
+	G4, err4 := StrongDigraph(9, 20, 4)
 	assert.Nil(err4)
 
 	cc := NewKosarajuSharirSCC(G4)
-	assert.GreaterOrEqual(cc.Count(), 4)
+	assert.LessOrEqual(cc.Count(), 4)
 }

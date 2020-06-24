@@ -300,7 +300,7 @@ func EulerianPathDigraph(V, E int) (*Digraph, error) {
 	return G, nil
 }
 
-// StrongDigraph returns a random simple digraph on V vertices, E edges and (at least) c strong components.
+// StrongDigraph returns a random simple digraph on V vertices, E edges and (at most) c strong components.
 func StrongDigraph(V, E, c int) (*Digraph, error) {
 	if c >= V || c <= 0 {
 		return nil, errors.New("number of components must be between 1 and V")
