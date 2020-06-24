@@ -44,15 +44,11 @@ func NewEdgeWeightedGraphV(V int) *EdgeWeightedGraph {
 
 // NewEdgeWeightedGraphVE initializes a random edge-weighted graph with V vertices and E edges.
 func NewEdgeWeightedGraphVE(V, E int) *EdgeWeightedGraph {
+	wg := NewEdgeWeightedGraphV(V)
 	if E < 0 {
 		panic("Number of edges must be non negative")
 	}
 	rand.Seed(time.Now().UnixNano())
-	adj := make([]*bag.Bag, V)
-	for i := 0; i < E; i++ {
-		adj[i] = bag.New()
-	}
-	wg := &EdgeWeightedGraph{v: V, e: 0, adj: adj}
 	for i := 0; i < E; i++ {
 		v := rand.Intn(V)
 		w := rand.Intn(V)
