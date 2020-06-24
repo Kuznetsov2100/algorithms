@@ -11,9 +11,9 @@ import "fmt"
 // an empty data structure with n sites, any intermixed sequence of m union and find operations takes
 // O(m α(n)) time, where α(n) is the inverse of Ackermann's function.
 type UF struct {
-	parent []int
-	rank   []int8
-	count  int
+	parent []int  // parent[i] = parent of i
+	rank   []int8 // rank[i] = rank of subtree rooted at i (never more than 31)
+	count  int    // number of components
 }
 
 // NewUF initializes an empty union-find data structure with n elements 0 through n-1.
@@ -37,7 +37,7 @@ func NewUF(n int) *UF {
 func (uf *UF) Find(p int) int {
 	uf.validate(p)
 	for p != uf.parent[p] {
-		uf.parent[p] = uf.parent[uf.parent[p]]
+		uf.parent[p] = uf.parent[uf.parent[p]] // path compression by halving
 		p = uf.parent[p]
 	}
 	return p
@@ -55,6 +55,7 @@ func (uf *UF) Union(p, q int) {
 	if rootP == rootQ {
 		return
 	}
+	// make root of smaller rank point to root of larger rank
 	if uf.rank[rootP] < uf.rank[rootQ] {
 		uf.parent[rootP] = rootQ
 	} else if uf.rank[rootP] > uf.rank[rootQ] {
