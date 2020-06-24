@@ -6,6 +6,26 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestDigraphGenerator_DAG(t *testing.T) {
+	assert := assert.New(t)
+
+	// E > V*(V-1)/2
+	G1, err1 := Dag(3, 6)
+	assert.Nil(G1)
+	assert.EqualError(err1, "too many edges")
+
+	// E < 0
+	G2, err2 := Dag(3, -1)
+	assert.Nil(G2)
+	assert.EqualError(err2, "too few edges")
+
+	// Dag
+	G3, err3 := Dag(7, 4)
+	assert.Nil(err3)
+	finder := NewDirectedCycle(G3)
+	assert.False(finder.HasCycle())
+}
+
 func TestDigraphGenerator_Cycle(t *testing.T) {
 	assert := assert.New(t)
 
@@ -83,4 +103,30 @@ func TestDigraphGenerator_BinaryTree(t *testing.T) {
 	assert.False(finder.HasCycle())
 	assert.Equal(V/2*2, g.E())
 
+}
+
+func TestDigraphGenerator_StrongDigraph(t *testing.T) {
+	assert := assert.New(t)
+
+	// c >= V || c <= 0
+	G1, err1 := StrongDigraph(7, 4, 9)
+	assert.Nil(G1)
+	assert.EqualError(err1, "number of components must be between 1 and V")
+
+	// E <=2 *(V-c)
+	G2, err2 := StrongDigraph(7, 2, 4)
+	assert.Nil(G2)
+	assert.EqualError(err2, "number of edges must be at least 2*(V-c)")
+
+	// E > V*(V-1)/2
+	G3, err3 := StrongDigraph(4, 7, 2)
+	assert.Nil(G3)
+	assert.EqualError(err3, "too many edges")
+
+	// strongDigraph
+	G4, err4 := StrongDigraph(9, 12, 4)
+	assert.Nil(err4)
+
+	cc := NewKosarajuSharirSCC(G4)
+	assert.GreaterOrEqual(cc.Count(), 4)
 }
