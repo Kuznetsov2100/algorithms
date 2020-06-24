@@ -56,10 +56,10 @@ func TestEdgeWeightedGraph(t *testing.T) {
 	assert.Panics(func() { G.Degree(8) })
 
 	edges := []*Edge{
-		NewEdge(6, 0, 0.58000),
-		NewEdge(0, 2, 0.26000),
-		NewEdge(0, 4, 0.38000),
-		NewEdge(0, 7, 0.16000),
+		NewEdge(6, 0, 0.58),
+		NewEdge(0, 2, 0.26),
+		NewEdge(0, 4, 0.38),
+		NewEdge(0, 7, 0.16),
 	}
 	assert.Equal(edges, G.Adj(0))
 
@@ -93,8 +93,8 @@ func TestEdgeWeightedGraph(t *testing.T) {
 	in2 := &stdin.In{Scanner: scanner2}
 	G4 := NewEdgeWeightedGraphIn(in2)
 	edges2 := []*Edge{
-		NewEdge(0, 1, 0.37000),
-		NewEdge(0, 0, 0.35000),
+		NewEdge(0, 1, 0.37),
+		NewEdge(0, 0, 0.35),
 	}
 	assert.Equal(edges2, G4.Edges())
 }
