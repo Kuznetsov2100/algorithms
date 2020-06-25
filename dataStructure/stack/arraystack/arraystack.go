@@ -48,10 +48,10 @@ func (s *Stack) Peek() (interface{}, error) {
 
 // Values return all of the values in the stack as a slice.
 func (s *Stack) Values() []interface{} {
-	v := make([]interface{}, s.Size())
-	copy(v, s.item)
-	for i, j := 0, s.Size()-1; i < j; i, j = i+1, j-1 {
-		v[i], v[j] = v[j], v[i]
+	n := s.Size()
+	v := make([]interface{}, n)
+	for i, val := range s.item {
+		v[n-i-1] = val
 	}
 	return v
 }
