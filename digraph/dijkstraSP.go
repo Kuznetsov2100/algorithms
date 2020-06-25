@@ -42,7 +42,7 @@ func NewDijkstraSP(G *EdgeWeightedDigraph, s int) *DijkstraSP {
 	//nolint:errcheck
 	sp.pq.Insert(s, sp.distTo[s])
 	for !sp.pq.IsEmpty() {
-		v, _ := sp.pq.DelMin()
+		v, _ := sp.pq.DelMin() // relax vertices in order of distance from s
 		for _, e := range G.Adj(v) {
 			sp.relax(e)
 		}
@@ -53,12 +53,13 @@ func NewDijkstraSP(G *EdgeWeightedDigraph, s int) *DijkstraSP {
 func (sp *DijkstraSP) relax(e *DirectedEdge) {
 	v := e.From()
 	w := e.To()
+	// relax edge e and update pq if changed
 	if sp.distTo[w] > sp.distTo[v]+double(e.Weight()) {
 		sp.distTo[w] = sp.distTo[v] + double(e.Weight())
 		sp.edgeTo[w] = e
 		if sp.pq.Contains(w) {
 			//nolint:errcheck
-			sp.pq.DecreaseKey(w, sp.distTo[w])
+			sp.pq.DecreaseKey(w, sp.distTo[w]) // update pq if changed
 		} else {
 			//nolint:errcheck
 			sp.pq.Insert(w, sp.distTo[w])
