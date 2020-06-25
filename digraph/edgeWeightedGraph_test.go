@@ -71,6 +71,18 @@ func TestEdgeWeightedGraph(t *testing.T) {
 	in1 := &stdin.In{Scanner: scanner1}
 	assert.PanicsWithValue("number of edges must be non negative", func() { NewEdgeWeightedGraphIn(in1) })
 
+	// NewEdgeWeightedDigraphIn V < 0
+	tinyEWG3 := "-2\n" +
+		"2\n" +
+		"0 0 0.35\n" +
+		"0 1 0.37\n"
+	buf3 := strings.NewReader(tinyEWG3)
+	scanner3 := bufio.NewScanner(buf3)
+	scanner3.Split(bufio.ScanWords)
+	in3 := &stdin.In{Scanner: scanner3}
+	assert.PanicsWithValue("number of vertices must be non negative",
+		func() { NewEdgeWeightedGraphIn(in3) })
+
 	// NewEdgeWeightedGraphV
 	assert.PanicsWithValue("Number of vertices must be non negative", func() { NewEdgeWeightedGraphV(-1) })
 	G2 := NewEdgeWeightedGraphV(3)

@@ -66,6 +66,9 @@ func NewEdgeWeightedGraphIn(in *stdin.In) *EdgeWeightedGraph {
 	}
 
 	V := in.ReadInt()
+	if V < 0 {
+		panic("number of vertices must be non negative")
+	}
 	adj := make([]*bag.Bag, V)
 	for v := 0; v < V; v++ {
 		adj[v] = bag.New()
