@@ -29,6 +29,20 @@ func NewTopological(G *Digraph) *Topological {
 	return top
 }
 
+// NewTopologicalEWD determines whether the edge-weighted digraph G has a topological order and, if so, finds such an order.
+func NewTopologicalEWD(G *EdgeWeightedDigraph) *Topological {
+	top := &Topological{rank: make([]int, G.V())}
+	finder := NewEdgeWeightedDirectedCycle(G)
+	if !finder.HasCycle() {
+		dfo := NewDepthFirstOrderEWD(G)
+		top.order = dfo.ReversePost()
+		for i, v := range top.order {
+			top.rank[v] = i
+		}
+	}
+	return top
+}
+
 // Order returns a topological order if the digraph has a topologial order, and nil otherwise.
 func (top *Topological) Order() (order []int) {
 	order = make([]int, len(top.order))

@@ -102,3 +102,22 @@ func TestToplogical_Rank(t *testing.T) {
 	assert.Equal(-1, top.Rank(0))
 	assert.Panics(func() { top.Rank(13) })
 }
+
+func TestToplogicalEWD(t *testing.T) {
+	assert := assert.New(t)
+
+	tinyEWD := "3\n" +
+		"2\n" +
+		"0 1 0.35\n" +
+		"1 2 0.40\n"
+
+	buf := strings.NewReader(tinyEWD)
+	scanner := bufio.NewScanner(buf)
+	scanner.Split(bufio.ScanWords)
+	in := &stdin.In{Scanner: scanner}
+	g := NewEdgeWeightedDigraphIn(in)
+
+	top := NewTopologicalEWD(g)
+	assert.True(top.HasOrder())
+
+}
