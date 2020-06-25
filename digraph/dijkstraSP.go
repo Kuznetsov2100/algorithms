@@ -8,19 +8,27 @@ import (
 	"github.com/handane123/algorithms/dataStructure/stack/arraystack"
 )
 
+// DijkstraSP struct represents a data type for solving the single-source shortest paths problem
+// in edge-weighted digraphs where the edge weights are nonnegative.
+// This implementation uses Dijkstra's algorithm with a binary heap.
+// The constructor takes O(E log V) time in the worst case,
+// where V is the number of vertices and E is the number of edges.
+// Each instance method takes O(1) time. It uses O(V) extra space
+// (not including the edge-weighted digraph).
 type DijkstraSP struct {
-	distTo []double
-	edgeTo []*DirectedEdge
-	pq     *priorityqueue.IndexMinPQ
+	distTo []double                  // distTo[v] = distance  of shortest s->v path
+	edgeTo []*DirectedEdge           // edgeTo[v] = last edge on shortest s->v path
+	pq     *priorityqueue.IndexMinPQ // index priority queue of vertices
 }
 
+// NewDijkstraSP computes a shortest-paths tree from the source vertex s to every other vertex
+// in the edge-weighted digraph G.
 func NewDijkstraSP(G *EdgeWeightedDigraph, s int) *DijkstraSP {
 	for _, e := range G.Edges() {
 		if e.Weight() < 0 {
 			panic(fmt.Sprintln("edge ", e, " has negative weight"))
 		}
 	}
-
 	sp := &DijkstraSP{
 		distTo: make([]double, G.V()),
 		edgeTo: make([]*DirectedEdge, G.V()),
@@ -30,7 +38,6 @@ func NewDijkstraSP(G *EdgeWeightedDigraph, s int) *DijkstraSP {
 	for v := 0; v < G.V(); v++ {
 		sp.distTo[v] = math.MaxFloat64
 	}
-
 	sp.distTo[s] = 0.0
 	//nolint:errcheck
 	sp.pq.Insert(s, sp.distTo[s])
@@ -59,16 +66,19 @@ func (sp *DijkstraSP) relax(e *DirectedEdge) {
 	}
 }
 
+// DistTo returns the length of a shortest path from the source vertex s to vertex v.
 func (sp *DijkstraSP) DistTo(v int) float64 {
 	sp.validateVertex(v)
 	return float64(sp.distTo[v])
 }
 
+// HasPathTo returns true if there is a path from the source vertex s to vertex v.
 func (sp *DijkstraSP) HasPathTo(v int) bool {
 	sp.validateVertex(v)
 	return sp.distTo[v] < math.MaxFloat64
 }
 
+// PathTo returns a shortest path from the source vertex s to vertex v.
 func (sp *DijkstraSP) PathTo(v int) (edges []*DirectedEdge) {
 	sp.validateVertex(v)
 	if !sp.HasPathTo(v) {
@@ -78,7 +88,6 @@ func (sp *DijkstraSP) PathTo(v int) (edges []*DirectedEdge) {
 	for e := sp.edgeTo[v]; e != nil; e = sp.edgeTo[e.From()] {
 		path.Push(e)
 	}
-
 	for _, e := range path.Values() {
 		edges = append(edges, e.(*DirectedEdge))
 	}
