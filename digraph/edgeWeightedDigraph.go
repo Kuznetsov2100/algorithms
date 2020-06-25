@@ -10,6 +10,14 @@ import (
 	"github.com/handane123/algorithms/stdin"
 )
 
+// EdgeWeightedDigraph struct represents a edge-weighted digraph of vertices named 0 through V - 1,
+// where each directed edge is of type DirectedEdge and has a real-valued weight.
+// This implementation uses an adjacency-lists representation, which is a vertex-indexed array
+// of Bag objects. It uses O(E + V) space, where E is the number of edges and V is the number
+// of vertices. All instance methods take O(1) time. (Though, iterating over the edges returned
+// by adj(int) takes time proportional to the outdegree of the vertex.) Constructing an empty
+// edge-weighted digraph with V vertices takes O(V) time; constructing an edge-weighted digraph
+// with E edges and V vertices takes O(E + V) time.
 type EdgeWeightedDigraph struct {
 	v        int
 	e        int
@@ -17,6 +25,7 @@ type EdgeWeightedDigraph struct {
 	indegree []int
 }
 
+// NewEdgeWeightedDigraphV initializes an empty edge-weighted digraph with V vertices and 0 edges.
 func NewEdgeWeightedDigraphV(V int) *EdgeWeightedDigraph {
 	if V < 0 {
 		panic("number of vertices in a digraph must be non negative")
@@ -33,6 +42,7 @@ func NewEdgeWeightedDigraphV(V int) *EdgeWeightedDigraph {
 	}
 }
 
+// NewEdgeWeightedDigraphVE initializes a random edge-weighted digraph with V vertices and E edges.
 func NewEdgeWeightedDigraphVE(V, E int) *EdgeWeightedDigraph {
 	wd := NewEdgeWeightedDigraphV(V)
 	if E < 0 {
@@ -49,7 +59,7 @@ func NewEdgeWeightedDigraphVE(V, E int) *EdgeWeightedDigraph {
 	return wd
 }
 
-// NewEdgeWeightedGraphIn initializes an edge-weighted graph from an input stream.
+// NewEdgeWeightedDigraphIn initializes an edge-weighted digraph from an input stream.
 func NewEdgeWeightedDigraphIn(in *stdin.In) *EdgeWeightedDigraph {
 	if in == nil {
 		panic("argument is nil")
@@ -82,15 +92,17 @@ func NewEdgeWeightedDigraphIn(in *stdin.In) *EdgeWeightedDigraph {
 	return wd
 }
 
+// V returns the number of vertices in this edge-weighted digraph.
 func (wd *EdgeWeightedDigraph) V() int {
 	return wd.v
 }
 
+// E returns the number of edges in this edge-weighted digraph.
 func (wd *EdgeWeightedDigraph) E() int {
 	return wd.e
 }
 
-// Adj returns the edges incident on vertex v.
+// Adj returns the directed edges incident from vertex v.
 func (wd *EdgeWeightedDigraph) Adj(v int) (edges []*DirectedEdge) {
 	for _, x := range wd.adj[v].Values() {
 		edges = append(edges, x.(*DirectedEdge))
@@ -98,16 +110,19 @@ func (wd *EdgeWeightedDigraph) Adj(v int) (edges []*DirectedEdge) {
 	return edges
 }
 
+// OutDegree returns the number of directed edges incident from vertex v.
 func (wd *EdgeWeightedDigraph) OutDegree(v int) int {
 	wd.validateVertex(v)
 	return wd.adj[v].Size()
 }
 
+// InDegree returns the number of directed edges incident to vertex v.
 func (wd *EdgeWeightedDigraph) InDegree(v int) int {
 	wd.validateVertex(v)
 	return wd.indegree[v]
 }
 
+// Edges returns all directed edges in this edge-weighted digraph.
 func (wd *EdgeWeightedDigraph) Edges() (edges []*DirectedEdge) {
 	for v := 0; v < wd.v; v++ {
 		for _, e := range wd.adj[v].Values() {
@@ -117,6 +132,7 @@ func (wd *EdgeWeightedDigraph) Edges() (edges []*DirectedEdge) {
 	return edges
 }
 
+// AddEdge adds the directed edge e to this edge-weighted digraph.
 func (wd *EdgeWeightedDigraph) AddEdge(e *DirectedEdge) {
 	v := e.From()
 	w := e.To()
