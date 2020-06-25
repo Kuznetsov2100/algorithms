@@ -34,6 +34,21 @@ func NewDepthFirstOrder(G *Digraph) *DepthFirstOrder {
 	return dfo
 }
 
+// NewDepthFirstOrderEWD determines a depth-first order for the edge-weighted digraph G.
+func NewDepthFirstOrderEWD(G *EdgeWeightedDigraph) *DepthFirstOrder {
+	dfo := &DepthFirstOrder{
+		marked: make([]bool, G.V()),
+		pre:    make([]int, G.V()),
+		post:   make([]int, G.V()),
+	}
+	for v := 0; v < G.V(); v++ {
+		if !dfo.marked[v] {
+			dfo.dfsEWD(G, v)
+		}
+	}
+	return dfo
+}
+
 func (dfo *DepthFirstOrder) dfs(G *Digraph, v int) {
 	dfo.marked[v] = true
 	dfo.pre[v] = dfo.preCounter
@@ -42,6 +57,22 @@ func (dfo *DepthFirstOrder) dfs(G *Digraph, v int) {
 	for _, w := range G.Adj(v) {
 		if !dfo.marked[w] {
 			dfo.dfs(G, w)
+		}
+	}
+	dfo.post[v] = dfo.postCounter
+	dfo.postCounter++
+	dfo.postorder = append(dfo.postorder, v)
+}
+
+func (dfo *DepthFirstOrder) dfsEWD(G *EdgeWeightedDigraph, v int) {
+	dfo.marked[v] = true
+	dfo.pre[v] = dfo.preCounter
+	dfo.preCounter++
+	dfo.preorder = append(dfo.preorder, v)
+	for _, e := range G.Adj(v) {
+		w := e.To()
+		if !dfo.marked[w] {
+			dfo.dfsEWD(G, w)
 		}
 	}
 	dfo.post[v] = dfo.postCounter

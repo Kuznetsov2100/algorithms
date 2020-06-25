@@ -56,3 +56,43 @@ func TestDepthFirstOrder(t *testing.T) {
 	assert.Equal([]int{7, 6, 8, 9, 10, 11, 12, 0, 1, 5, 4, 3, 2}, dfo.ReversePost())
 
 }
+
+func TestDepthFirstOrderEWD(t *testing.T) {
+	assert := assert.New(t)
+	tinyEWD := "8\n" +
+		"15\n" +
+		"4 5 0.35\n" +
+		"5 4 0.35\n" +
+		"4 7 0.37\n" +
+		"5 7 0.28\n" +
+		"7 5 0.28\n" +
+		"5 1 0.32\n" +
+		"0 4 0.38\n" +
+		"0 2 0.26\n" +
+		"7 3 0.39\n" +
+		"1 3 0.29\n" +
+		"2 7 0.34\n" +
+		"6 2 0.40\n" +
+		"3 6 0.52\n" +
+		"6 0 0.58\n" +
+		"6 4 0.93\n"
+
+	buf := strings.NewReader(tinyEWD)
+	scanner := bufio.NewScanner(buf)
+	scanner.Split(bufio.ScanWords)
+	in := &stdin.In{Scanner: scanner}
+	g := NewEdgeWeightedDigraphIn(in)
+
+	dfo := NewDepthFirstOrderEWD(g)
+	pre := []int{0, 7, 1, 3, 5, 6, 4, 2}
+	post := []int{7, 0, 6, 4, 2, 1, 3, 5}
+	for v := 0; v < g.V(); v++ {
+		assert.Equal(pre[v], dfo.Pre(v))
+		assert.Equal(post[v], dfo.Post(v))
+	}
+	assert.Panics(func() { dfo.Pre(13) })
+
+	assert.Equal([]int{0, 2, 7, 3, 6, 4, 5, 1}, dfo.PreOrder())
+	assert.Equal([]int{1, 5, 4, 6, 3, 7, 2, 0}, dfo.PostOrder())
+	assert.Equal([]int{0, 2, 7, 3, 6, 4, 5, 1}, dfo.ReversePost())
+}
