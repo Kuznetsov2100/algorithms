@@ -103,7 +103,7 @@ func (wd *EdgeWeightedDigraph) OutDegree(v int) int {
 	return wd.adj[v].Size()
 }
 
-func (wd *EdgeWeightedDigraph) Indegree(v int) int {
+func (wd *EdgeWeightedDigraph) InDegree(v int) int {
 	wd.validateVertex(v)
 	return wd.indegree[v]
 }
