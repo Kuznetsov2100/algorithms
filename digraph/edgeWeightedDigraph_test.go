@@ -12,7 +12,7 @@ import (
 func TestEdgeWeightedDigraph(t *testing.T) {
 	assert := assert.New(t)
 
-	tinyEWG := "8\n" +
+	tinyEWD := "8\n" +
 		"15\n" +
 		"4 5 0.35\n" +
 		"5 4 0.35\n" +
@@ -30,8 +30,10 @@ func TestEdgeWeightedDigraph(t *testing.T) {
 		"6 0 0.58\n" +
 		"6 4 0.93\n"
 
+	// argument is nil
 	assert.Panics(func() { NewEdgeWeightedDigraphIn(nil) })
-	buf := strings.NewReader(tinyEWG)
+
+	buf := strings.NewReader(tinyEWD)
 	scanner := bufio.NewScanner(buf)
 	scanner.Split(bufio.ScanWords)
 	in := &stdin.In{Scanner: scanner}
@@ -40,6 +42,7 @@ func TestEdgeWeightedDigraph(t *testing.T) {
 	assert.Equal(8, G.V())
 	assert.Equal(15, G.E())
 
+	// String
 	toString := "8 15\n" +
 		"0: 0->2  0.26  0->4  0.38  \n" +
 		"1: 1->3  0.29  \n" +
@@ -51,41 +54,38 @@ func TestEdgeWeightedDigraph(t *testing.T) {
 		"7: 7->3  0.39  7->5  0.28  \n"
 	assert.Equal(toString, G.String())
 
+	// Indegree and OutDegree
 	assert.Equal(2, G.OutDegree(0))
-	assert.Equal(1, G.Indegree(0))
+	assert.Equal(1, G.InDegree(0))
 	assert.Panics(func() { G.OutDegree(8) })
 
+	// Adj
 	edges := []*DirectedEdge{
 		NewDirectedEdge(0, 2, 0.26),
 		NewDirectedEdge(0, 4, 0.38),
 	}
 	assert.Equal(edges, G.Adj(0))
 
-	tinyEWG1 := "8\n" +
-		"-1\n"
-	buf1 := strings.NewReader(tinyEWG1)
-	scanner1 := bufio.NewScanner(buf1)
-	scanner1.Split(bufio.ScanWords)
-	in1 := &stdin.In{Scanner: scanner1}
-	assert.PanicsWithValue("number of edges must be non negative", func() { NewEdgeWeightedDigraphIn(in1) })
-
-	// NewEdgeWeightedGraphV
-	assert.PanicsWithValue("number of vertices in a digraph must be non negative", func() { NewEdgeWeightedDigraphV(-1) })
+	// NewEdgeWeightedDigraphV V < 0
+	assert.PanicsWithValue("number of vertices in a digraph must be non negative",
+		func() { NewEdgeWeightedDigraphV(-1) })
 	G2 := NewEdgeWeightedGraphV(3)
 	assert.Equal(3, G2.V())
 	assert.Equal(0, G2.E())
 
-	//NewEdgeWeightedGraphVE
-	assert.PanicsWithValue("number of edges in a digraph must be non negative", func() { NewEdgeWeightedDigraphVE(3, -1) })
+	//NewEdgeWeightedDigraphVE E < 0
+	assert.PanicsWithValue("number of edges in a digraph must be non negative",
+		func() { NewEdgeWeightedDigraphVE(3, -1) })
 	G3 := NewEdgeWeightedDigraphVE(3, 3)
 	assert.Equal(3, G3.V())
 	assert.Equal(3, G3.E())
 
-	tinyEWG2 := "2\n" +
+	// Edges
+	tinyEWD2 := "2\n" +
 		"2\n" +
 		"0 0 0.35\n" +
 		"0 1 0.37\n"
-	buf2 := strings.NewReader(tinyEWG2)
+	buf2 := strings.NewReader(tinyEWD2)
 	scanner2 := bufio.NewScanner(buf2)
 	scanner2.Split(bufio.ScanWords)
 	in2 := &stdin.In{Scanner: scanner2}
@@ -96,13 +96,25 @@ func TestEdgeWeightedDigraph(t *testing.T) {
 	}
 	assert.Equal(edges2, G4.Edges())
 
-	tinyEWG3 := "-2\n" +
+	// NewEdgeWeightedDigraphIn E < 0
+	tinyEWD1 := "8\n" +
+		"-1\n"
+	buf1 := strings.NewReader(tinyEWD1)
+	scanner1 := bufio.NewScanner(buf1)
+	scanner1.Split(bufio.ScanWords)
+	in1 := &stdin.In{Scanner: scanner1}
+	assert.PanicsWithValue("number of edges must be non negative",
+		func() { NewEdgeWeightedDigraphIn(in1) })
+
+	// NewEdgeWeightedDigraphIn V < 0
+	tinyEWD3 := "-2\n" +
 		"2\n" +
 		"0 0 0.35\n" +
 		"0 1 0.37\n"
-	buf3 := strings.NewReader(tinyEWG3)
+	buf3 := strings.NewReader(tinyEWD3)
 	scanner3 := bufio.NewScanner(buf3)
 	scanner3.Split(bufio.ScanWords)
 	in3 := &stdin.In{Scanner: scanner3}
-	assert.PanicsWithValue("number of vertices in a digraph must be non negative", func() { NewEdgeWeightedDigraphIn(in3) })
+	assert.PanicsWithValue("number of vertices in a digraph must be non negative",
+		func() { NewEdgeWeightedDigraphIn(in3) })
 }
