@@ -80,7 +80,7 @@ func TestAcyclicSP(t *testing.T) {
 	assert.Equal(pathto4, sp.PathTo(4))
 	assert.InEpsilon(1.74, sp.DistTo(4), 1e-9)
 	assert.Equal(pathto5, sp.PathTo(5))
-	assert.Equal(math.MaxFloat64, sp.DistTo(5))
+	assert.Equal(math.Inf(1), sp.DistTo(5))
 	assert.Equal(pathto6, sp.PathTo(6))
 	assert.InEpsilon(0.81, sp.DistTo(6), 1e-9)
 	assert.Equal(pathto7, sp.PathTo(7))

@@ -15,19 +15,19 @@ import (
 // in the worst case, where V is the number of vertices and E is the number of edges.
 // Each instance method takes O(1) time. It uses O(V) extra space (not including the edge-weighted digraph).
 type AcyclicSP struct {
-	distTo []double        // distTo[v] = distance  of shortest s->v path
+	distTo []float64       // distTo[v] = distance  of shortest s->v path
 	edgeTo []*DirectedEdge // edgeTo[v] = last edge on shortest s->v path
 }
 
 // NewAcyclicSP computes a shortest paths tree from s to every other vertex in the directed acyclic graph G.
 func NewAcyclicSP(G *EdgeWeightedDigraph, s int) (*AcyclicSP, error) {
 	sp := &AcyclicSP{
-		distTo: make([]double, G.V()),
+		distTo: make([]float64, G.V()),
 		edgeTo: make([]*DirectedEdge, G.V()),
 	}
 	sp.validateVertex(s)
 	for v := 0; v < G.V(); v++ {
-		sp.distTo[v] = math.MaxFloat64
+		sp.distTo[v] = math.Inf(1)
 	}
 	sp.distTo[s] = 0.0
 
@@ -48,8 +48,8 @@ func NewAcyclicSP(G *EdgeWeightedDigraph, s int) (*AcyclicSP, error) {
 func (sp *AcyclicSP) relax(e *DirectedEdge) {
 	v := e.From()
 	w := e.To()
-	if sp.distTo[w] > sp.distTo[v]+double(e.Weight()) {
-		sp.distTo[w] = sp.distTo[v] + double(e.Weight())
+	if sp.distTo[w] > sp.distTo[v]+e.Weight() {
+		sp.distTo[w] = sp.distTo[v] + e.Weight()
 		sp.edgeTo[w] = e
 	}
 }
@@ -57,13 +57,13 @@ func (sp *AcyclicSP) relax(e *DirectedEdge) {
 // DistTo returns the length of a shortest path from the source vertex s to vertex v.
 func (sp *AcyclicSP) DistTo(v int) float64 {
 	sp.validateVertex(v)
-	return float64(sp.distTo[v])
+	return sp.distTo[v]
 }
 
 // HasPathTo returns true if there is a path from the source vertex s to vertex v.
 func (sp *AcyclicSP) HasPathTo(v int) bool {
 	sp.validateVertex(v)
-	return sp.distTo[v] < math.MaxFloat64
+	return sp.distTo[v] < math.Inf(1)
 }
 
 // PathTo returns a shortest path from the source vertex s to vertex v.
