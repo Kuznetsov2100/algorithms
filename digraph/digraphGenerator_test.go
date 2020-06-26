@@ -6,6 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestDigraphGenerator_Complete(t *testing.T) {
+	assert := assert.New(t)
+
+	G := Complete(7)
+	assert.Equal(7, G.V())
+	assert.Equal(42, G.E())
+}
+
 func TestDigraphGenerator_DAG(t *testing.T) {
 	assert := assert.New(t)
 
