@@ -104,6 +104,7 @@ func (wd *EdgeWeightedDigraph) E() int {
 
 // Adj returns the directed edges incident from vertex v.
 func (wd *EdgeWeightedDigraph) Adj(v int) (edges []*DirectedEdge) {
+	wd.validateVertex(v)
 	for _, x := range wd.adj[v].Values() {
 		edges = append(edges, x.(*DirectedEdge))
 	}
