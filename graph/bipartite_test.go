@@ -31,6 +31,7 @@ func TestBipartite(t *testing.T) {
 	assert.Nil(err)
 
 	b := NewBipartite(g)
+	assert.Equal([]int(nil), b.OddCycle())
 	assert.True(b.IsBipartite())
 	assert.False(b.Color(0))
 	assert.False(b.Color(1))

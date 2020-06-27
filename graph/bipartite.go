@@ -74,6 +74,9 @@ func (b *Bipartite) Color(v int) bool {
 
 // OddCycle returns an odd-length cycle if the graph is not bipartite, and nil otherwise.
 func (b *Bipartite) OddCycle() (cy []int) {
+	if b.cycle == nil {
+		return nil
+	}
 	for _, val := range b.cycle.Values() {
 		cy = append(cy, val.(int))
 	}
