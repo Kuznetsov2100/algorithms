@@ -129,6 +129,7 @@ func (dg *Digraph) E() int {
 
 // Adj returns the vertices adjacent to vertex v.
 func (dg *Digraph) Adj(v int) (vertices []int) {
+	dg.validateVertex(v)
 	for _, x := range dg.adj[v].Values() {
 		vertices = append(vertices, x.(int))
 	}
