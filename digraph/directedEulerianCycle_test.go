@@ -45,4 +45,5 @@ func TestEulerianCycle(t *testing.T) {
 	assert.Nil(err3)
 	ec3 := NewDirectedEulerianCycle(g3)
 	assert.False(ec3.HasEulerianCycle())
+	assert.Equal([]int(nil), ec3.GetCycle())
 }

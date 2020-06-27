@@ -67,6 +67,9 @@ func NewDirectedEulerianCycle(G *Digraph) *DirectedEulerianCycle {
 
 // GetCycle returns the sequence of vertices on an Eulerian cycle.
 func (dec *DirectedEulerianCycle) GetCycle() (cy []int) {
+	if !dec.HasEulerianCycle() {
+		return nil
+	}
 	for _, val := range dec.cycle.Values() {
 		cy = append(cy, val.(int))
 	}
