@@ -38,6 +38,9 @@ func (c *DirectedCycle) HasCycle() bool {
 
 // GetCycle returns a directed cycle if the digraph has a directed cycle, and nil otherwise.
 func (c *DirectedCycle) GetCycle() (cy []int) {
+	if !c.HasCycle() {
+		return nil
+	}
 	for _, val := range c.cycle.Values() {
 		cy = append(cy, val.(int))
 	}

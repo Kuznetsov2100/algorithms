@@ -46,4 +46,19 @@ func TestDirectedCycle(t *testing.T) {
 	finder := NewDirectedCycle(g)
 	assert.True(finder.HasCycle())
 	assert.Equal([]int{3, 5, 4, 3}, finder.GetCycle())
+
+	tinyDG1 := "2\n" +
+		"1\n" +
+		"0 1\n"
+
+	buf1 := strings.NewReader(tinyDG1)
+	scanner1 := bufio.NewScanner(buf1)
+	scanner1.Split(bufio.ScanWords)
+	in1 := &stdin.In{Scanner: scanner1}
+	g1, err1 := NewDigraphIn(in1)
+	assert.Nil(err1)
+
+	finder1 := NewDirectedCycle(g1)
+	assert.False(finder1.HasCycle())
+	assert.Equal([]int(nil), finder1.GetCycle())
 }
