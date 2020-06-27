@@ -77,6 +77,9 @@ func NewDirectedEulerianPath(G *Digraph) *DirectedEulerianPath {
 
 // Path returns the sequence of vertices on an Eulerian path.
 func (dep *DirectedEulerianPath) Path() (p []int) {
+	if !dep.HasEulerianPath() {
+		return nil
+	}
 	for _, val := range dep.path.Values() {
 		p = append(p, val.(int))
 	}
