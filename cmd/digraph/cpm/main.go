@@ -2,7 +2,7 @@ package main
 
 //   Critical path method.
 
-//   % go run main.go < jobsPC.txt
+//   % go run main.go  jobsPC.txt
 //    job   start  finish
 //   --------------------
 //      0     0.0    41.0
