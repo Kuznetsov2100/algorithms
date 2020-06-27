@@ -17,12 +17,12 @@ import (
 // is the number of edges. In practice, it performs much better. Each instance method takes O(1) time.
 // It uses O(V) extra space (not including the edge-weighted digraph).
 type BellmanFordSP struct {
-	distTo  []float64
-	edgeTo  []*DirectedEdge
-	onQueue []bool
-	queue   *arrayqueue.Queue
-	cost    int
-	cycle   []*DirectedEdge
+	distTo  []float64         // distTo[v] = distance  of shortest s->v path
+	edgeTo  []*DirectedEdge   // edgeTo[v] = last edge on shortest s->v path
+	onQueue []bool            // onQueue[v] = is v currently on the queue?
+	queue   *arrayqueue.Queue // queue of vertices to relax
+	cost    int               // number of calls to relax()
+	cycle   []*DirectedEdge   // negative cycle (or nil if no such cycle)
 }
 
 // NewBellmanFordSP computes a shortest paths tree from s to every other vertex in the edge-weighted digraph G.
@@ -49,6 +49,7 @@ func NewBellmanFordSP(G *EdgeWeightedDigraph, s int) *BellmanFordSP {
 	return sp
 }
 
+// relax vertex v and put other endpoints on queue if changed
 func (sp *BellmanFordSP) relax(G *EdgeWeightedDigraph, v int) {
 	for _, e := range G.Adj(v) {
 		w := e.To()
@@ -63,7 +64,7 @@ func (sp *BellmanFordSP) relax(G *EdgeWeightedDigraph, v int) {
 		if sp.cost++; sp.cost%G.V() == 0 {
 			sp.findNegativeCycle()
 			if sp.HasNegativeCycle() {
-				return
+				return // found a negative cycle
 			}
 		}
 	}
