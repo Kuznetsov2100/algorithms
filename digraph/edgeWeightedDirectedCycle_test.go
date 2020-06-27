@@ -45,6 +45,19 @@ func TestEdgeWeightedDirectedCycle(t *testing.T) {
 		NewDirectedEdge(6, 4, 0.93),
 		NewDirectedEdge(4, 7, 0.37),
 	}
-
 	assert.Equal(cycle, finder.GetCycle())
+
+	tinyEWD1 := "2\n" +
+		"1\n" +
+		"0 1 0.35\n"
+
+	buf1 := strings.NewReader(tinyEWD1)
+	scanner1 := bufio.NewScanner(buf1)
+	scanner1.Split(bufio.ScanWords)
+	in1 := &stdin.In{Scanner: scanner1}
+	G1 := NewEdgeWeightedDigraphIn(in1)
+
+	finder1 := NewEdgeWeightedDirectedCycle(G1)
+	assert.False(finder1.HasCycle())
+	assert.Equal([]*DirectedEdge(nil), finder1.GetCycle())
 }
