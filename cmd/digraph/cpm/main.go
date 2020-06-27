@@ -43,7 +43,7 @@ func main() {
 		m := in.ReadInt()
 		for j := 0; j < m; j++ {
 			precedent := in.ReadInt()
-			G.AddEdge(digraph.NewDirectedEdge(n+i, precedent, 0.0))
+			G.AddEdge(digraph.NewDirectedEdge(i+n, precedent, 0.0))
 		}
 	}
 
