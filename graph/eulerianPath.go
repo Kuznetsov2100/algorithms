@@ -125,6 +125,9 @@ func NewEulerianPath(G *Graph) *EulerianPath {
 
 // Path returns the sequence of vertices on an Eulerian path.
 func (ep *EulerianPath) Path() (p []int) {
+	if !ep.HasEulerianPath() {
+		return nil
+	}
 	for _, val := range ep.path.Values() {
 		p = append(p, val.(int))
 	}

@@ -58,4 +58,5 @@ func TestEulerianPath(t *testing.T) {
 	assert.Nil(err4)
 	ec4 := NewEulerianPath(g4)
 	assert.False(ec4.HasEulerianPath())
+	assert.Equal([]int(nil), ec4.Path())
 }
