@@ -116,6 +116,7 @@ func (wg *EdgeWeightedGraph) AddEdge(e *Edge) {
 
 // Adj returns the edges incident on vertex v.
 func (wg *EdgeWeightedGraph) Adj(v int) (edges []*Edge) {
+	wg.validateVertex(v)
 	for _, x := range wg.adj[v].Values() {
 		edges = append(edges, x.(*Edge))
 	}
