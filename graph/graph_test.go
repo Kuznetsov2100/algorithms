@@ -66,6 +66,7 @@ func TestGraph_Adj(t *testing.T) {
 	g.AddEdge(0, 1)
 	g.AddEdge(0, 2)
 	assert.Equal([]int{2, 1}, g.Adj(0))
+	assert.Panics(func() { g.Adj(3) })
 }
 
 func TestGraph_String(t *testing.T) {

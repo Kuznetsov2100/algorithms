@@ -120,6 +120,7 @@ func (g *Graph) Degree(v int) int {
 
 // Adj returns the vertices adjacent to vertex v.
 func (g *Graph) Adj(v int) (vertices []int) {
+	g.validateVertex(v)
 	for _, x := range g.adj[v].Values() {
 		vertices = append(vertices, x.(int))
 	}
