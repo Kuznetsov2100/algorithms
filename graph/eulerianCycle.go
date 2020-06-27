@@ -113,6 +113,9 @@ func NewEulerianCycle(G *Graph) *EulerianCycle {
 
 // GetCycle returns the sequence of vertices on an Eulerian cycle.
 func (ec *EulerianCycle) GetCycle() (cy []int) {
+	if !ec.HasEulerianCycle() {
+		return nil
+	}
 	for _, val := range ec.cycle.Values() {
 		cy = append(cy, val.(int))
 	}
