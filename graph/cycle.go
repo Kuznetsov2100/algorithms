@@ -39,6 +39,9 @@ func (c *Cycle) HasCycle() bool {
 
 // GetCycle returns a cycle in the graph G.
 func (c *Cycle) GetCycle() (cy []int) {
+	if !c.HasCycle() {
+		return nil
+	}
 	for _, val := range c.cycle.Values() {
 		cy = append(cy, val.(int))
 	}
