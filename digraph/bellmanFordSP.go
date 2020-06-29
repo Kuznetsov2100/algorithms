@@ -56,6 +56,9 @@ func (sp *BellmanFordSP) relax(G *EdgeWeightedDigraph, v int) {
 		if sp.distTo[w] > sp.distTo[v]+e.Weight() {
 			sp.distTo[w] = sp.distTo[v] + e.Weight()
 			sp.edgeTo[w] = e
+			// the only edges that could lead to a change in distTo[] are those leaving a vertex
+			// whose distTo[] value changed in the previous pass. To keep track of such vertices,
+			// we use a FIFO queue.
 			if !sp.onQueue[w] {
 				sp.queue.Enqueue(w)
 				sp.onQueue[w] = true
