@@ -36,7 +36,10 @@ func (s *StdIn) ReadString() string {
 
 // ReadInt reads the next token from this input stream, parses it as a int, and returns the int.
 func (s *StdIn) ReadInt() int {
-	v, _ := strconv.Atoi(s.scanner.Text())
+	v, err := strconv.Atoi(s.scanner.Text())
+	if err != nil {
+		panic(err)
+	}
 	return v
 }
 
