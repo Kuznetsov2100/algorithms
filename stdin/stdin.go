@@ -45,7 +45,8 @@ func (s *StdIn) ReadInt() int {
 
 // ReadAllStrings reads all remaining tokens from standard input and returns them as a slice of strings.
 func ReadAllStrings() (words []string) {
-	scanner := bufio.NewScanner(os.Stdin) // default splitFunc:ScanLines
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Split(bufio.ScanWords) // split by words
 	for scanner.Scan() {
 		words = append(words, scanner.Text())
 	}
