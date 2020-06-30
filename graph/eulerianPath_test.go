@@ -59,4 +59,7 @@ func TestEulerianPath(t *testing.T) {
 	ec4 := NewEulerianPath(g4)
 	assert.False(ec4.HasEulerianPath())
 	assert.Equal([]int(nil), ec4.Path())
+
+	edge := newepEdge(0, 1)
+	assert.PanicsWithValue("Illegal endpoint", func() { edge.other(2) })
 }

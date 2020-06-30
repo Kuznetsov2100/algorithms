@@ -47,4 +47,7 @@ func TestEulerianCycle(t *testing.T) {
 	ec3 := NewEulerianCycle(g3)
 	assert.False(ec3.HasEulerianCycle())
 	assert.Equal([]int(nil), ec3.GetCycle())
+
+	edge := newecEdge(0, 1)
+	assert.PanicsWithValue("Illegal endpoint", func() { edge.other(2) })
 }
