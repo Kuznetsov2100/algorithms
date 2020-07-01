@@ -23,7 +23,7 @@ func quick3string(a []string, lo, hi, d int) {
 	}
 
 	lt, gt := lo, hi
-	v := charAt(a[lo], d)
+	v := charAt(a[lo], d) // use first character to partition into "less", "equal", and "greater" subarrays
 	i := lo + 1
 
 	for i <= gt {
@@ -43,7 +43,7 @@ func quick3string(a []string, lo, hi, d int) {
 	// a[lo..lt-1] < v = a[lt..gt] < a[gt+1..hi].
 	quick3string(a, lo, lt-1, d)
 	if v >= 0 {
-		quick3string(a, lt, gt, d+1)
+		quick3string(a, lt, gt, d+1) // excluding first character for "equal" subarray
 	}
 	quick3string(a, gt+1, hi, d)
 }
