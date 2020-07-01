@@ -29,7 +29,7 @@ func main() {
 	a := stdin.ReadAllStrings()
 	n := len(a)
 
-	str.MsdSort(a)
+	str.InplaceMsdSort(a)
 	for i := 0; i < n; i++ {
 		fmt.Println(a[i])
 	}
