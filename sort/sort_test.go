@@ -28,6 +28,7 @@ func (s class) Swap(i, j int) {
 }
 
 func (s class) Shuffle() {
+	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(s.Len(), s.Swap)
 }
 
@@ -47,6 +48,7 @@ func (p intSlice) Swap(i, j int) {
 }
 
 func (p intSlice) Shuffle() {
+	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(p.Len(), p.Swap)
 }
 

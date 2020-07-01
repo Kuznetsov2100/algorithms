@@ -243,19 +243,12 @@ func QuickSort2Way(data Comparable) {
 // QuickSort3Way sorts Comparable type uses the 3-way partitioning scheme.
 // This sorting algorithm is not stable.
 func QuickSort3Way(data Comparable) {
-	const INSERTION_SORT_CUTOFF = 8
 	var sort func(data Comparable, lo, hi int)
 	sort = func(data Comparable, lo, hi int) {
 		if hi <= lo {
 			return
 		}
-		n := hi - lo + 1
-		if n <= INSERTION_SORT_CUTOFF {
-			insertionSortA2B(data, lo, hi+1)
-			return
-		}
-		m := median3(data, lo, lo+n/2, hi)
-		data.Swap(m, lo)
+
 		i, lt, gt := lo+1, lo, hi
 		for i <= gt {
 			if data.Less(i, lt) {
@@ -266,7 +259,7 @@ func QuickSort3Way(data Comparable) {
 				data.Swap(i, gt)
 				gt--
 			} else {
-				i--
+				i++
 			}
 		}
 		sort(data, lo, lt-1)
