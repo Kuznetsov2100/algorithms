@@ -2,8 +2,7 @@ package str
 
 // InplaceMsdSort rearranges the array of extended ASCII strings in ascending order using in-place MSD radix sort.
 func InplaceMsdSort(a []string) {
-	n := len(a)
-	inplaceSort(a, 0, n-1, 0)
+	inplaceSort(a, 0, len(a)-1, 0)
 }
 
 // sort from a[lo] to a[hi], starting at the dth character
