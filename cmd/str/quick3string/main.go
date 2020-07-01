@@ -1,6 +1,6 @@
 package main
 
-//   Sort an array of strings or integers using MSD radix sort.
+//   Sort an array of strings  using 3-way radix quicksort.
 
 //    % go run main.go < shells.txt
 //    are
