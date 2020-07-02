@@ -53,4 +53,8 @@ func TestPrimMST(t *testing.T) {
 		NewEdge(0, 7, 0.16),
 	}
 	assert.Equal(edges, mst.Edges())
+
+	var foo double = 1.1
+	var bar double = 1.1
+	assert.Equal(0, foo.CompareTo(bar))
 }
