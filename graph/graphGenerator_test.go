@@ -243,3 +243,11 @@ func TestGraphGenerator_Tree(t *testing.T) {
 	assert.False(finder2.HasCycle())
 	assert.Equal(g2.V(), search2.Count())
 }
+
+func TestVkey(t *testing.T) {
+	assert := assert.New(t)
+
+	var a vkey = 1
+	var b vkey = 1
+	assert.Equal(0, a.CompareTo(b))
+}
