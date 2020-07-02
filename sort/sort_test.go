@@ -3,7 +3,6 @@ package sort
 import (
 	"math/rand"
 	"testing"
-	"time"
 )
 
 // type class implement Len(), Less(), Swap(), Shuffle() for Comparable interface
@@ -28,7 +27,7 @@ func (s class) Swap(i, j int) {
 }
 
 func (s class) Shuffle() {
-	rand.Seed(time.Now().UnixNano())
+	rand.Seed(23)
 	rand.Shuffle(s.Len(), s.Swap)
 }
 
@@ -48,13 +47,13 @@ func (p intSlice) Swap(i, j int) {
 }
 
 func (p intSlice) Shuffle() {
-	rand.Seed(time.Now().UnixNano())
+	rand.Seed(23)
 	rand.Shuffle(p.Len(), p.Swap)
 }
 
 func createNumbers(size int) intSlice {
 	numbers := make(intSlice, size)
-	rand.Seed(time.Now().Unix())
+	rand.Seed(23)
 	for i := 0; i < size; i++ {
 		numbers[i] = rand.Int()
 	}
