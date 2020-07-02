@@ -1,6 +1,8 @@
 package str
 
 import (
+	"strings"
+
 	"github.com/pkg/errors"
 )
 
@@ -110,6 +112,30 @@ func (st *TrieST) Keys() []string {
 
 // KeysWithPrefix returns all of the keys in the set that start with prefix.
 func (st *TrieST) KeysWithPrefix(prefix string) (results []string) {
+	var s strings.Builder
+	s.WriteString(prefix)
+	st.collectPrefix(st.get(st.root, prefix, 0), &s, &results)
+	return results
+}
+
+func (st *TrieST) collectPrefix(x *node, prefix *strings.Builder, results *[]string) {
+	if x == nil {
+		return
+	}
+	if x.val != nil {
+		*results = append(*results, prefix.String())
+	}
+	str := prefix.String()
+	for c := 0; c < asciiR; c++ {
+		prefix.Reset()
+		prefix.WriteString(str)
+		prefix.WriteByte(byte(c))
+		st.collectPrefix(x.next[c], prefix, results)
+	}
+}
+
+// this is the equivalent version of KeysWithPrefix, use string instead of strings.builder,speed is slower
+/*func (st *TrieST) KeysWithPrefix(prefix string) (results []string) {
 	st.collectPrefix(st.get(st.root, prefix, 0), prefix, &results)
 	return results
 }
@@ -126,22 +152,24 @@ func (st *TrieST) collectPrefix(x *node, prefix string, results *[]string) {
 		st.collectPrefix(x.next[c], prefix, results)
 		prefix = prefix[:len(prefix)-1]
 	}
-}
+}*/
 
 // KeysThatMatch returns all of the keys in the symbol table that match pattern,
 // where "." symbol is treated as a wildcard character.
 func (st *TrieST) KeysThatMatch(pattern string) (results []string) {
-	st.collectMatch(st.root, "", pattern, &results)
+	var s strings.Builder
+	st.collectMatch(st.root, &s, pattern, &results)
 	return results
 }
 
-func (st *TrieST) collectMatch(x *node, prefix string, pattern string, results *[]string) {
+func (st *TrieST) collectMatch(x *node, prefix *strings.Builder, pattern string, results *[]string) {
 	if x == nil {
 		return
 	}
-	d := len(prefix)
+	d := prefix.Len()
+	str := prefix.String()
 	if d == len(pattern) && x.val != nil {
-		*results = append(*results, prefix)
+		*results = append(*results, str)
 	}
 	if d == len(pattern) {
 		return
@@ -149,13 +177,14 @@ func (st *TrieST) collectMatch(x *node, prefix string, pattern string, results *
 	c := string(pattern[d])
 	if c == "." {
 		for ch := 0; ch < asciiR; ch++ {
-			prefix = prefix + string(ch)
+			prefix.Reset()
+			prefix.WriteString(str)
+			prefix.WriteByte(byte(ch))
 			st.collectMatch(x.next[ch], prefix, pattern, results)
-			prefix = prefix[:len(prefix)-1]
 		}
 	} else {
-		st.collectMatch(x.next[c[0]], prefix+c, pattern, results)
-		//prefix = prefix[:len(prefix)-1]
+		prefix.WriteString(c)
+		st.collectMatch(x.next[c[0]], prefix, pattern, results)
 	}
 }
 
