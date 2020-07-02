@@ -77,18 +77,23 @@ func TestTrieST(t *testing.T) {
 	assert.Nil(err4)
 	assert.Equal([]string{"by", "sea", "sells", "shells", "shore", "the"}, st.Keys())
 
-	//Delete
 	st1 := NewTrieST()
+	shellsST1 := []string{"she", "sells", "sea", "shells", "by", "the", "shores", "shore"}
+	for index, key := range shellsST1 {
+		//nolint:errcheck
+		st1.Put(key, index)
+	}
+
+	//Delete
 	err5 := st1.Delete("")
 	assert.EqualError(err5, "argument to Delete() is empty string")
 
-	err5 = st.Delete("love")
+	err5 = st1.Delete("love")
 	assert.Nil(err5)
 
-	keys := st.Keys()
-	for _, k := range keys {
-		err6 := st.Delete(k)
-		assert.Nil(err6)
-	}
-	assert.True(st.IsEmpty())
+	err5 = st1.Delete("shores")
+	assert.Nil(err5)
+
+	err5 = st1.Delete("shore")
+	assert.Nil(err5)
 }
