@@ -24,18 +24,13 @@ func main() {
 	st := str.NewTrieST()
 	for i := 0; !stdin.IsEmpty(); i++ {
 		key := stdin.ReadString()
-		//nolint:errcheck
 		st.Put(key, i)
 	}
 
 	if st.Size() < 100 {
 		fmt.Println("keys(\"\"):")
 		for _, key := range st.Keys() {
-			val, err := st.Get(key)
-			if err != nil {
-				fmt.Printf("%+v\n", err)
-			}
-			fmt.Println(key, " ", val.(int))
+			fmt.Println(key, " ", st.Get(key).(int))
 		}
 		fmt.Println()
 	}

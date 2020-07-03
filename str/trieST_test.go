@@ -14,7 +14,6 @@ func TestTrieST(t *testing.T) {
 	st := NewTrieST()
 
 	for index, key := range shellsST {
-		//nolint:errcheck
 		st.Put(key, index)
 	}
 
@@ -25,30 +24,18 @@ func TestTrieST(t *testing.T) {
 	assert.Equal([]string{"by", "sea", "sells", "she", "shells", "shore", "the"}, st.Keys())
 
 	//Contains
-	ok, err1 := st.Contains("")
-	assert.False(ok)
-	assert.EqualError(err1, "argument to Contains() is empty string")
+	assert.False(st.Contains(""))
 
-	ok, err1 = st.Contains("by")
-	assert.True(ok)
-	assert.Nil(err1)
+	assert.True(st.Contains("by"))
 
 	//LongestPrefixOf
-	actual, err := st.LongestPrefixOf("shellsort")
-	assert.Nil(err)
-	assert.Equal("shells", actual)
+	assert.Equal("shells", st.LongestPrefixOf("shellsort"))
 
-	actual, err = st.LongestPrefixOf("quicksort")
-	assert.Nil(err)
-	assert.Empty(actual)
+	assert.Empty(st.LongestPrefixOf("quicksort"))
 
-	actual, err = st.LongestPrefixOf("")
-	assert.Empty(actual)
-	assert.EqualError(err, "argument to LongestPrefixOf() is empty string")
+	assert.Empty(st.LongestPrefixOf(""))
 
-	actual, err = st.LongestPrefixOf("she")
-	assert.Nil(err)
-	assert.Equal("she", actual)
+	assert.Equal("she", st.LongestPrefixOf("she"))
 
 	//KeysWithPrefix
 	assert.Equal([]string{"shore"}, st.KeysWithPrefix("shor"))
@@ -57,43 +44,32 @@ func TestTrieST(t *testing.T) {
 	assert.Equal([]string{"shells"}, st.KeysThatMatch(".he.l."))
 
 	//Get
-	val, err3 := st.Get("she")
-	assert.Nil(err3)
-	assert.Equal(0, val.(int))
+	assert.Equal(0, st.Get("she").(int))
 
-	val, err3 = st.Get("")
-	assert.Nil(val)
-	assert.EqualError(err3, "argument to Get() is empty string")
+	assert.Nil(st.Get(""))
 
-	val, err3 = st.Get("love")
-	assert.Nil(err3)
-	assert.Nil(val)
+	assert.Nil(st.Get("love"))
 
 	//Put
-	err4 := st.Put("", 10)
-	assert.EqualError(err4, "first argument to Put() is empty string")
-
-	err4 = st.Put("she", nil)
-	assert.Nil(err4)
+	st.Put("she", nil)
 	assert.Equal([]string{"by", "sea", "sells", "shells", "shore", "the"}, st.Keys())
 
 	st1 := NewTrieST()
 	shellsST1 := []string{"she", "sells", "sea", "shells", "by", "the", "shores", "shore"}
 	for index, key := range shellsST1 {
-		//nolint:errcheck
 		st1.Put(key, index)
 	}
 
 	//Delete
-	err5 := st1.Delete("")
-	assert.EqualError(err5, "argument to Delete() is empty string")
+	st1.Delete("")
+	assert.Equal(8, st1.Size())
 
-	err5 = st1.Delete("love")
-	assert.Nil(err5)
+	st1.Delete("love")
+	assert.Equal(8, st1.Size())
 
-	err5 = st1.Delete("shores")
-	assert.Nil(err5)
+	st1.Delete("shores")
+	assert.Equal(7, st1.Size())
 
-	err5 = st1.Delete("shore")
-	assert.Nil(err5)
+	st1.Delete("shore")
+	assert.Equal(6, st1.Size())
 }

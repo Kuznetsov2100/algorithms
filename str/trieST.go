@@ -2,8 +2,6 @@ package str
 
 import (
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // TrieST struct represents an symbol table of key-value pairs, with string keys and generic values.
@@ -45,15 +43,13 @@ func (st *TrieST) IsEmpty() bool {
 }
 
 // Get returns the value associated with the given key.
-func (st *TrieST) Get(key string) (interface{}, error) {
-	if key == "" {
-		return nil, errors.New("argument to Get() is empty string")
-	}
+func (st *TrieST) Get(key string) interface{} {
+
 	x := st.get(st.root, key, 0)
 	if x == nil {
-		return nil, nil
+		return nil
 	}
-	return x.val, nil
+	return x.val
 }
 
 func (st *TrieST) get(x *node, key string, d int) *node {
@@ -67,27 +63,17 @@ func (st *TrieST) get(x *node, key string, d int) *node {
 }
 
 // Contains returns true if the symbol table contains the given key.
-func (st *TrieST) Contains(key string) (bool, error) {
-	if key == "" {
-		return false, errors.New("argument to Contains() is empty string")
-	}
-	val, _ := st.Get(key)
-	return val != nil, nil
+func (st *TrieST) Contains(key string) bool {
+	return st.Get(key) != nil
 }
 
 // Put inserts the key-value pair into the symbol table,
 // overwriting the old value with the new value if the key is already in the symbol table.
-func (st *TrieST) Put(key string, val interface{}) error {
-	if key == "" {
-		return errors.New("first argument to Put() is empty string")
-	}
+func (st *TrieST) Put(key string, val interface{}) {
 	if val == nil {
-		//nolint:errcheck
 		st.Delete(key)
-		return nil
 	}
 	st.root = st.put(st.root, key, val, 0)
-	return nil
 }
 
 func (st *TrieST) put(x *node, key string, val interface{}, d int) *node {
@@ -190,15 +176,12 @@ func (st *TrieST) collectMatch(x *node, prefix *strings.Builder, pattern string,
 
 // LongestPrefixOf returns the string in the symbol table that
 // is the longest prefix of query, or nil, if no such string.
-func (st *TrieST) LongestPrefixOf(query string) (string, error) {
-	if query == "" {
-		return "", errors.New("argument to LongestPrefixOf() is empty string")
-	}
+func (st *TrieST) LongestPrefixOf(query string) string {
 	length := st.longestPrefixOf(st.root, query, 0, -1)
 	if length == -1 {
-		return "", nil
+		return ""
 	}
-	return query[:length], nil
+	return query[:length]
 }
 
 func (st *TrieST) longestPrefixOf(x *node, query string, d, length int) int {
@@ -215,12 +198,8 @@ func (st *TrieST) longestPrefixOf(x *node, query string, d, length int) int {
 }
 
 // Delete removes the key from the set if the key is present.
-func (st *TrieST) Delete(key string) error {
-	if key == "" {
-		return errors.New("argument to Delete() is empty string")
-	}
+func (st *TrieST) Delete(key string) {
 	st.root = st.delete(st.root, key, 0)
-	return nil
 }
 
 func (st *TrieST) delete(x *node, key string, d int) *node {
