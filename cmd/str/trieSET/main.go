@@ -23,7 +23,6 @@ func main() {
 	set := str.NewTrieSET()
 	for !stdin.IsEmpty() {
 		key := stdin.ReadString()
-		//nolint:errcheck
 		set.Add(key)
 	}
 

@@ -12,9 +12,7 @@ func TestTrieSET(t *testing.T) {
 	shellsST := []string{"she", "sells", "sea", "shells", "by", "the", "sea", "shore"}
 
 	st := NewTrieSET()
-	ok10, err10 := st.Contains("love")
-	assert.Nil(err10)
-	assert.False(ok10)
+	assert.False(st.Contains("love"))
 
 	for _, key := range shellsST {
 		//nolint:errcheck
@@ -28,30 +26,18 @@ func TestTrieSET(t *testing.T) {
 	assert.Equal([]string{"by", "sea", "sells", "she", "shells", "shore", "the"}, st.Iterator())
 
 	//Contains
-	ok, err1 := st.Contains("")
-	assert.False(ok)
-	assert.EqualError(err1, "argument to Contains() is empty string")
+	assert.False(st.Contains(""))
 
-	ok, err1 = st.Contains("by")
-	assert.True(ok)
-	assert.Nil(err1)
+	assert.True(st.Contains("by"))
 
 	//LongestPrefixOf
-	actual, err := st.LongestPrefixOf("shellsort")
-	assert.Nil(err)
-	assert.Equal("shells", actual)
+	assert.Equal("shells", st.LongestPrefixOf("shellsort"))
 
-	actual, err = st.LongestPrefixOf("quicksort")
-	assert.Nil(err)
-	assert.Empty(actual)
+	assert.Empty(st.LongestPrefixOf("quicksort"))
 
-	actual, err = st.LongestPrefixOf("")
-	assert.Empty(actual)
-	assert.EqualError(err, "argument to LongestPrefixOf() is empty string")
+	assert.Empty(st.LongestPrefixOf(""))
 
-	actual, err = st.LongestPrefixOf("she")
-	assert.Nil(err)
-	assert.Equal("she", actual)
+	assert.Equal("she", st.LongestPrefixOf("she"))
 
 	//KeysWithPrefix
 	assert.Equal([]string{"shore"}, st.KeysWithPrefix("shor"))
@@ -59,27 +45,22 @@ func TestTrieSET(t *testing.T) {
 	//KeysThatMatch
 	assert.Equal([]string{"shells"}, st.KeysThatMatch(".he.l."))
 
-	//Add
-	err4 := st.Add("")
-	assert.EqualError(err4, "first argument to Add() is empty string")
-
 	st1 := NewTrieSET()
 	shellsST1 := []string{"she", "sells", "sea", "shells", "by", "the", "shores", "shore"}
 	for _, key := range shellsST1 {
-		//nolint:errcheck
 		st1.Add(key)
 	}
 
 	//Delete
-	err5 := st1.Delete("")
-	assert.EqualError(err5, "argument to Delete() is empty string")
+	st1.Delete("")
+	assert.Equal(8, st1.Size())
 
-	err5 = st1.Delete("love")
-	assert.Nil(err5)
+	st1.Delete("love")
+	assert.Equal(8, st1.Size())
 
-	err5 = st1.Delete("shores")
-	assert.Nil(err5)
+	st1.Delete("shores")
+	assert.Equal(7, st1.Size())
 
-	err5 = st1.Delete("shore")
-	assert.Nil(err5)
+	st1.Delete("shore")
+	assert.Equal(6, st1.Size())
 }

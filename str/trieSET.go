@@ -2,8 +2,6 @@ package str
 
 import (
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // TrieSET struct represents an ordered set of strings over the extended ASCII alphabet.
@@ -50,24 +48,17 @@ func (st *TrieSET) get(x *nodeB, key string, d int) *nodeB {
 }
 
 // Contains returns true if the set contains the given key.
-func (st *TrieSET) Contains(key string) (bool, error) {
-	if key == "" {
-		return false, errors.New("argument to Contains() is empty string")
-	}
+func (st *TrieSET) Contains(key string) bool {
 	x := st.get(st.root, key, 0)
 	if x == nil {
-		return false, nil
+		return false
 	}
-	return x.isString, nil
+	return x.isString
 }
 
 // Add adds the key to the set if it is not already present.
-func (st *TrieSET) Add(key string) error {
-	if key == "" {
-		return errors.New("first argument to Add() is empty string")
-	}
+func (st *TrieSET) Add(key string) {
 	st.root = st.add(st.root, key, 0)
-	return nil
 }
 
 func (st *TrieSET) add(x *nodeB, key string, d int) *nodeB {
@@ -114,26 +105,6 @@ func (st *TrieSET) collectPrefix(x *nodeB, prefix *strings.Builder, results *[]s
 	}
 }
 
-// this is the equivalent version of KeysWithPrefix, use string instead of strings.builder,speed is slower
-/*func (st *TrieSET) KeysWithPrefix(prefix string) (results []string) {
-	st.collectPrefix(st.get(st.root, prefix, 0), prefix, &results)
-	return results
-}
-
-func (st *TrieSET) collectPrefix(x *nodeB, prefix string, results *[]string) {
-	if x == nil {
-		return
-	}
-	if x.isString {
-		*results = append(*results, prefix)
-	}
-	for c := 0; c < asciiR; c++ {
-		prefix = prefix + string(c)
-		st.collectPrefix(x.next[c], prefix, results)
-		prefix = prefix[:len(prefix)-1]
-	}
-}*/
-
 // KeysThatMatch returns all of the keys in the set that match the pattern,
 // where "." symbol is treated as a wildcard character.
 func (st *TrieSET) KeysThatMatch(pattern string) (results []string) {
@@ -170,15 +141,12 @@ func (st *TrieSET) collectMatch(x *nodeB, prefix *strings.Builder, pattern strin
 
 // LongestPrefixOf returns the string in the set that
 // is the longest prefix of query, or nil, if no such string.
-func (st *TrieSET) LongestPrefixOf(query string) (string, error) {
-	if query == "" {
-		return "", errors.New("argument to LongestPrefixOf() is empty string")
-	}
+func (st *TrieSET) LongestPrefixOf(query string) string {
 	length := st.longestPrefixOf(st.root, query, 0, -1)
 	if length == -1 {
-		return "", nil
+		return ""
 	}
-	return query[:length], nil
+	return query[:length]
 }
 
 func (st *TrieSET) longestPrefixOf(x *nodeB, query string, d, length int) int {
@@ -195,12 +163,8 @@ func (st *TrieSET) longestPrefixOf(x *nodeB, query string, d, length int) int {
 }
 
 // Delete removes the key from the set if the key is present.
-func (st *TrieSET) Delete(key string) error {
-	if key == "" {
-		return errors.New("argument to Delete() is empty string")
-	}
+func (st *TrieSET) Delete(key string) {
 	st.root = st.delete(st.root, key, 0)
-	return nil
 }
 
 func (st *TrieSET) delete(x *nodeB, key string, d int) *nodeB {
