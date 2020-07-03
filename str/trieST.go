@@ -113,10 +113,10 @@ func (st *TrieST) collectPrefix(x *node, prefix *strings.Builder, results *[]str
 	}
 	str := prefix.String()
 	for c := 0; c < asciiR; c++ {
-		prefix.Reset()
-		prefix.WriteString(str)
 		prefix.WriteByte(byte(c))
 		st.collectPrefix(x.next[c], prefix, results)
+		prefix.Reset()
+		prefix.WriteString(str)
 	}
 }
 
@@ -163,14 +163,16 @@ func (st *TrieST) collectMatch(x *node, prefix *strings.Builder, pattern string,
 	c := string(pattern[d])
 	if c == "." {
 		for ch := 0; ch < asciiR; ch++ {
-			prefix.Reset()
-			prefix.WriteString(str)
 			prefix.WriteByte(byte(ch))
 			st.collectMatch(x.next[ch], prefix, pattern, results)
+			prefix.Reset()
+			prefix.WriteString(str)
 		}
 	} else {
 		prefix.WriteString(c)
 		st.collectMatch(x.next[c[0]], prefix, pattern, results)
+		prefix.Reset()
+		prefix.WriteString(str)
 	}
 }
 
