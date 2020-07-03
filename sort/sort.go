@@ -191,16 +191,16 @@ func QuickSort2Way(data Comparable) {
 		n := hi - lo + 1
 		m := median3(data, lo, lo+n/2, hi)
 		data.Swap(m, lo)
-		pivot, i, j := lo, lo+1, hi
+		pivot, i, j := lo, lo, hi+1
 
-		for ; data.Less(i, pivot); i++ {
+		for i++; data.Less(i, pivot); i++ {
 			if i == hi {
 				data.Swap(lo, hi)
 				return hi
 			}
 		}
 
-		for ; data.Less(pivot, j); j-- {
+		for j--; data.Less(pivot, j); j-- {
 			if j == lo+1 {
 				return lo
 			}
@@ -208,10 +208,10 @@ func QuickSort2Way(data Comparable) {
 
 		for i < j {
 			data.Swap(i, j)
-			for data.Less(i, pivot) {
+			for i++; data.Less(i, pivot); {
 				i++
 			}
-			for data.Less(pivot, j) {
+			for j--; data.Less(pivot, j); {
 				j--
 			}
 		}

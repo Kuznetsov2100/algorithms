@@ -252,6 +252,12 @@ func Test_QuickSort3Way(t *testing.T) {
 	if !IsSorted(numbers) {
 		t.Errorf("expect true, got %t", IsSorted(numbers))
 	}
+
+	numbers1 := intSlice{10, 4, 3, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 5, 6, 7, 9, 8}
+	QuickSort3Way(numbers1)
+	if !IsSorted(numbers1) {
+		t.Errorf("expect true, got %t", IsSorted(numbers1))
+	}
 }
 
 func Test_HeapSort(t *testing.T) {
