@@ -146,20 +146,21 @@ func (st *TST) KeysWithPrefix(prefix string) (results []string) {
 	return results
 }
 
+// in-order traversal gives nodes in non-decreasing order
 func (st *TST) collectPrefix(x *nodeC, prefix *strings.Builder, results *[]string) {
 	if x == nil {
 		return
 	}
-	st.collectPrefix(x.left, prefix, results)
+	st.collectPrefix(x.left, prefix, results) // Step 1 - Recursively traverse left subtree.
 	str := prefix.String()
 	if x.val != nil {
 		*results = append(*results, str+string(x.c))
 	}
 	prefix.WriteByte(x.c)
-	st.collectPrefix(x.mid, prefix, results)
+	st.collectPrefix(x.mid, prefix, results) // Step 2 - Visit mid node.
 	prefix.Reset()
 	prefix.WriteString(str)
-	st.collectPrefix(x.right, prefix, results)
+	st.collectPrefix(x.right, prefix, results) // step 3 - Recursively traverse right subtree.
 }
 
 // KeysThatMatch returns all of the keys in the symbol table that match pattern,
