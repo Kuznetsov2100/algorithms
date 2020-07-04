@@ -13,16 +13,16 @@ import "strings"
 // is equivalent to deleting the key from the symbol table.
 // This implementation uses a ternary search trie.
 type TST struct {
-	n    int
-	root *nodeC
+	n    int    // size
+	root *nodeC // root of TST
 }
 
 type nodeC struct {
-	c     byte
-	left  *nodeC
-	mid   *nodeC
-	right *nodeC
-	val   interface{}
+	c     byte        // character
+	left  *nodeC      // left subtries
+	mid   *nodeC      // mid subtries
+	right *nodeC      // right subtries
+	val   interface{} // value associated with string
 }
 
 // NewTST initializes an empty string symbol table.
@@ -42,7 +42,6 @@ func (st *TST) IsEmpty() bool {
 
 // Contains returns true if the symbol table contains the given key.
 func (st *TST) Contains(key string) bool {
-
 	return st.Get(key) != nil
 }
 
@@ -79,7 +78,7 @@ func (st *TST) Put(key string, val interface{}) {
 	if !st.Contains(key) {
 		st.n++
 	} else if val == nil {
-		st.n--
+		st.n-- // delete existing key
 	}
 	st.root = st.put(st.root, key, val, 0)
 }
