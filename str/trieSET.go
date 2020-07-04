@@ -1,7 +1,7 @@
 package str
 
 import (
-	"strings"
+	"bytes"
 )
 
 // TrieSET struct represents an ordered set of strings over the extended ASCII alphabet.
@@ -83,44 +83,41 @@ func (st *TrieSET) Iterator() []string {
 
 // KeysWithPrefix returns all of the keys in the set that start with prefix.
 func (st *TrieSET) KeysWithPrefix(prefix string) (results []string) {
-	var s strings.Builder
-	s.WriteString(prefix)
-	st.collectPrefix(st.get(st.root, prefix, 0), &s, &results)
+	var b bytes.Buffer
+	b.WriteString(prefix)
+	st.collectPrefix(st.get(st.root, prefix, 0), &b, &results)
 	return results
 }
 
-func (st *TrieSET) collectPrefix(x *nodeB, prefix *strings.Builder, results *[]string) {
+func (st *TrieSET) collectPrefix(x *nodeB, prefix *bytes.Buffer, results *[]string) {
 	if x == nil {
 		return
 	}
 	if x.isString {
 		*results = append(*results, prefix.String())
 	}
-	str := prefix.String()
 	for c := 0; c < asciiR; c++ {
 		prefix.WriteByte(byte(c))
 		st.collectPrefix(x.next[c], prefix, results)
-		prefix.Reset()
-		prefix.WriteString(str)
+		prefix.Truncate(prefix.Len() - 1)
 	}
 }
 
 // KeysThatMatch returns all of the keys in the set that match the pattern,
 // where "." symbol is treated as a wildcard character.
 func (st *TrieSET) KeysThatMatch(pattern string) (results []string) {
-	var s strings.Builder
-	st.collectMatch(st.root, &s, pattern, &results)
+	var b bytes.Buffer
+	st.collectMatch(st.root, &b, pattern, &results)
 	return results
 }
 
-func (st *TrieSET) collectMatch(x *nodeB, prefix *strings.Builder, pattern string, results *[]string) {
+func (st *TrieSET) collectMatch(x *nodeB, prefix *bytes.Buffer, pattern string, results *[]string) {
 	if x == nil {
 		return
 	}
 	d := prefix.Len()
-	str := prefix.String()
 	if d == len(pattern) && x.isString {
-		*results = append(*results, str)
+		*results = append(*results, prefix.String())
 	}
 	if d == len(pattern) {
 		return
@@ -130,14 +127,12 @@ func (st *TrieSET) collectMatch(x *nodeB, prefix *strings.Builder, pattern strin
 		for ch := 0; ch < asciiR; ch++ {
 			prefix.WriteByte(byte(ch))
 			st.collectMatch(x.next[ch], prefix, pattern, results)
-			prefix.Reset()
-			prefix.WriteString(str)
+			prefix.Truncate(prefix.Len() - 1)
 		}
 	} else {
 		prefix.WriteString(c)
 		st.collectMatch(x.next[c[0]], prefix, pattern, results)
-		prefix.Reset()
-		prefix.WriteString(str)
+		prefix.Truncate(prefix.Len() - 1)
 	}
 }
 

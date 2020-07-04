@@ -1,6 +1,8 @@
 package str
 
-import "strings"
+import (
+	"bytes"
+)
 
 // TST stuct represents an symbol table of key-value pairs, with string keys and generic values.
 // It supports the usual put, get, contains, delete, size, and is-empty methods. It also provides
@@ -126,8 +128,8 @@ func (st *TST) LongestPrefixOf(query string) string {
 
 // Keys returns all keys in the symbol table as a slice
 func (st *TST) Keys() (keys []string) {
-	var s strings.Builder
-	st.collectPrefix(st.root, &s, &keys)
+	var b bytes.Buffer
+	st.collectPrefix(st.root, &b, &keys)
 	return keys
 }
 
@@ -140,55 +142,51 @@ func (st *TST) KeysWithPrefix(prefix string) (results []string) {
 	if x.val != nil {
 		results = append(results, prefix)
 	}
-	var s strings.Builder
-	s.WriteString(prefix)
-	st.collectPrefix(x.mid, &s, &results)
+	var b bytes.Buffer
+	b.WriteString(prefix)
+	st.collectPrefix(x.mid, &b, &results)
 	return results
 }
 
 // in-order traversal gives nodes in non-decreasing order
-func (st *TST) collectPrefix(x *nodeC, prefix *strings.Builder, results *[]string) {
+func (st *TST) collectPrefix(x *nodeC, prefix *bytes.Buffer, results *[]string) {
 	if x == nil {
 		return
 	}
 	st.collectPrefix(x.left, prefix, results) // Step 1 - Recursively traverse left subtree.
-	str := prefix.String()
 	if x.val != nil {
-		*results = append(*results, str+string(x.c))
+		*results = append(*results, prefix.String()+string(x.c))
 	}
 	prefix.WriteByte(x.c)
 	st.collectPrefix(x.mid, prefix, results) // Step 2 - Visit mid node.
-	prefix.Reset()
-	prefix.WriteString(str)
+	prefix.Truncate(prefix.Len() - 1)
 	st.collectPrefix(x.right, prefix, results) // step 3 - Recursively traverse right subtree.
 }
 
 // KeysThatMatch returns all of the keys in the symbol table that match pattern,
 // where "." symbol is treated as a wildcard character.
 func (st *TST) KeysThatMatch(pattern string) (results []string) {
-	var s strings.Builder
-	st.collectMatch(st.root, &s, 0, pattern, &results)
+	var b bytes.Buffer
+	st.collectMatch(st.root, &b, 0, pattern, &results)
 	return results
 }
 
-func (st *TST) collectMatch(x *nodeC, prefix *strings.Builder, i int, pattern string, results *[]string) {
+func (st *TST) collectMatch(x *nodeC, prefix *bytes.Buffer, i int, pattern string, results *[]string) {
 	if x == nil {
 		return
 	}
 	c := pattern[i]
-	str := prefix.String()
 	if string(c) == "." || c < x.c {
 		st.collectMatch(x.left, prefix, i, pattern, results)
 	}
 	if string(c) == "." || c == x.c {
 		if i == len(pattern)-1 && x.val != nil {
-			*results = append(*results, str+string(x.c))
+			*results = append(*results, prefix.String()+string(x.c))
 		}
 		if i < len(pattern)-1 {
 			prefix.WriteByte(x.c)
 			st.collectMatch(x.mid, prefix, i+1, pattern, results)
-			prefix.Reset()
-			prefix.WriteString(str)
+			prefix.Truncate(prefix.Len() - 1)
 		}
 	}
 	if string(c) == "." || c > x.c {
