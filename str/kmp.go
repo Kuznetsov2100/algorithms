@@ -57,9 +57,9 @@ func (kmp *KMP) Search(txt string) int {
 		j = kmp.dfa[txt[i]][j]
 	}
 	if j == kmp.m {
-		return i - kmp.m // found
+		return i - kmp.m // found(hit end of pattern)
 	}
-	return n // not found
+	return n // not found(hit end of txt)
 }
 
 // SearchByte returns the index of the first occurrrence of the pattern []byte in the text []byte.
