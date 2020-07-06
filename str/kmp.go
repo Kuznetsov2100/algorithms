@@ -22,11 +22,16 @@ func NewKMP(pat string) *KMP {
 
 	dfa[pat[0]][0] = 1 // base case
 	for x, j := 0, 1; j < m; j++ {
+		// Mismatch transition: If in state j and next char c != pat[j],
+		// then the last j-1 characters of input are par[1..j-1], followed by c.
+		// To compute dfa[c][j]: Simulate pat[1..j-1] (state x) on DFA and take transition c.
 		for c := 0; c < radixR; c++ {
 			dfa[c][j] = dfa[c][x] // Copy mismatch cases.
 		}
+		// Match transition: If in state j and next char c == pat[j],go to j+1
 		dfa[pat[j]][j] = j + 1 // Set match case.
-		x = dfa[pat[j]][x]     // Update restart state.
+		// we have state x after input pat[1..j-1],we can update state x by got input pat[js]
+		x = dfa[pat[j]][x] // Update restart state.
 	}
 	return &KMP{radixR: radixR, m: m, dfa: dfa}
 }
@@ -45,8 +50,7 @@ func NewKMPR(pat []byte, R int) *KMP {
 			dfa[c][j] = dfa[c][x] // Copy mismatch cases.
 		}
 		dfa[pat[j]][j] = j + 1 // Set match case.
-		// the same structure as j = kmp.dfa[txt[i]][j] in func search
-		x = dfa[pat[j]][x] // Update restart state.
+		x = dfa[pat[j]][x]     // Update restart state.
 	}
 	return &KMP{radixR: radixR, m: m, dfa: dfa}
 }
@@ -54,11 +58,9 @@ func NewKMPR(pat []byte, R int) *KMP {
 // Search returns the index of the first occurrrence of the pattern string in the text string.
 func (kmp *KMP) Search(txt string) int {
 	// simulate operation of DFA on text
-	n, i, j := len(txt), 0, 0 // j := 0 is the analog of x := 0
+	n, i, j := len(txt), 0, 0
 	for ; i < n && j < kmp.m; i++ {
-		// the current state is j, the current char is txt[i],
-		// the value of dfa[txt[i]][j] is the next state we will transite to
-		j = kmp.dfa[txt[i]][j] // update state
+		j = kmp.dfa[txt[i]][j]
 	}
 	if j == kmp.m {
 		return i - kmp.m // found(hit end of pattern)
