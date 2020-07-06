@@ -40,7 +40,8 @@ func NewBoyerMooreR(pattern []byte, R int) *BoyerMoore {
 func (bm *BoyerMoore) Search(txt string) int {
 	m := len(bm.pat)
 	n := len(txt)
-	for i, skip := 0, 0; i < n-m; i += skip {
+	skip := 0
+	for i := 0; i <= n-m; i += skip {
 		skip = 0
 		for j := m - 1; j >= 0; j-- {
 			if bm.pat[j] != txt[i+j] {
@@ -59,7 +60,7 @@ func (bm *BoyerMoore) Search(txt string) int {
 func (bm *BoyerMoore) SearchByte(text []byte) int {
 	m := len(bm.pattern)
 	n := len(text)
-	for i, skip := 0, 0; i < n-m; i += skip {
+	for i, skip := 0, 0; i <= n-m; i += skip {
 		skip = 0
 		for j := m - 1; j >= 0; j-- {
 			if bm.pattern[j] != text[i+j] {
