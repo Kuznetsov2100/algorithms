@@ -1,15 +1,19 @@
 package str
 
+// BoyerMoore struct finds the first occurrence of a pattern string in a text string.
+// This implementation uses the Boyer-Moore algorithm (with the bad-character rule,
+// but not the strong good suffix rule).
 type BoyerMoore struct {
-	radixR  int
-	right   []int
-	pattern []byte
-	pat     string
+	radixR  int    // the radix
+	right   []int  // the bad-character skip array
+	pattern []byte // store the pattern as a byte array
+	pat     string // or as a string
 }
 
+// NewBoyerMoore preprocesses the pattern string.
 func NewBoyerMoore(pat string) *BoyerMoore {
 	bm := &BoyerMoore{radixR: 256, pat: pat, right: make([]int, 256)}
-
+	// position of rightmost occurrence of c in the pattern
 	for c := 0; c < bm.radixR; c++ {
 		bm.right[c] = -1
 	}
@@ -19,11 +23,10 @@ func NewBoyerMoore(pat string) *BoyerMoore {
 	return bm
 }
 
+// NewBoyerMooreR preprocesses the pattern []byte with custom R.
 func NewBoyerMooreR(pattern []byte, R int) *BoyerMoore {
-	bm := &BoyerMoore{radixR: R, pattern: make([]byte, len(pattern)), right: make([]int, R)}
-	for j := 0; j < len(pattern); j++ {
-		bm.pattern[j] = pattern[j]
-	}
+	bm := &BoyerMoore{radixR: R, pattern: []byte(pattern), right: make([]int, R)}
+	// position of rightmost occurrence of c in the pattern
 	for c := 0; c < bm.radixR; c++ {
 		bm.right[c] = -1
 	}
@@ -33,6 +36,7 @@ func NewBoyerMooreR(pattern []byte, R int) *BoyerMoore {
 	return bm
 }
 
+// Search returns the index of the first occurrrence of the pattern string in the text string.
 func (bm *BoyerMoore) Search(txt string) int {
 	m := len(bm.pat)
 	n := len(txt)
@@ -45,12 +49,13 @@ func (bm *BoyerMoore) Search(txt string) int {
 			}
 		}
 		if skip == 0 {
-			return i
+			return i // found
 		}
 	}
-	return n
+	return n // not found
 }
 
+// SearchByte returns the index of the first occurrrence of the pattern string in the text []byte.
 func (bm *BoyerMoore) SearchByte(text []byte) int {
 	m := len(bm.pattern)
 	n := len(text)
@@ -63,10 +68,10 @@ func (bm *BoyerMoore) SearchByte(text []byte) int {
 			}
 		}
 		if skip == 0 {
-			return i
+			return i // found
 		}
 	}
-	return n
+	return n // not found
 }
 
 func max(i, j int) int {
