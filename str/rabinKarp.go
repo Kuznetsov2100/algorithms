@@ -33,7 +33,7 @@ func (rk *RabinKarp) Search(txt string) int {
 	if rk.patHash == txthash {
 		return 0
 	}
-	// check for hash match; if hash match, check for exact match
+	// check for hash match
 	// Use rolling hash (and % to avoid overflow).
 	for i := rk.m; i < n; i++ {
 		// Remove leading digit, add trailing digit, check for match.
