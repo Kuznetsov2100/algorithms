@@ -35,12 +35,20 @@ func (rk *RabinKarp) Search(txt string) int {
 	}
 	// check for hash match
 	// Use rolling hash (and % to avoid overflow).
+	// txt[0..m-1] has been checked
 	for i := rk.m; i < n; i++ {
 		// Remove leading digit, add trailing digit, check for match.
+		// txthash on right: current value(xi)
+		// rk.RM: R^(M-1)
+		// txt[i-rk.m]: leading digit(ti)
 		txthash = (txthash + rk.q - rk.RM*int64(txt[i-rk.m])%rk.q) % rk.q
+
+		// txthash on right : xi - ti*R^(M-1)
+		//txt[i]: trailing digit t(i+m)
+		// txthash on left: x(i+1)
 		txthash = (txthash*int64(rk.radixR) + int64(txt[i])) % rk.q
 		if rk.patHash == txthash { // match
-			return i - rk.m + 1
+			return i - rk.m + 1 // offset
 		}
 	}
 	return n // no match
