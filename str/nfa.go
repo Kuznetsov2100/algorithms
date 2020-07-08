@@ -28,7 +28,7 @@ func NewNFA(regexp string) *NFA {
 			val, _ := ops.Pop()
 			or := val.(int)
 
-			if regexp[or] == '|' {
+			if regexp[or] == '|' { // Add two ε-transition edges for each | operator
 				val, _ := ops.Pop()
 				lp = val.(int)
 				nfa.graph.AddEdge(lp, or+1)
@@ -38,10 +38,10 @@ func NewNFA(regexp string) *NFA {
 			}
 		}
 		if i < nfa.m-1 {
-			if regexp[i+1] == '*' {
+			if regexp[i+1] == '*' { // Add three ε-transition edges for each * operator
 				nfa.graph.AddEdge(lp, i+1)
 				nfa.graph.AddEdge(i+1, lp)
-			} else if regexp[i+1] == '+' {
+			} else if regexp[i+1] == '+' { // Add two ε-transition edges for each + operator
 				nfa.graph.AddEdge(i+1, lp)
 			}
 		}
