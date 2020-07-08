@@ -88,11 +88,11 @@ func (sg *SymbolGraph) Contains(s string) bool {
 
 // IndexOf returns the integer associated with the vertex named s.
 func (sg *SymbolGraph) IndexOf(s string) int {
-	if val, _ := sg.st.Get(key(s)); val != nil {
+	val, _ := sg.st.Get(key(s))
+	if val != nil {
 		return val.(int)
-	} else {
-		return -1
 	}
+	return -1
 }
 
 // NameOf returns the name of the vertex associated with the integer v.
