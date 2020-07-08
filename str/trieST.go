@@ -157,16 +157,15 @@ func (st *TrieST) collectMatch(x *node, prefix *bytes.Buffer, pattern string, re
 	if d == len(pattern) {
 		return
 	}
-	c := string(pattern[d])
-	if c == "." {
+	if c := pattern[d]; c == '.' {
 		for ch := 0; ch < asciiR; ch++ {
 			prefix.WriteByte(byte(ch))
 			st.collectMatch(x.next[ch], prefix, pattern, results)
 			prefix.Truncate(prefix.Len() - 1)
 		}
 	} else {
-		prefix.WriteString(c)
-		st.collectMatch(x.next[c[0]], prefix, pattern, results)
+		prefix.WriteByte(c)
+		st.collectMatch(x.next[c], prefix, pattern, results)
 		prefix.Truncate(prefix.Len() - 1)
 	}
 }

@@ -22,31 +22,31 @@ func NewNFA(regexp string) *NFA {
 	ops := arraystack.New()
 	for i := 0; i < nfa.m; i++ {
 		lp := i
-		if string(regexp[i]) == "(" || string(regexp[i]) == "|" {
+		if regexp[i] == '(' || regexp[i] == '|' {
 			ops.Push(i)
-		} else if string(regexp[i]) == ")" {
+		} else if regexp[i] == ')' {
 			val, _ := ops.Pop()
 			or := val.(int)
 
-			if string(regexp[or]) == "|" {
+			if regexp[or] == '|' {
 				val, _ := ops.Pop()
 				lp = val.(int)
 				nfa.graph.AddEdge(lp, or+1)
 				nfa.graph.AddEdge(or, i)
-			} else if string(regexp[or]) == "(" {
+			} else if regexp[or] == '(' {
 				lp = or
 			}
 		}
 		if i < nfa.m-1 {
-			if string(regexp[i+1]) == "*" {
+			if regexp[i+1] == '*' {
 				nfa.graph.AddEdge(lp, i+1)
 				nfa.graph.AddEdge(i+1, lp)
-			} else if string(regexp[i+1]) == "+" {
+			} else if regexp[i+1] == '+' {
 				nfa.graph.AddEdge(i+1, lp)
 			}
 		}
 
-		if s := string(regexp[i]); s == "(" || s == "*" || s == ")" || s == "+" {
+		if regexp[i] == '(' || regexp[i] == '*' || regexp[i] == ')' || regexp[i] == '+' {
 			nfa.graph.AddEdge(i, i+1)
 		}
 	}
@@ -70,7 +70,7 @@ func (nfa *NFA) Recognizes(txt string) bool {
 			if v == nfa.m {
 				continue // not necessarily a match (RE needs to match full text)
 			}
-			if nfa.regexp[v] == txt[i] || string(nfa.regexp[v]) == "." {
+			if nfa.regexp[v] == txt[i] || nfa.regexp[v] == '.' {
 				states = append(states, v+1)
 			}
 		}
@@ -102,7 +102,7 @@ func (nfa *NFA) epsilonTransition(V int, f func(v int) bool) (pc []int) {
 }
 
 func (nfa *NFA) validateTxt(txt byte) {
-	if text := string(txt); text == "*" || text == "|" || text == "(" || text == ")" {
+	if txt == '*' || txt == '|' || txt == '(' || txt == ')' {
 		panic(fmt.Sprintf("text contains the metacharacter '%c'\n", txt))
 	}
 }

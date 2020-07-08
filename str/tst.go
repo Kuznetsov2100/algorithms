@@ -176,10 +176,10 @@ func (st *TST) collectMatch(x *nodeC, prefix *bytes.Buffer, i int, pattern strin
 		return
 	}
 	c := pattern[i]
-	if string(c) == "." || c < x.c {
+	if c == '.' || c < x.c {
 		st.collectMatch(x.left, prefix, i, pattern, results)
 	}
-	if string(c) == "." || c == x.c {
+	if c == '.' || c == x.c {
 		if i == len(pattern)-1 && x.val != nil {
 			*results = append(*results, prefix.String()+string(x.c))
 		}
@@ -189,7 +189,7 @@ func (st *TST) collectMatch(x *nodeC, prefix *bytes.Buffer, i int, pattern strin
 			prefix.Truncate(prefix.Len() - 1)
 		}
 	}
-	if string(c) == "." || c > x.c {
+	if c == '.' || c > x.c {
 		st.collectMatch(x.right, prefix, i, pattern, results)
 	}
 }
