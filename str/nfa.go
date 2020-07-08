@@ -9,7 +9,7 @@ import (
 
 // NFA struct provides a data type for creating a nondeterministic finite state automaton (NFA) from
 // a regular expression and testing whether a given string is matched by that regular expression.
-// It supports the following operations: concatenation, closure, binary or, and parentheses.
+// It supports the following operations: concatenation, closure,one or more, binary or, and parentheses.
 type NFA struct {
 	graph  *digraph.Digraph // digraph of  ε-transitions
 	regexp string           // regular expression
@@ -37,12 +37,16 @@ func NewNFA(regexp string) *NFA {
 				lp = or
 			}
 		}
-
-		if i < nfa.m-1 && string(regexp[i+1]) == "*" {
-			nfa.graph.AddEdge(lp, i+1)
-			nfa.graph.AddEdge(i+1, lp)
+		if i < nfa.m-1 {
+			if string(regexp[i+1]) == "*" {
+				nfa.graph.AddEdge(lp, i+1)
+				nfa.graph.AddEdge(i+1, lp)
+			} else if string(regexp[i+1]) == "+" {
+				nfa.graph.AddEdge(i+1, lp)
+			}
 		}
-		if string(regexp[i]) == "(" || string(regexp[i]) == "*" || string(regexp[i]) == ")" {
+
+		if string(regexp[i]) == "(" || string(regexp[i]) == "*" || string(regexp[i]) == ")" || string(regexp[i]) == "+" {
 			nfa.graph.AddEdge(i, i+1)
 		}
 	}

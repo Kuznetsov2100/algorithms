@@ -18,4 +18,7 @@ func TestNFA(t *testing.T) {
 	assert.True(nfa.Recognizes("abcbcbcdaaaabcbcdaaaddd"))
 	assert.PanicsWithValue("text contains the metacharacter '*'\n", func() { nfa.Recognizes("abc*d") })
 	assert.PanicsWithValue("invalid regular expression", func() { NewNFA("((A*B|ACD)") })
+
+	nfa = NewNFA("(ab+d+)")
+	assert.True(nfa.Recognizes("abbbbbbdd"))
 }
