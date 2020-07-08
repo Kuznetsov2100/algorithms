@@ -29,7 +29,7 @@ func (s *StdIn) IsEmpty() bool {
 	return !s.scanner.Scan()
 }
 
-// ReadString reads the next token and returns the string.
+// ReadString reads the next token or the next line depends on splitfunc, and returns the string.
 func (s *StdIn) ReadString() string {
 	return s.scanner.Text()
 }
