@@ -55,19 +55,12 @@ func NewNFA(regexp string) *NFA {
 // Recognizes returns true if the text is matched by the regular expression.
 func (nfa *NFA) Recognizes(txt string) bool {
 	dfs := digraph.NewDirectedDFS(nfa.graph, 0)
-	var pc []int
 	//states reachable from start by ε-transitions
-	for v := 0; v < nfa.graph.V(); v++ {
-		if dfs.IsMarked(v) {
-			pc = append(pc, v)
-		}
-	}
+	pc := nfa.epsilonTransition(nfa.graph.V(), dfs.IsMarked)
 
 	// Compute possible NFA states for txt[i+1]
 	for i := range txt {
-		if string(txt[i]) == "*" || string(txt[i]) == "|" || string(txt[i]) == "(" || string(txt[i]) == ")" {
-			panic(fmt.Sprintf("text contains the metacharacter '%c'\n", txt[i]))
-		}
+		nfa.validateTxt(txt[i])
 		states := make([]int, 0) // set of states reachable after scanning past txt[i]
 		for _, v := range pc {
 			if v == nfa.m {
@@ -79,12 +72,7 @@ func (nfa *NFA) Recognizes(txt string) bool {
 		}
 		// follow ε-transitions
 		dfs = digraph.NewDirectedDFSources(nfa.graph, states)
-		pc = make([]int, 0)
-		for v := 0; v < nfa.graph.V(); v++ {
-			if dfs.IsMarked(v) {
-				pc = append(pc, v)
-			}
-		}
+		pc = nfa.epsilonTransition(nfa.graph.V(), dfs.IsMarked)
 
 		if len(pc) == 0 { // no states reachable
 			return false
@@ -98,4 +86,20 @@ func (nfa *NFA) Recognizes(txt string) bool {
 		}
 	}
 	return false
+}
+
+func (nfa *NFA) epsilonTransition(V int, f func(v int) bool) (pc []int) {
+	for i := 0; i < V; i++ {
+		if f(i) {
+			pc = append(pc, i)
+		}
+	}
+	return pc
+}
+
+func (nfa *NFA) validateTxt(txt byte) {
+	text := string(txt)
+	if text == "*" || text == "|" || text == "(" || text == ")" {
+		panic(fmt.Sprintf("text contains the metacharacter '%c'\n", txt))
+	}
 }
