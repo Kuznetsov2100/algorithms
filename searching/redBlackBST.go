@@ -346,11 +346,11 @@ func (b *RedBlackBST) Floor(key Key) (Key, error) {
 	if b.IsEmpty() {
 		return nil, errors.New("calls Floor() with empty symbol table")
 	}
-	if x := b.floor(b.root, key); x == nil {
+	x := b.floor(b.root, key)
+	if x == nil {
 		return nil, errors.New("argument to Floor() is too small")
-	} else {
-		return x.key, nil
 	}
+	return x.key, nil
 }
 
 // If a given key is less than the key at the root of a RedBlackBST,
@@ -367,11 +367,11 @@ func (b *RedBlackBST) floor(x *rbnode, key Key) *rbnode {
 	} else if cmp < 0 {
 		return b.floor(x.left, key)
 	}
-	if t := b.floor(x.right, key); t != nil {
+	t := b.floor(x.right, key)
+	if t != nil {
 		return t
-	} else {
-		return x
 	}
+	return x
 }
 
 // Ceiling returns the smallest key in this symbol table greater than or equal to key.
@@ -382,11 +382,11 @@ func (b *RedBlackBST) Ceiling(key Key) (Key, error) {
 	if b.IsEmpty() {
 		return nil, errors.New("calls Ceiling() with empty symbol table")
 	}
-	if x := b.ceiling(b.root, key); x == nil {
+	x := b.ceiling(b.root, key)
+	if x == nil {
 		return nil, errors.New("argument to Ceiling() is too large")
-	} else {
-		return x.key, nil
 	}
+	return x.key, nil
 }
 
 // If a given key is greater than the key at the root of a RedBlackBST,
@@ -401,11 +401,11 @@ func (b *RedBlackBST) ceiling(x *rbnode, key Key) *rbnode {
 	if cmp := key.CompareTo(x.key); cmp == 0 {
 		return x
 	} else if cmp < 0 {
-		if t := b.ceiling(x.left, key); t != nil {
+		t := b.ceiling(x.left, key)
+		if t != nil {
 			return t
-		} else {
-			return x
 		}
+		return x
 	}
 	return b.ceiling(x.right, key)
 }

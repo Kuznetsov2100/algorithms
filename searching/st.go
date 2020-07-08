@@ -23,11 +23,11 @@ func (s *ST) Get(key Key) (Value, error) {
 	if key == nil {
 		return nil, errors.New("calls Get() wit nil key")
 	}
-	if val, ok := s.st.Get(key); ok {
+	val, ok := s.st.Get(key)
+	if ok {
 		return val.(Value), nil
-	} else {
-		return nil, nil
 	}
+	return nil, nil
 }
 
 // Put inserts the specified key-value pair into the symbol table, overwriting the old value
