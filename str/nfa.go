@@ -46,7 +46,7 @@ func NewNFA(regexp string) *NFA {
 			}
 		}
 
-		if string(regexp[i]) == "(" || string(regexp[i]) == "*" || string(regexp[i]) == ")" || string(regexp[i]) == "+" {
+		if s := string(regexp[i]); s == "(" || s == "*" || s == ")" || s == "+" {
 			nfa.graph.AddEdge(i, i+1)
 		}
 	}
@@ -102,8 +102,7 @@ func (nfa *NFA) epsilonTransition(V int, f func(v int) bool) (pc []int) {
 }
 
 func (nfa *NFA) validateTxt(txt byte) {
-	text := string(txt)
-	if text == "*" || text == "|" || text == "(" || text == ")" {
+	if text := string(txt); text == "*" || text == "|" || text == "(" || text == ")" {
 		panic(fmt.Sprintf("text contains the metacharacter '%c'\n", txt))
 	}
 }
