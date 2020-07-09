@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/handane123/algorithms/stdin"
+	"github.com/handane123/algorithms/io/stdin"
 	"github.com/handane123/algorithms/str"
 )
 

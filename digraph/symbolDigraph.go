@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/handane123/algorithms/io/stdin"
 	"github.com/handane123/algorithms/searching"
-	"github.com/handane123/algorithms/stdin"
 )
 
 // SymbolDigraph struct represents an digraph,

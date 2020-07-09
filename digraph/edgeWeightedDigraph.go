@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/handane123/algorithms/dataStructure/bag"
-	"github.com/handane123/algorithms/stdin"
+	"github.com/handane123/algorithms/io/stdin"
 )
 
 // EdgeWeightedDigraph struct represents a edge-weighted digraph of vertices named 0 through V - 1,

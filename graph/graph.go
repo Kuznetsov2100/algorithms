@@ -29,7 +29,7 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/handane123/algorithms/dataStructure/bag"
-	"github.com/handane123/algorithms/stdin"
+	"github.com/handane123/algorithms/io/stdin"
 )
 
 // Graph struct represents an undirected graph of vertices named 0 through V – 1.

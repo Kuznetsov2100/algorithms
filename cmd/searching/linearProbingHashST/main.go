@@ -18,8 +18,8 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/handane123/algorithms/io/stdin"
 	"github.com/handane123/algorithms/searching"
-	"github.com/handane123/algorithms/stdin"
 )
 
 type stringHashKey = searching.StringHashKey

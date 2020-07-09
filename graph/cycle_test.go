@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/handane123/algorithms/stdin"
+	"github.com/handane123/algorithms/io/stdin"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/handane123/algorithms/digraph"
-	"github.com/handane123/algorithms/stdin"
+	"github.com/handane123/algorithms/io/stdin"
 )
 
 func main() {

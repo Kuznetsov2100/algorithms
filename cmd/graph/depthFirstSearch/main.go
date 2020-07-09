@@ -17,7 +17,7 @@ import (
 	"strconv"
 
 	"github.com/handane123/algorithms/graph"
-	"github.com/handane123/algorithms/stdin"
+	"github.com/handane123/algorithms/io/stdin"
 )
 
 func main() {

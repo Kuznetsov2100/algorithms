@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/handane123/algorithms/dataStructure/bag"
-	"github.com/handane123/algorithms/stdin"
+	"github.com/handane123/algorithms/io/stdin"
 	"github.com/pkg/errors"
 )
 
