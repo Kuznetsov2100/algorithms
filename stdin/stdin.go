@@ -4,24 +4,34 @@ import (
 	"bufio"
 	"os"
 	"strconv"
+	"sync"
 )
+
+var stdin *StdIn
+var once sync.Once
 
 // StdIn wraps the scanner
 type StdIn struct {
 	scanner *bufio.Scanner
 }
 
-// NewStdIn initialize Stdin
+// NewStdIn initialize Stdin using singleton mode
 func NewStdIn() *StdIn {
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Split(bufio.ScanWords)
-	return &StdIn{scanner}
+	once.Do(func() {
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Split(bufio.ScanWords)
+		stdin = &StdIn{scanner}
+	})
+	return stdin
 }
 
-// NewStdInLine initialize Stdin
+// NewStdInLine initialize Stdin using singleton mode
 func NewStdInLine() *StdIn {
-	scanner := bufio.NewScanner(os.Stdin)
-	return &StdIn{scanner}
+	once.Do(func() {
+		scanner := bufio.NewScanner(os.Stdin)
+		stdin = &StdIn{scanner}
+	})
+	return stdin
 }
 
 // IsEmpty reports if the In is empty
