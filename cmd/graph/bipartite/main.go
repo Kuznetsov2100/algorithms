@@ -14,8 +14,8 @@ func main() {
 	V2, _ := strconv.Atoi(os.Args[2])
 	E, _ := strconv.Atoi(os.Args[3])
 	F, _ := strconv.Atoi(os.Args[4])
-
-	G, _ := graph.BipartiteGraph(V1, V2, E)
+	generator := graph.NewGraphGenerator()
+	G, _ := generator.BipartiteGraph(V1, V2, E)
 	for i := 0; i < F; i++ {
 		v := rand.Intn(V1 + V2)
 		w := rand.Intn(V1 + V2)

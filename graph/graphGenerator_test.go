@@ -7,18 +7,19 @@ import (
 )
 
 func TestGraphGenerator_Simple(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
-	g, err := Simple(3, 4)
+	g, err := generator.Simple(3, 4)
 	assert.Nil(g)
 	assert.Error(err)
 
-	g1, err1 := Simple(3, -1)
+	g1, err1 := generator.Simple(3, -1)
 	assert.Nil(g1)
 	assert.Error(err1)
 
 	V := 20
 	E := 30
-	g2, err2 := Simple(V, E)
+	g2, err2 := generator.Simple(V, E)
 	assert.Nil(err2)
 
 	// a simple graph has no self-loop and no parallel edges.
@@ -28,14 +29,15 @@ func TestGraphGenerator_Simple(t *testing.T) {
 }
 
 func TestGraphGenerator_SimpleP(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
-	g, err := SimpleP(3, 1.2)
+	g, err := generator.SimpleP(3, 1.2)
 	assert.Nil(g)
 	assert.Error(err)
 
 	V := 5
 	p := 0.769283
-	g1, err1 := SimpleP(V, p)
+	g1, err1 := generator.SimpleP(V, p)
 	assert.Nil(err1)
 
 	finder := NewCycle(g1)
@@ -44,52 +46,56 @@ func TestGraphGenerator_SimpleP(t *testing.T) {
 }
 
 func TestGraphGenerator_Complete(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 	V := 3
-	g := Complete(V)
+	g := generator.Complete(V)
 	for i := 0; i < V; i++ {
 		assert.Equal(2, g.Degree(i))
 	}
 }
 
 func TestGraphGenerator_Bipartite(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 	V1, V2, E := 10, 5, 8
-	G, err := BipartiteGraph(V1, V2, E)
+	G, err := generator.BipartiteGraph(V1, V2, E)
 	assert.Nil(err)
 	b := NewBipartite(G)
 	assert.True(b.IsBipartite())
 
 	// too many edges
-	G1, err1 := BipartiteGraph(7, 3, 30)
+	G1, err1 := generator.BipartiteGraph(7, 3, 30)
 	assert.Nil(G1)
 	assert.EqualError(err1, "too many edges")
 
 	// too few edges
-	G2, err2 := BipartiteGraph(7, 3, -1)
+	G2, err2 := generator.BipartiteGraph(7, 3, -1)
 	assert.Nil(G2)
 	assert.EqualError(err2, "too few edges")
 }
 
 func TestGraphGenerator_BipartiteP(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 	V1, V2, p := 10, 5, 0.5732
-	G, err := BipartiteP(V1, V2, p)
+	G, err := generator.BipartiteP(V1, V2, p)
 	assert.Nil(err)
 	b := NewBipartite(G)
 	assert.True(b.IsBipartite())
 
 	// invalid probability
-	G1, err1 := BipartiteP(10, 5, 1.2)
+	G1, err1 := generator.BipartiteP(10, 5, 1.2)
 	assert.Nil(G1)
 	assert.EqualError(err1, "probability must be between 0 and 1")
 }
 
 func TestGraphGenerator_CompleteBipartite(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
 	V1, V2 := 5, 3
-	G := CompleteBipartite(V1, V2)
+	G := generator.CompleteBipartite(V1, V2)
 
 	b := NewBipartite(G)
 	assert.True(b.IsBipartite())
@@ -98,19 +104,21 @@ func TestGraphGenerator_CompleteBipartite(t *testing.T) {
 }
 
 func TestGraphGenerator_CycleGraph(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
 	V := 7
-	g := CycleGraph(V)
+	g := generator.CycleGraph(V)
 	finder := NewCycle(g)
 	assert.True(finder.HasCycle())
 }
 
 func TestGraphGenerator_Path(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
 	V := 3
-	g := PathGraph(V)
+	g := generator.PathGraph(V)
 
 	degree1, degree2 := 0, 0
 	for v := 0; v < g.V(); v++ {
@@ -125,10 +133,11 @@ func TestGraphGenerator_Path(t *testing.T) {
 }
 
 func TestGraphGenerator_BinaryTree(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
 	V := 15
-	g := BinaryTree(V)
+	g := generator.BinaryTree(V)
 	finder := NewCycle(g)
 	search := NewDepthFirstSearch(g, 0)
 	assert.False(finder.HasCycle())
@@ -137,68 +146,72 @@ func TestGraphGenerator_BinaryTree(t *testing.T) {
 }
 
 func TestGraphGenerator_EulerianCycleGraph(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
 	V, E := 5, 3
-	g, err := EulerianCycleGraph(V, E)
+	g, err := generator.EulerianCycleGraph(V, E)
 	assert.Nil(err)
 	ec := NewEulerianCycle(g)
 	assert.True(ec.HasEulerianCycle())
 
 	// E < 0
-	g1, err1 := EulerianCycleGraph(5, -1)
+	g1, err1 := generator.EulerianCycleGraph(5, -1)
 	assert.Nil(g1)
 	assert.EqualError(err1, "an Eulerian cycle must have at least one edge")
 
 	// V < 0
-	g2, err2 := EulerianCycleGraph(-3, 4)
+	g2, err2 := generator.EulerianCycleGraph(-3, 4)
 	assert.Nil(g2)
 	assert.EqualError(err2, "an Eulerian cycle must have at least one vertex")
 }
 
 func TestGraphGenerator_EulerianPathGraph(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
 	V, E := 7, 4
-	g, err := EulerianPathGraph(V, E)
+	g, err := generator.EulerianPathGraph(V, E)
 	assert.Nil(err)
 	ec := NewEulerianPath(g)
 	assert.True(ec.HasEulerianPath())
 
 	// E < 0
-	g1, err1 := EulerianPathGraph(5, -1)
+	g1, err1 := generator.EulerianPathGraph(5, -1)
 	assert.Nil(g1)
 	assert.EqualError(err1, "negative number of edges")
 
 	// V < 0
-	g2, err2 := EulerianPathGraph(-3, 4)
+	g2, err2 := generator.EulerianPathGraph(-3, 4)
 	assert.Nil(g2)
 	assert.EqualError(err2, "an Eulerian path must have at least one vertex")
 
 }
 
 func TestGraphGenerator_Wheel(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
-	g1, err1 := Wheel(1)
+	g1, err1 := generator.Wheel(1)
 	assert.Nil(g1)
 	assert.Error(err1)
 
 	V := 8
-	g2, err2 := Wheel(V)
+	g2, err2 := generator.Wheel(V)
 	assert.Nil(err2)
 	assert.Equal(2*(V-1), g2.E())
 }
 
 func TestGraphGenerator_Star(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
-	g1, err1 := Star(0)
+	g1, err1 := generator.Star(0)
 	assert.Nil(g1)
 	assert.Error(err1)
 
 	V := 8
-	g2, err2 := Star(V)
+	g2, err2 := generator.Star(V)
 	assert.Nil(err2)
 	degree1count := 0
 	degreenMinus1Count := 0
@@ -214,14 +227,15 @@ func TestGraphGenerator_Star(t *testing.T) {
 }
 
 func TestGraphGenerator_Regular(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
-	g1, err1 := Regular(5, 3)
+	g1, err1 := generator.Regular(5, 3)
 	assert.Nil(g1)
 	assert.Error(err1)
 
 	V, k := 5, 2
-	g2, err2 := Regular(V, k)
+	g2, err2 := generator.Regular(V, k)
 	assert.Nil(err2)
 	for v := 0; v < g2.V()-1; v++ {
 		assert.Equal(g2.Degree(v), g2.Degree(v+1))
@@ -229,15 +243,16 @@ func TestGraphGenerator_Regular(t *testing.T) {
 }
 
 func TestGraphGenerator_Tree(t *testing.T) {
+	generator := NewGraphGenerator()
 	assert := assert.New(t)
 
-	g1 := Tree(1)
+	g1 := generator.Tree(1)
 	finder := NewCycle(g1)
 	search := NewDepthFirstSearch(g1, 0)
 	assert.False(finder.HasCycle())
 	assert.Equal(g1.V(), search.Count())
 
-	g2 := Tree(15)
+	g2 := generator.Tree(15)
 	finder2 := NewCycle(g2)
 	search2 := NewDepthFirstSearch(g2, 0)
 	assert.False(finder2.HasCycle())
