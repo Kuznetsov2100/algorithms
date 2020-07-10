@@ -102,7 +102,7 @@ func (bs *BinaryStdIn) ReadByte() (byte, error) {
 	//	----------------------
 	//	x  x  x  x  x  x  1  1
 	//  bits unchanged  |bits set
-	x |= (bs.buffer >> bs.n)
+	x |= (bs.buffer >> bs.n) // here bs.buffer >= 0, so signed right shift equals unsigned right shift
 	return byte(x), nil
 }
 

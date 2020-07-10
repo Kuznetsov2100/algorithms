@@ -108,7 +108,7 @@ func (hf *Huffman) Expand() {
 				x = x.left
 			}
 		}
-		err := binarystdout.WriteBits(int(x.ch), 8)
+		err := binarystdout.WriteBitR(int(x.ch), 8)
 		if err != nil {
 			panic(err)
 		}
@@ -167,7 +167,7 @@ func (hf *Huffman) writeTrie(x *hnode) {
 	binarystdout := binarystdout.NewBinaryStdOut()
 	if x.isLeaf() {
 		binarystdout.WriteBit(true)
-		err := binarystdout.WriteBits(int(x.ch), 8)
+		err := binarystdout.WriteBitR(int(x.ch), 8)
 		if err != nil {
 			panic(err)
 		}
