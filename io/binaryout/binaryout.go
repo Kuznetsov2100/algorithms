@@ -19,7 +19,7 @@ func NewBinaryOut(w io.Writer) *BinaryOut {
 	return &BinaryOut{out: w, buffer: 0, n: 0}
 }
 
-// WriteBit writes the specified bit to standard output.
+// WriteBit writes the specified bit to output stream.
 func (bs *BinaryOut) WriteBit(bit bool) {
 	bs.buffer <<= 1
 	if bit {
@@ -31,7 +31,7 @@ func (bs *BinaryOut) WriteBit(bit bool) {
 	}
 }
 
-// WriteBitR writes the r-bit int to standard output.
+// WriteBitR writes the r-bit int to output stream.
 func (bs *BinaryOut) WriteBitR(x int, r int) error {
 	if r == 32 {
 		err := bs.WriteInt(x)
@@ -53,7 +53,7 @@ func (bs *BinaryOut) WriteBitR(x int, r int) error {
 	return nil
 }
 
-// WriterInt writes the 32-bit int to standard output.
+// WriterInt writes the 32-bit int to output stream.
 func (bs *BinaryOut) WriteInt(i int) error {
 	x := uint(i)
 	err1 := bs.WriteByte(byte((x >> 24) & 0xff))
@@ -63,7 +63,7 @@ func (bs *BinaryOut) WriteInt(i int) error {
 	return checkError(err1, err2, err3, err4)
 }
 
-// WriteInt16 Writes the 16-bit int to standard output.
+// WriteInt16 Writes the 16-bit int to output stream.
 func (bs *BinaryOut) WriteInt16(i int16) error {
 	x := uint16(i)
 	err1 := bs.WriteByte(byte((x >> 8) & 0xff))
@@ -71,7 +71,7 @@ func (bs *BinaryOut) WriteInt16(i int16) error {
 	return checkError(err1, err2)
 }
 
-// WriteInt64 writes the 64-bit int to standard output.
+// WriteInt64 writes the 64-bit int to output stream.
 func (bs *BinaryOut) WriteInt64(i int64) error {
 	x := uint64(i)
 	err1 := bs.WriteByte(byte((x >> 56) & 0xff))
@@ -85,7 +85,7 @@ func (bs *BinaryOut) WriteInt64(i int64) error {
 	return checkError(err1, err2, err3, err4, err5, err6, err7, err8)
 }
 
-// WriteByte writes the 8-bit byte to standard output.
+// WriteByte writes the 8-bit byte to output stream.
 func (bs *BinaryOut) WriteByte(x byte) error {
 	if bs.n == 0 {
 		_, err := bs.out.Write([]byte{x})
@@ -102,7 +102,7 @@ func (bs *BinaryOut) WriteByte(x byte) error {
 	return nil
 }
 
-// WriteString writes the string of 8-bit characters to standard output.
+// WriteString writes the string of 8-bit characters to output stream.
 func (bs *BinaryOut) WriteString(s string) error {
 	for i := range s {
 		if err := bs.WriteByte(s[i]); err != nil {
@@ -112,7 +112,7 @@ func (bs *BinaryOut) WriteString(s string) error {
 	return nil
 }
 
-// Close flushes and closes standard output.
+// Close flushes and closes output stream.
 func (bs *BinaryOut) Close() {
 	bs.clearBuffer()
 }

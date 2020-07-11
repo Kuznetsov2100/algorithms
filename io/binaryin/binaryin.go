@@ -16,7 +16,7 @@ type BinaryIn struct {
 	in            io.Reader // input stream
 	buffer        int       // one byte buffer
 	n             int       // number of bits left in buffer
-	isInitialized bool      // has BinaryStdIn been called for first time?
+	isInitialized bool      // has BinaryIn been called for first time?
 }
 
 // NewBinaryIn
@@ -44,7 +44,7 @@ func (bs *BinaryIn) fillBuffer() {
 	}
 }
 
-// IsEmpty returns true if standard input is empty.
+// IsEmpty returns true if input stream is empty.
 func (bs *BinaryIn) IsEmpty() bool {
 	if !bs.isInitialized {
 		bs.initialize()
@@ -52,7 +52,7 @@ func (bs *BinaryIn) IsEmpty() bool {
 	return bs.buffer == -1 // -1 means EOF
 }
 
-// ReadBool reads the next bit of data from standard input and return as a bool.
+// ReadBool reads the next bit of data from input stream and return as a bool.
 func (bs *BinaryIn) ReadBool() (bool, error) {
 	if bs.IsEmpty() {
 		return false, errors.New("reading from empty input stream")
@@ -66,7 +66,7 @@ func (bs *BinaryIn) ReadBool() (bool, error) {
 	return bit, nil
 }
 
-// ReadByte reads the next 8 bits from standard input and return as an 8-bit byte.
+// ReadByte reads the next 8 bits from input stream and return as an 8-bit byte.
 func (bs *BinaryIn) ReadByte() (byte, error) {
 	if bs.IsEmpty() {
 		return 0, errors.New("reading from empty input stream")
@@ -98,7 +98,7 @@ func (bs *BinaryIn) ReadByte() (byte, error) {
 	return byte(x), nil
 }
 
-// ReadInt reads the next 32 bits from standard input and return as a 32-bit int.
+// ReadInt reads the next 32 bits from input stream and return as a 32-bit int.
 func (bs *BinaryIn) ReadInt() (int, error) {
 	x := 0
 	// 32 bit int equals 4 byte
@@ -113,7 +113,7 @@ func (bs *BinaryIn) ReadInt() (int, error) {
 	return x, nil
 }
 
-// ReadInt16 reads the next 16 bits from standard input and return as a 16-bit int16
+// ReadInt16 reads the next 16 bits from input stream and return as a 16-bit int16
 func (bs *BinaryIn) ReadInt16() (int16, error) {
 	var x int16 = 0
 	for i := 0; i < 2; i++ {
@@ -127,7 +127,7 @@ func (bs *BinaryIn) ReadInt16() (int16, error) {
 	return x, nil
 }
 
-// ReadInt64 reads the next 64 bits from standard input and return as a 64-bit int64.
+// ReadInt64 reads the next 64 bits from input stream and return as a 64-bit int64.
 func (bs *BinaryIn) ReadInt64() (int64, error) {
 	var x int64 = 0
 	for i := 0; i < 2; i++ {
@@ -141,7 +141,7 @@ func (bs *BinaryIn) ReadInt64() (int64, error) {
 	return x, nil
 }
 
-// ReadIntR reads the next r bits from standard input and return as an r-bit int.
+// ReadIntR reads the next r bits from input stream and return as an r-bit int.
 func (bs *BinaryIn) ReadIntR(r int) (int, error) {
 	if r < 1 || r > 32 {
 		return -1, errors.Errorf("illegal value of r = %d\n", r)
@@ -163,7 +163,7 @@ func (bs *BinaryIn) ReadIntR(r int) (int, error) {
 	return x, nil
 }
 
-// ReadString reads the remaining bytes of data from standard input and return as a string.
+// ReadString reads the remaining bytes of data from input stream and return as a string.
 func (bs *BinaryIn) ReadString() (string, error) {
 	if bs.IsEmpty() {
 		return "", errors.New("reading from empty input stream")
