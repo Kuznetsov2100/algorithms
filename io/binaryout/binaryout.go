@@ -53,7 +53,7 @@ func (bs *BinaryOut) WriteBitR(x int, r int) error {
 	return nil
 }
 
-// WriterInt writes the 32-bit int to output stream.
+// WriteInt writes the 32-bit int to output stream.
 func (bs *BinaryOut) WriteInt(i int) error {
 	x := uint(i)
 	err1 := bs.WriteByte(byte((x >> 24) & 0xff))

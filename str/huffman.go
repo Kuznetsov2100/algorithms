@@ -147,9 +147,8 @@ func (hf *Huffman) readTrie() *hnode {
 			panic(err1)
 		}
 		return newhnode(b, -1, nil, nil)
-	} else {
-		return newhnode('0', -1, hf.readTrie(), hf.readTrie())
 	}
+	return newhnode('0', -1, hf.readTrie(), hf.readTrie())
 }
 
 // write bitstring-encoded trie to output stream
