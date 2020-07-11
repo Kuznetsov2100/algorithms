@@ -22,7 +22,7 @@ func NewHuffman(r io.Reader, w io.Writer) *Huffman {
 }
 
 // Compress reads a sequence of 8-bit bytes from input stream;compresses them using Huffman codes
-// with an 8-bit alphabet; and writes the results to ouput stream.
+// with an 8-bit alphabet; and writes the results to output stream.
 func (hf *Huffman) Compress() {
 	// read the input
 	input, err := hf.in.ReadString()
