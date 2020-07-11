@@ -25,7 +25,7 @@ import (
 func main() {
 	bitsPerLine := 16
 	count := 0
-	binarystdin := binarystdin.NewBinaryStdIn()
+	binarystdin := binarystdin.NewBinaryStdIn(os.Stdin)
 	if len(os.Args) == 1 {
 		bitsPerLine, _ = strconv.Atoi(os.Args[1])
 	}
