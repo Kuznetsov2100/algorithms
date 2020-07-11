@@ -4,12 +4,7 @@ import (
 	"github.com/pkg/errors"
 
 	"io"
-	"os"
-	"sync"
 )
-
-var binarystdout *BinaryStdOut
-var once sync.Once
 
 // BinaryStdOut provides methods for converting primtive type variables (bool, byte, int16, int, int64,string)
 // to sequences of bits and writing them to standard output. Uses big-endian (most-significant byte first).
@@ -20,11 +15,10 @@ type BinaryStdOut struct {
 }
 
 // NewBinaryStdOut creates the singleton BinaryStdout struct
-func NewBinaryStdOut() *BinaryStdOut {
-	once.Do(func() {
-		binarystdout = &BinaryStdOut{out: os.Stdout, buffer: 0, n: 0}
-	})
-	return binarystdout
+func NewBinaryStdOut(w io.Writer) *BinaryStdOut {
+
+	return &BinaryStdOut{out: w, buffer: 0, n: 0}
+
 }
 
 // WriteBit writes the specified bit to standard output.

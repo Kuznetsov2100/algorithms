@@ -2,15 +2,10 @@ package binarystdin
 
 import (
 	"io"
-	"os"
 	"strings"
-	"sync"
 
 	"github.com/pkg/errors"
 )
-
-var binaryStdIn *BinaryStdIn
-var once sync.Once
 
 // BinaryStdIn struct provides methods for reading in bits from standard input,
 // either one bit at a time (as a bool), 8 bits at a time (as a byte), 16 bits at a time (as a int16),
@@ -25,11 +20,10 @@ type BinaryStdIn struct {
 }
 
 // NewBinaryStdIn creates the singleton BinaryStdIn struct
-func NewBinaryStdIn() *BinaryStdIn {
-	once.Do(func() {
-		binaryStdIn = &BinaryStdIn{in: os.Stdin, buffer: 0, n: 0, isInitialized: false}
-	})
-	return binaryStdIn
+func NewBinaryStdIn(r io.Reader) *BinaryStdIn {
+
+	return &BinaryStdIn{in: r, buffer: 0, n: 0, isInitialized: false}
+
 }
 
 func (bs *BinaryStdIn) initialize() {
