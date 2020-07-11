@@ -10,9 +10,13 @@ import (
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
 )
 
+// GraphGenerator struct provides static methods for creating various graphs,
+// including Erdos-Renyi random graphs, random bipartite graphs, random k-regular graphs,
+// and random rooted trees.
 type GraphGenerator struct {
 }
 
+// NewGraphGenerator constructs the GraphGenerator struct
 func NewGraphGenerator() *GraphGenerator {
 	return &GraphGenerator{}
 }
@@ -50,7 +54,7 @@ func comparator(a, b interface{}) int {
 
 // Simple returns a random simple graph containing V vertices and E edges.
 // A simple graph is a graph with no self-loops and parallel edges.
-func (_ *GraphGenerator) Simple(V, E int) (*Graph, error) {
+func (generator *GraphGenerator) Simple(V, E int) (*Graph, error) {
 	if E > V*(V-1)/2 {
 		return nil, errors.New("too many edges")
 	}
@@ -73,7 +77,7 @@ func (_ *GraphGenerator) Simple(V, E int) (*Graph, error) {
 }
 
 // SimpleP returns a random simple graph on V vertices, with an edge between any two vertices with probability p.
-func (_ *GraphGenerator) SimpleP(V int, p float64) (*Graph, error) {
+func (generator *GraphGenerator) SimpleP(V int, p float64) (*Graph, error) {
 	if p < 0.0 || p > 1.0 {
 		return nil, errors.New("probability must be between 0 and 1")
 	}
@@ -103,7 +107,7 @@ func (generator *GraphGenerator) CompleteBipartite(V1, V2 int) *Graph {
 }
 
 // BipartiteGraph returns a random simple bipartite graph on V1 and V2 vertices with E edges.
-func (_ *GraphGenerator) BipartiteGraph(V1, V2, E int) (*Graph, error) {
+func (generator *GraphGenerator) BipartiteGraph(V1, V2, E int) (*Graph, error) {
 	if E > V1*V2 {
 		return nil, errors.New("too many edges")
 	}
@@ -127,7 +131,7 @@ func (_ *GraphGenerator) BipartiteGraph(V1, V2, E int) (*Graph, error) {
 }
 
 // BipartiteP returns a random simple bipartite graph on V1 and V2 vertices, containing each possible edge with probability p.
-func (_ *GraphGenerator) BipartiteP(V1, V2 int, p float64) (*Graph, error) {
+func (generator *GraphGenerator) BipartiteP(V1, V2 int, p float64) (*Graph, error) {
 	if p < 0.0 || p > 1.0 {
 		return nil, errors.New("probability must be between 0 and 1")
 	}
@@ -145,7 +149,7 @@ func (_ *GraphGenerator) BipartiteP(V1, V2 int, p float64) (*Graph, error) {
 }
 
 // PathGraph returns a path graph on V vertices.
-func (_ *GraphGenerator) PathGraph(V int) *Graph {
+func (generator *GraphGenerator) PathGraph(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V-1; i++ {
@@ -155,7 +159,7 @@ func (_ *GraphGenerator) PathGraph(V int) *Graph {
 }
 
 // BinaryTree returns a complete binary tree graph on V vertices.
-func (_ *GraphGenerator) BinaryTree(V int) *Graph {
+func (generator *GraphGenerator) BinaryTree(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
 	for i := 1; i < V; i++ {
@@ -165,7 +169,7 @@ func (_ *GraphGenerator) BinaryTree(V int) *Graph {
 }
 
 // CycleGraph returns a cycle graph on V vertices.
-func (_ *GraphGenerator) CycleGraph(V int) *Graph {
+func (generator *GraphGenerator) CycleGraph(V int) *Graph {
 	G := NewGraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V-1; i++ {
@@ -176,7 +180,7 @@ func (_ *GraphGenerator) CycleGraph(V int) *Graph {
 }
 
 // EulerianCycleGraph returns an Eulerian cycle graph on V vertices.
-func (_ *GraphGenerator) EulerianCycleGraph(V, E int) (*Graph, error) {
+func (generator *GraphGenerator) EulerianCycleGraph(V, E int) (*Graph, error) {
 	if E <= 0 {
 		return nil, errors.New("an Eulerian cycle must have at least one edge")
 	}
@@ -197,7 +201,7 @@ func (_ *GraphGenerator) EulerianCycleGraph(V, E int) (*Graph, error) {
 }
 
 // EulerianPathGraph returns an Eulerian path graph on V vertices.
-func (_ *GraphGenerator) EulerianPathGraph(V, E int) (*Graph, error) {
+func (generator *GraphGenerator) EulerianPathGraph(V, E int) (*Graph, error) {
 	if E < 0 {
 		return nil, errors.New("negative number of edges")
 	}
@@ -217,7 +221,7 @@ func (_ *GraphGenerator) EulerianPathGraph(V, E int) (*Graph, error) {
 }
 
 // Wheel returns a wheel graph on V vertices.
-func (_ *GraphGenerator) Wheel(V int) (*Graph, error) {
+func (generator *GraphGenerator) Wheel(V int) (*Graph, error) {
 	if V <= 1 {
 		return nil, errors.New("number of vertices must be at least 2")
 	}
@@ -238,7 +242,7 @@ func (_ *GraphGenerator) Wheel(V int) (*Graph, error) {
 }
 
 // Star returns a star graph on V vertices.
-func (_ *GraphGenerator) Star(V int) (*Graph, error) {
+func (generator *GraphGenerator) Star(V int) (*Graph, error) {
 	if V <= 0 {
 		return nil, errors.New("number of vertices must be at least 1")
 	}
@@ -253,7 +257,7 @@ func (_ *GraphGenerator) Star(V int) (*Graph, error) {
 }
 
 // Regular returns a uniformly random k-regular graph on V vertices (not necessarily simple).
-func (_ *GraphGenerator) Regular(V, k int) (*Graph, error) {
+func (generator *GraphGenerator) Regular(V, k int) (*Graph, error) {
 	if V*k%2 != 0 {
 		return nil, errors.New("number of vertices * k must be even")
 	}
@@ -289,7 +293,7 @@ func (v vkey) CompareTo(k priorityqueue.Key) int {
 }
 
 // Tree returns a uniformly random tree on V vertices.
-func (_ *GraphGenerator) Tree(V int) *Graph {
+func (generator *GraphGenerator) Tree(V int) *Graph {
 	G := NewGraph(V)
 	if V == 1 {
 		return G

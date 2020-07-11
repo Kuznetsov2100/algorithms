@@ -16,6 +16,7 @@ type Huffman struct {
 	out *binaryout.BinaryOut // output stream
 }
 
+// NewHuffman constructs the Huffman struct
 func NewHuffman(r io.Reader, w io.Writer) *Huffman {
 	return &Huffman{R: 256, in: binaryin.NewBinaryIn(r), out: binaryout.NewBinaryOut(w)}
 }

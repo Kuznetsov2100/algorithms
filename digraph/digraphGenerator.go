@@ -8,9 +8,13 @@ import (
 	"github.com/pkg/errors"
 )
 
+// DigraphGenerator struct provides static methods for creating various digraphs,
+// including Erdos-Renyi random digraphs, random DAGs, random rooted trees, random rooted DAGs,
+// random tournaments, path digraphs, cycle digraphs, and the complete digraph.
 type DigraphGenerator struct {
 }
 
+// NewDigraphGenerator constructs the DigraphGenerator struct
 func NewDigraphGenerator() *DigraphGenerator {
 	return &DigraphGenerator{}
 }
@@ -43,7 +47,7 @@ func comparator(a, b interface{}) int {
 }
 
 // Simple returns a random simple digraph containing V vertices and E edges.
-func (_ *DigraphGenerator) Simple(V, E int) (*Digraph, error) {
+func (generator *DigraphGenerator) Simple(V, E int) (*Digraph, error) {
 	if E > V*(V-1) {
 		return nil, errors.New("too many edges")
 	}
@@ -67,7 +71,7 @@ func (_ *DigraphGenerator) Simple(V, E int) (*Digraph, error) {
 }
 
 // SimpleP returns a random simple digraph on V vertices, with an edge between any two vertices with probability p.
-func (_ *DigraphGenerator) SimpleP(V int, p float64) (*Digraph, error) {
+func (generator *DigraphGenerator) SimpleP(V int, p float64) (*Digraph, error) {
 	if p < 0.0 || p > 1.0 {
 		return nil, errors.New("probability must be between 0 and 1")
 	}
@@ -86,7 +90,7 @@ func (_ *DigraphGenerator) SimpleP(V int, p float64) (*Digraph, error) {
 }
 
 // Complete returns the complete digraph on V vertices.
-func (_ *DigraphGenerator) Complete(V int) *Digraph {
+func (generator *DigraphGenerator) Complete(V int) *Digraph {
 	G := NewDigraph(V)
 	for v := 0; v < V; v++ {
 		for w := 0; w < V; w++ {
@@ -99,7 +103,7 @@ func (_ *DigraphGenerator) Complete(V int) *Digraph {
 }
 
 // Dag returns a random simple DAG containing V vertices and E edges.
-func (_ *DigraphGenerator) Dag(V, E int) (*Digraph, error) {
+func (generator *DigraphGenerator) Dag(V, E int) (*Digraph, error) {
 	if E > V*(V-1)/2 {
 		return nil, errors.New("too many edges")
 	}
@@ -123,7 +127,7 @@ func (_ *DigraphGenerator) Dag(V, E int) (*Digraph, error) {
 }
 
 // Tournament returns a random tournament digraph on V vertices.
-func (_ *DigraphGenerator) Tournament(V int) *Digraph {
+func (generator *DigraphGenerator) Tournament(V int) *Digraph {
 	G := NewDigraph(V)
 	rand.Seed(time.Now().Unix())
 	for v := 0; v < G.V(); v++ {
@@ -139,7 +143,7 @@ func (_ *DigraphGenerator) Tournament(V int) *Digraph {
 }
 
 // CompleteRootedInDAG returns a complete rooted-in DAG on V vertices.
-func (_ *DigraphGenerator) CompleteRootedInDAG(V int) *Digraph {
+func (generator *DigraphGenerator) CompleteRootedInDAG(V int) *Digraph {
 	G := NewDigraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V; i++ {
@@ -151,7 +155,7 @@ func (_ *DigraphGenerator) CompleteRootedInDAG(V int) *Digraph {
 }
 
 // RootedInDAG returns a random rooted-in DAG on V vertices and E edges.
-func (_ *DigraphGenerator) RootedInDAG(V, E int) (*Digraph, error) {
+func (generator *DigraphGenerator) RootedInDAG(V, E int) (*Digraph, error) {
 	if E > V*(V-1)/2 {
 		return nil, errors.New("too many edges")
 	}
@@ -181,7 +185,7 @@ func (_ *DigraphGenerator) RootedInDAG(V, E int) (*Digraph, error) {
 }
 
 // CompleteRootedOutDAG returns a complete rooted-out DAG on V vertices.
-func (_ *DigraphGenerator) CompleteRootedOutDAG(V int) *Digraph {
+func (generator *DigraphGenerator) CompleteRootedOutDAG(V int) *Digraph {
 	G := NewDigraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V; i++ {
@@ -193,7 +197,7 @@ func (_ *DigraphGenerator) CompleteRootedOutDAG(V int) *Digraph {
 }
 
 // RootedOutDAG returns a random rooted-out DAG on V vertices and E edges.
-func (_ *DigraphGenerator) RootedOutDAG(V, E int) (*Digraph, error) {
+func (generator *DigraphGenerator) RootedOutDAG(V, E int) (*Digraph, error) {
 	if E > V*(V-1)/2 {
 		return nil, errors.New("too many edges")
 	}
@@ -236,7 +240,7 @@ func (generator *DigraphGenerator) RootedOutTree(V int) (*Digraph, error) {
 }
 
 // PathDigraph returns a path digraph on V vertices.
-func (_ *DigraphGenerator) PathDigraph(V int) *Digraph {
+func (generator *DigraphGenerator) PathDigraph(V int) *Digraph {
 	G := NewDigraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V-1; i++ {
@@ -246,7 +250,7 @@ func (_ *DigraphGenerator) PathDigraph(V int) *Digraph {
 }
 
 // BinaryTree returns a complete binary tree digraph on V vertices.
-func (_ *DigraphGenerator) BinaryTree(V int) *Digraph {
+func (generator *DigraphGenerator) BinaryTree(V int) *Digraph {
 	G := NewDigraph(V)
 	vertices := createVertices(V)
 	for i := 1; i < V; i++ {
@@ -256,7 +260,7 @@ func (_ *DigraphGenerator) BinaryTree(V int) *Digraph {
 }
 
 // CycleDigraph returns a cycle digraph on V vertices.
-func (_ *DigraphGenerator) CycleDigraph(V int) *Digraph {
+func (generator *DigraphGenerator) CycleDigraph(V int) *Digraph {
 	G := NewDigraph(V)
 	vertices := createVertices(V)
 	for i := 0; i < V-1; i++ {
@@ -267,7 +271,7 @@ func (_ *DigraphGenerator) CycleDigraph(V int) *Digraph {
 }
 
 // EulerianCycleDigraph returns an Eulerian cycle digraph on V vertices.
-func (_ *DigraphGenerator) EulerianCycleDigraph(V, E int) (*Digraph, error) {
+func (generator *DigraphGenerator) EulerianCycleDigraph(V, E int) (*Digraph, error) {
 	if E <= 0 {
 		return nil, errors.New("an Eulerian cycle must at least one edge")
 	}
@@ -288,7 +292,7 @@ func (_ *DigraphGenerator) EulerianCycleDigraph(V, E int) (*Digraph, error) {
 }
 
 // EulerianPathDigraph returns an Eulerian path digraph on V vertices.
-func (_ *DigraphGenerator) EulerianPathDigraph(V, E int) (*Digraph, error) {
+func (generator *DigraphGenerator) EulerianPathDigraph(V, E int) (*Digraph, error) {
 	if E < 0 {
 		return nil, errors.New("negative number of edges")
 	}
@@ -308,7 +312,7 @@ func (_ *DigraphGenerator) EulerianPathDigraph(V, E int) (*Digraph, error) {
 }
 
 // StrongDigraph returns a random simple digraph on V vertices, E edges and (at most) c strong components.
-func (_ *DigraphGenerator) StrongDigraph(V, E, c int) (*Digraph, error) {
+func (generator *DigraphGenerator) StrongDigraph(V, E, c int) (*Digraph, error) {
 	if c >= V || c <= 0 {
 		return nil, errors.New("number of components must be between 1 and V")
 	}

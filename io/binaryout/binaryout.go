@@ -14,7 +14,7 @@ type BinaryOut struct {
 	n      int       // number of bits remaining in buffer
 }
 
-// NewBinaryOut
+// NewBinaryOut constructs the BinaryOut struct
 func NewBinaryOut(w io.Writer) *BinaryOut {
 	return &BinaryOut{out: w, buffer: 0, n: 0}
 }

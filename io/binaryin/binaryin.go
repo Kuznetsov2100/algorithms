@@ -19,7 +19,7 @@ type BinaryIn struct {
 	isInitialized bool      // has BinaryIn been called for first time?
 }
 
-// NewBinaryIn
+// NewBinaryIn constructs the BinaryIn struct
 func NewBinaryIn(r io.Reader) *BinaryIn {
 	return &BinaryIn{in: r, buffer: 0, n: 0, isInitialized: false}
 }
@@ -115,7 +115,7 @@ func (bs *BinaryIn) ReadInt() (int, error) {
 
 // ReadInt16 reads the next 16 bits from input stream and return as a 16-bit int16
 func (bs *BinaryIn) ReadInt16() (int16, error) {
-	var x int16 = 0
+	var x int16
 	for i := 0; i < 2; i++ {
 		byteValue, err := bs.ReadByte()
 		if err != nil {
@@ -129,7 +129,7 @@ func (bs *BinaryIn) ReadInt16() (int16, error) {
 
 // ReadInt64 reads the next 64 bits from input stream and return as a 64-bit int64.
 func (bs *BinaryIn) ReadInt64() (int64, error) {
-	var x int64 = 0
+	var x int64
 	for i := 0; i < 2; i++ {
 		intValue, err := bs.ReadInt()
 		if err != nil {
