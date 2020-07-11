@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	huffman := str.NewHuffman()
+	huffman := str.NewHuffman(os.Stdin, os.Stdout)
 	if os.Args[1] == "-" {
 		huffman.Compress()
 	} else if os.Args[1] == "+" {

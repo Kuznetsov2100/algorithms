@@ -1,25 +1,23 @@
 package str
 
 import (
-	"sync"
+	"io"
 
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
 	"github.com/handane123/algorithms/io/binarystdin"
 	"github.com/handane123/algorithms/io/binarystdout"
 )
 
-var huffman *Huffman
-var once sync.Once
-
 type Huffman struct {
-	R int
+	R   int
+	in  *binarystdin.BinaryStdIn
+	out *binarystdout.BinaryStdOut
 }
 
-func NewHuffman() *Huffman {
-	once.Do(func() {
-		huffman = &Huffman{R: 256}
-	})
-	return huffman
+func NewHuffman(r io.Reader, w io.Writer) *Huffman {
+
+	return &Huffman{R: 256, in: binarystdin.NewBinaryStdIn(r), out: binarystdout.NewBinaryStdOut(w)}
+
 }
 
 type hnode struct {
@@ -30,12 +28,7 @@ type hnode struct {
 }
 
 func newhnode(ch byte, freq int, left *hnode, right *hnode) *hnode {
-	return &hnode{
-		ch:    ch,
-		freq:  freq,
-		left:  left,
-		right: right,
-	}
+	return &hnode{ch: ch, freq: freq, left: left, right: right}
 }
 
 func (node *hnode) isLeaf() bool {
@@ -53,9 +46,7 @@ func (node *hnode) CompareTo(key priorityqueue.Key) int {
 }
 
 func (hf *Huffman) Compress() {
-	binarystdin := binarystdin.NewBinaryStdIn()
-	binarystdout := binarystdout.NewBinaryStdOut()
-	s, err := binarystdin.ReadString()
+	s, err := hf.in.ReadString()
 	if err != nil {
 		panic(err)
 	}
@@ -67,7 +58,7 @@ func (hf *Huffman) Compress() {
 	st := make([]string, hf.R)
 	hf.buildCode(st, root, "")
 	hf.writeTrie(root)
-	err = binarystdout.WriteInt(len(s))
+	err = hf.out.WriteInt(len(s))
 	if err != nil {
 		panic(err)
 	}
@@ -76,29 +67,27 @@ func (hf *Huffman) Compress() {
 		code := st[s[i]]
 		for j := range code {
 			if code[j] == '0' {
-				binarystdout.WriteBit(false)
+				hf.out.WriteBit(false)
 			} else if code[j] == '1' {
-				binarystdout.WriteBit(true)
+				hf.out.WriteBit(true)
 			} else {
 				panic("illegal state")
 			}
 		}
 	}
-	binarystdout.Close()
+	hf.out.Close()
 }
 
 func (hf *Huffman) Expand() {
 	root := hf.readTrie()
-	binarystdin := binarystdin.NewBinaryStdIn()
-	binarystdout := binarystdout.NewBinaryStdOut()
-	length, err := binarystdin.ReadInt()
+	length, err := hf.in.ReadInt()
 	if err != nil {
 		panic(err)
 	}
 	for i := 0; i < length; i++ {
 		x := root
 		for !x.isLeaf() {
-			bit, err := binarystdin.ReadBool()
+			bit, err := hf.in.ReadBool()
 			if err != nil {
 				panic(err)
 			}
@@ -108,23 +97,22 @@ func (hf *Huffman) Expand() {
 				x = x.left
 			}
 		}
-		err := binarystdout.WriteBitR(int(x.ch), 8)
+		err := hf.out.WriteBitR(int(x.ch), 8)
 		if err != nil {
 			panic(err)
 		}
 
 	}
-	binarystdout.Close()
+	hf.out.Close()
 }
 
 func (hf *Huffman) readTrie() *hnode {
-	binarystdin := binarystdin.NewBinaryStdIn()
-	isLeaf, err := binarystdin.ReadBool()
+	isLeaf, err := hf.in.ReadBool()
 	if err != nil {
 		panic(err)
 	}
 	if isLeaf {
-		b, err1 := binarystdin.ReadByte()
+		b, err1 := hf.in.ReadByte()
 		if err1 != nil {
 			panic(err1)
 		}
@@ -164,16 +152,15 @@ func (hf *Huffman) buildCode(st []string, x *hnode, s string) {
 }
 
 func (hf *Huffman) writeTrie(x *hnode) {
-	binarystdout := binarystdout.NewBinaryStdOut()
 	if x.isLeaf() {
-		binarystdout.WriteBit(true)
-		err := binarystdout.WriteBitR(int(x.ch), 8)
+		hf.out.WriteBit(true)
+		err := hf.out.WriteBitR(int(x.ch), 8)
 		if err != nil {
 			panic(err)
 		}
 		return
 	}
-	binarystdout.WriteBit(false)
+	hf.out.WriteBit(false)
 	hf.writeTrie(x.left)
 	hf.writeTrie(x.right)
 }
