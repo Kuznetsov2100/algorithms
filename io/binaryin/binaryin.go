@@ -1,4 +1,4 @@
-package binarystdin
+package binaryin
 
 import (
 	"io"
@@ -7,31 +7,29 @@ import (
 	"github.com/pkg/errors"
 )
 
-// BinaryStdIn struct provides methods for reading in bits from standard input,
+// BinaryIn struct provides methods for reading in bits from io.Reader,
 // either one bit at a time (as a bool), 8 bits at a time (as a byte), 16 bits at a time (as a int16),
 // 32 bits at a time (as an int), or 64 bits at a time (as a int64).
 // All primitive types are assumed to be represented using their golang standard representations,
 // in big-endian (most significant byte first) order.
-type BinaryStdIn struct {
+type BinaryIn struct {
 	in            io.Reader // input stream
 	buffer        int       // one byte buffer
 	n             int       // number of bits left in buffer
 	isInitialized bool      // has BinaryStdIn been called for first time?
 }
 
-// NewBinaryStdIn creates the singleton BinaryStdIn struct
-func NewBinaryStdIn(r io.Reader) *BinaryStdIn {
-
-	return &BinaryStdIn{in: r, buffer: 0, n: 0, isInitialized: false}
-
+// NewBinaryIn
+func NewBinaryIn(r io.Reader) *BinaryIn {
+	return &BinaryIn{in: r, buffer: 0, n: 0, isInitialized: false}
 }
 
-func (bs *BinaryStdIn) initialize() {
+func (bs *BinaryIn) initialize() {
 	bs.fillBuffer()
 	bs.isInitialized = true
 }
 
-func (bs *BinaryStdIn) fillBuffer() {
+func (bs *BinaryIn) fillBuffer() {
 	p := make([]byte, 1)
 	if _, err := bs.in.Read(p); err != nil {
 		if err == io.EOF {
@@ -47,7 +45,7 @@ func (bs *BinaryStdIn) fillBuffer() {
 }
 
 // IsEmpty returns true if standard input is empty.
-func (bs *BinaryStdIn) IsEmpty() bool {
+func (bs *BinaryIn) IsEmpty() bool {
 	if !bs.isInitialized {
 		bs.initialize()
 	}
@@ -55,7 +53,7 @@ func (bs *BinaryStdIn) IsEmpty() bool {
 }
 
 // ReadBool reads the next bit of data from standard input and return as a bool.
-func (bs *BinaryStdIn) ReadBool() (bool, error) {
+func (bs *BinaryIn) ReadBool() (bool, error) {
 	if bs.IsEmpty() {
 		return false, errors.New("reading from empty input stream")
 
@@ -69,7 +67,7 @@ func (bs *BinaryStdIn) ReadBool() (bool, error) {
 }
 
 // ReadByte reads the next 8 bits from standard input and return as an 8-bit byte.
-func (bs *BinaryStdIn) ReadByte() (byte, error) {
+func (bs *BinaryIn) ReadByte() (byte, error) {
 	if bs.IsEmpty() {
 		return 0, errors.New("reading from empty input stream")
 	}
@@ -101,7 +99,7 @@ func (bs *BinaryStdIn) ReadByte() (byte, error) {
 }
 
 // ReadInt reads the next 32 bits from standard input and return as a 32-bit int.
-func (bs *BinaryStdIn) ReadInt() (int, error) {
+func (bs *BinaryIn) ReadInt() (int, error) {
 	x := 0
 	// 32 bit int equals 4 byte
 	for i := 0; i < 4; i++ {
@@ -116,7 +114,7 @@ func (bs *BinaryStdIn) ReadInt() (int, error) {
 }
 
 // ReadInt16 reads the next 16 bits from standard input and return as a 16-bit int16
-func (bs *BinaryStdIn) ReadInt16() (int16, error) {
+func (bs *BinaryIn) ReadInt16() (int16, error) {
 	var x int16 = 0
 	for i := 0; i < 2; i++ {
 		byteValue, err := bs.ReadByte()
@@ -130,7 +128,7 @@ func (bs *BinaryStdIn) ReadInt16() (int16, error) {
 }
 
 // ReadInt64 reads the next 64 bits from standard input and return as a 64-bit int64.
-func (bs *BinaryStdIn) ReadInt64() (int64, error) {
+func (bs *BinaryIn) ReadInt64() (int64, error) {
 	var x int64 = 0
 	for i := 0; i < 2; i++ {
 		intValue, err := bs.ReadInt()
@@ -144,7 +142,7 @@ func (bs *BinaryStdIn) ReadInt64() (int64, error) {
 }
 
 // ReadIntR reads the next r bits from standard input and return as an r-bit int.
-func (bs *BinaryStdIn) ReadIntR(r int) (int, error) {
+func (bs *BinaryIn) ReadIntR(r int) (int, error) {
 	if r < 1 || r > 32 {
 		return -1, errors.Errorf("illegal value of r = %d\n", r)
 	}
@@ -166,7 +164,7 @@ func (bs *BinaryStdIn) ReadIntR(r int) (int, error) {
 }
 
 // ReadString reads the remaining bytes of data from standard input and return as a string.
-func (bs *BinaryStdIn) ReadString() (string, error) {
+func (bs *BinaryIn) ReadString() (string, error) {
 	if bs.IsEmpty() {
 		return "", errors.New("reading from empty input stream")
 	}

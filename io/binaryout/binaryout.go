@@ -1,4 +1,4 @@
-package binarystdout
+package binaryout
 
 import (
 	"github.com/pkg/errors"
@@ -6,23 +6,21 @@ import (
 	"io"
 )
 
-// BinaryStdOut provides methods for converting primtive type variables (bool, byte, int16, int, int64,string)
-// to sequences of bits and writing them to standard output. Uses big-endian (most-significant byte first).
-type BinaryStdOut struct {
-	out    io.Writer // output stream (standard output)
+// BinaryOut provides methods for converting primtive type variables (bool, byte, int16, int, int64,string)
+// to sequences of bits and writing them to io.Writer. Uses big-endian (most-significant byte first).
+type BinaryOut struct {
+	out    io.Writer // output stream
 	buffer int       // 8-bit buffer of bits to write
 	n      int       // number of bits remaining in buffer
 }
 
-// NewBinaryStdOut creates the singleton BinaryStdout struct
-func NewBinaryStdOut(w io.Writer) *BinaryStdOut {
-
-	return &BinaryStdOut{out: w, buffer: 0, n: 0}
-
+// NewBinaryOut
+func NewBinaryOut(w io.Writer) *BinaryOut {
+	return &BinaryOut{out: w, buffer: 0, n: 0}
 }
 
 // WriteBit writes the specified bit to standard output.
-func (bs *BinaryStdOut) WriteBit(bit bool) {
+func (bs *BinaryOut) WriteBit(bit bool) {
 	bs.buffer <<= 1
 	if bit {
 		bs.buffer |= 1
@@ -34,7 +32,7 @@ func (bs *BinaryStdOut) WriteBit(bit bool) {
 }
 
 // WriteBitR writes the r-bit int to standard output.
-func (bs *BinaryStdOut) WriteBitR(x int, r int) error {
+func (bs *BinaryOut) WriteBitR(x int, r int) error {
 	if r == 32 {
 		err := bs.WriteInt(x)
 		if err != nil {
@@ -56,7 +54,7 @@ func (bs *BinaryStdOut) WriteBitR(x int, r int) error {
 }
 
 // WriterInt writes the 32-bit int to standard output.
-func (bs *BinaryStdOut) WriteInt(i int) error {
+func (bs *BinaryOut) WriteInt(i int) error {
 	x := uint(i)
 	err1 := bs.WriteByte(byte((x >> 24) & 0xff))
 	err2 := bs.WriteByte(byte((x >> 16) & 0xff))
@@ -66,7 +64,7 @@ func (bs *BinaryStdOut) WriteInt(i int) error {
 }
 
 // WriteInt16 Writes the 16-bit int to standard output.
-func (bs *BinaryStdOut) WriteInt16(i int16) error {
+func (bs *BinaryOut) WriteInt16(i int16) error {
 	x := uint16(i)
 	err1 := bs.WriteByte(byte((x >> 8) & 0xff))
 	err2 := bs.WriteByte(byte((x >> 0) & 0xff))
@@ -74,7 +72,7 @@ func (bs *BinaryStdOut) WriteInt16(i int16) error {
 }
 
 // WriteInt64 writes the 64-bit int to standard output.
-func (bs *BinaryStdOut) WriteInt64(i int64) error {
+func (bs *BinaryOut) WriteInt64(i int64) error {
 	x := uint64(i)
 	err1 := bs.WriteByte(byte((x >> 56) & 0xff))
 	err2 := bs.WriteByte(byte((x >> 48) & 0xff))
@@ -88,7 +86,7 @@ func (bs *BinaryStdOut) WriteInt64(i int64) error {
 }
 
 // WriteByte writes the 8-bit byte to standard output.
-func (bs *BinaryStdOut) WriteByte(x byte) error {
+func (bs *BinaryOut) WriteByte(x byte) error {
 	if bs.n == 0 {
 		_, err := bs.out.Write([]byte{x})
 		if err != nil {
@@ -105,7 +103,7 @@ func (bs *BinaryStdOut) WriteByte(x byte) error {
 }
 
 // WriteString writes the string of 8-bit characters to standard output.
-func (bs *BinaryStdOut) WriteString(s string) error {
+func (bs *BinaryOut) WriteString(s string) error {
 	for i := range s {
 		if err := bs.WriteByte(s[i]); err != nil {
 			return err
@@ -115,11 +113,11 @@ func (bs *BinaryStdOut) WriteString(s string) error {
 }
 
 // Close flushes and closes standard output.
-func (bs *BinaryStdOut) Close() {
+func (bs *BinaryOut) Close() {
 	bs.clearBuffer()
 }
 
-func (bs *BinaryStdOut) clearBuffer() {
+func (bs *BinaryOut) clearBuffer() {
 	if bs.n == 0 {
 		return
 	}

@@ -22,13 +22,13 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/handane123/algorithms/io/binarystdin"
+	"github.com/handane123/algorithms/io/binaryin"
 )
 
 func main() {
 	bytesPerLine := 16
 	var i int
-	binarystdin := binarystdin.NewBinaryStdIn(os.Stdin)
+	binarystdin := binaryin.NewBinaryIn(os.Stdin)
 	if len(os.Args) == 1 {
 		bytesPerLine, _ = strconv.Atoi(os.Args[1])
 	}

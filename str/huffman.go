@@ -4,47 +4,27 @@ import (
 	"io"
 
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
-	"github.com/handane123/algorithms/io/binarystdin"
-	"github.com/handane123/algorithms/io/binarystdout"
+	"github.com/handane123/algorithms/io/binaryin"
+	"github.com/handane123/algorithms/io/binaryout"
 )
 
+// Huffman struct provides static methods for compressing and expanding a binary input
+// using Huffman codes over the 8-bit extended ASCII alphabet.
 type Huffman struct {
 	R   int
-	in  *binarystdin.BinaryStdIn
-	out *binarystdout.BinaryStdOut
+	in  *binaryin.BinaryIn
+	out *binaryout.BinaryOut
 }
 
 func NewHuffman(r io.Reader, w io.Writer) *Huffman {
 
-	return &Huffman{R: 256, in: binarystdin.NewBinaryStdIn(r), out: binarystdout.NewBinaryStdOut(w)}
+	return &Huffman{R: 256, in: binaryin.NewBinaryIn(r), out: binaryout.NewBinaryOut(w)}
 
 }
 
-type hnode struct {
-	ch    byte
-	freq  int
-	left  *hnode
-	right *hnode
-}
-
-func newhnode(ch byte, freq int, left *hnode, right *hnode) *hnode {
-	return &hnode{ch: ch, freq: freq, left: left, right: right}
-}
-
-func (node *hnode) isLeaf() bool {
-	return node.left == nil && node.right == nil
-}
-
-func (node *hnode) CompareTo(key priorityqueue.Key) int {
-	that := key.(*hnode)
-	if node.freq < that.freq {
-		return -1
-	} else if node.freq > that.freq {
-		return 1
-	}
-	return 0
-}
-
+// Compress reads a sequence of 8-bit bytes from standard input;
+// compresses them using Huffman codes with an 8-bit alphabet;
+// and writes the results to standard output.
 func (hf *Huffman) Compress() {
 	s, err := hf.in.ReadString()
 	if err != nil {
@@ -163,4 +143,29 @@ func (hf *Huffman) writeTrie(x *hnode) {
 	hf.out.WriteBit(false)
 	hf.writeTrie(x.left)
 	hf.writeTrie(x.right)
+}
+
+type hnode struct {
+	ch    byte
+	freq  int
+	left  *hnode
+	right *hnode
+}
+
+func newhnode(ch byte, freq int, left *hnode, right *hnode) *hnode {
+	return &hnode{ch: ch, freq: freq, left: left, right: right}
+}
+
+func (node *hnode) isLeaf() bool {
+	return node.left == nil && node.right == nil
+}
+
+func (node *hnode) CompareTo(key priorityqueue.Key) int {
+	that := key.(*hnode)
+	if node.freq < that.freq {
+		return -1
+	} else if node.freq > that.freq {
+		return 1
+	}
+	return 0
 }
