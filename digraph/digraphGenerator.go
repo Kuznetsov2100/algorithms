@@ -2,24 +2,17 @@ package digraph
 
 import (
 	"math/rand"
-	"sync"
 	"time"
 
 	"github.com/emirpasic/gods/sets/treeset"
 	"github.com/pkg/errors"
 )
 
-var digraphGenerator *DigraphGenerator
-var once sync.Once
-
 type DigraphGenerator struct {
 }
 
 func NewDigraphGenerator() *DigraphGenerator {
-	once.Do(func() {
-		digraphGenerator = &DigraphGenerator{}
-	})
-	return digraphGenerator
+	return &DigraphGenerator{}
 }
 
 type privateEdge struct {

@@ -2,7 +2,6 @@ package graph
 
 import (
 	"math/rand"
-	"sync"
 	"time"
 
 	"github.com/pkg/errors"
@@ -11,17 +10,11 @@ import (
 	"github.com/handane123/algorithms/dataStructure/priorityqueue"
 )
 
-var graphGenerator *GraphGenerator
-var once sync.Once
-
 type GraphGenerator struct {
 }
 
 func NewGraphGenerator() *GraphGenerator {
-	once.Do(func() {
-		graphGenerator = &GraphGenerator{}
-	})
-	return graphGenerator
+	return &GraphGenerator{}
 }
 
 type edge struct {
