@@ -7,14 +7,17 @@ import (
 	"github.com/handane123/algorithms/io/binaryout"
 )
 
+// LZW struct provides static methods for compressing and expanding a binary input
+// using LZW compression over the 8-bit extended ASCII alphabet with 12-bit codewords.
 type LZW struct {
-	R   int
-	L   int
-	W   int
+	R   int // number of input chars:256
+	L   int // number of codewords = 2^W = 4096
+	W   int // codeword width:12
 	in  *binaryin.BinaryIn
 	out *binaryout.BinaryOut
 }
 
+// NewLZW constructs the LZW struct
 func NewLZW(r io.Reader, w io.Writer) *LZW {
 	return &LZW{R: 256, L: 4096, W: 12,
 		in:  binaryin.NewBinaryIn(r),
@@ -22,6 +25,9 @@ func NewLZW(r io.Reader, w io.Writer) *LZW {
 	}
 }
 
+// Compress reads a sequence of 8-bit bytes from input stream;
+// compresses them using LZW compression with 12-bit codewords;
+// and writes the results to output stream.
 func (lzw *LZW) Compress() {
 	input, err := lzw.in.ReadString()
 	if err != nil {
@@ -31,33 +37,35 @@ func (lzw *LZW) Compress() {
 	for i := 0; i < lzw.R; i++ {
 		st.Put(string(i), i)
 	}
-	code := lzw.R + 1
+	code := lzw.R + 1 // R is codeword for EOF
 
 	for len(input) > 0 {
-		s := st.LongestPrefixOf(input)
-		val := st.Get(s)
+		s := st.LongestPrefixOf(input) // Find max prefix match s.
 		//nolint:errcheck
-		lzw.out.WriteBitR(val.(int), lzw.W)
+		lzw.out.WriteBitR(st.Get(s).(int), lzw.W) // Print s's encoding.
 		t := len(s)
 		if t < len(input) && code < lzw.L {
-			st.Put(input[:t+1], code)
+			st.Put(input[:t+1], code) // Add s to symbol table.
 			code++
 		}
-		input = input[t:]
+		input = input[t:] // Scan past s in input.
 	}
 	//nolint:errcheck
 	lzw.out.WriteBitR(lzw.R, lzw.W)
 	lzw.out.Close()
 }
 
+// Expand reads a sequence of bit encoded using LZW compression with 12-bit codewords from input stream;
+// expands them; and writes the results to output stream.
 func (lzw *LZW) Expand() {
 	st := make([]string, lzw.L)
-	var i int
+	var i int // next available codeword value
 
+	// initialize symbol table with all 1-character strings
 	for i = 0; i < lzw.R; i++ {
 		st[i] = string(i)
 	}
-	st[i] = ""
+	st[i] = "" // (unused) lookahead for EOF
 	i++
 
 	codeword, err := lzw.in.ReadIntR(lzw.W)
@@ -65,10 +73,10 @@ func (lzw *LZW) Expand() {
 		panic(err)
 	}
 	if codeword == lzw.R {
-		return
+		return // expanded message is empty string
 	}
-	val := st[codeword]
 
+	val := st[codeword]
 	for {
 		//nolint:errcheck
 		lzw.out.WriteString(val)
@@ -81,7 +89,7 @@ func (lzw *LZW) Expand() {
 		}
 		s := st[codeword]
 		if i == codeword {
-			s = val + string(val[0])
+			s = val + string(val[0]) // special case hack
 		}
 		if i < lzw.L {
 			st[i] = val + string(s[0])
