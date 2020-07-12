@@ -46,9 +46,8 @@ func (hf *Huffman) Compress() {
 	hf.writeTrie(root)
 
 	// print number of bytes in original uncompressed message
-	if err := hf.out.WriteInt(len(input)); err != nil {
-		panic(err)
-	}
+	//nolint:errcheck
+	hf.out.WriteInt(len(input))
 
 	// use Huffman code to encode input
 	for i := range input {
@@ -91,10 +90,8 @@ func (hf *Huffman) Expand() {
 				x = x.left
 			}
 		}
-		err := hf.out.WriteByte(x.ch)
-		if err != nil {
-			panic(err)
-		}
+		//nolint:errcheck
+		hf.out.WriteByte(x.ch)
 
 	}
 	hf.out.Close()
@@ -155,10 +152,8 @@ func (hf *Huffman) readTrie() *hnode {
 func (hf *Huffman) writeTrie(x *hnode) {
 	if x.isLeaf() {
 		hf.out.WriteBit(true)
-		err := hf.out.WriteByte(x.ch)
-		if err != nil {
-			panic(err)
-		}
+		//nolint:errcheck
+		hf.out.WriteByte(x.ch)
 		return
 	}
 	hf.out.WriteBit(false)
