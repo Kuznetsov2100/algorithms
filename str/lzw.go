@@ -1,6 +1,7 @@
 package str
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/handane123/algorithms/io/binaryin"
@@ -35,7 +36,7 @@ func (lzw *LZW) Compress() {
 	}
 	st := NewTST()
 	for i := 0; i < lzw.R; i++ {
-		st.Put(string(i), i)
+		st.Put(fmt.Sprintf("%c", i), i)
 	}
 	code := lzw.R + 1 // R is codeword for EOF
 
@@ -63,7 +64,7 @@ func (lzw *LZW) Expand() {
 
 	// initialize symbol table with all 1-character strings
 	for i = 0; i < lzw.R; i++ {
-		st[i] = string(i)
+		st[i] = fmt.Sprintf("%c", i)
 	}
 	st[i] = "" // (unused) lookahead for EOF
 	i++
