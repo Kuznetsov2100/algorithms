@@ -25,10 +25,11 @@ func NewHuffman(r io.Reader, w io.Writer) *Huffman {
 // with an 8-bit alphabet; and writes the results to output stream.
 func (hf *Huffman) Compress() {
 	// read the input
-	input, err := hf.in.ReadString()
+	s, err := hf.in.ReadString()
 	if err != nil {
 		panic(err)
 	}
+	input := []byte(s)
 
 	// tabulate frequency counts
 	freq := make([]int, hf.R)
