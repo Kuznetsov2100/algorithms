@@ -46,13 +46,13 @@ func (lzw *LZW) Compress() {
 		lzw.out.WriteBitR(st.Get(s).(int), lzw.widthW) // Print s's encoding.
 		t := len(s)
 		if t < len(input) && code < lzw.numberL {
-			st.Put(input[:t+1], code) // Add s to symbol table.
+			st.Put(input[:t+1], code) // Add s+c to symbol table.
 			code++
 		}
 		input = input[t:] // Scan past s in input.
 	}
 	//nolint:errcheck
-	lzw.out.WriteBitR(lzw.asciiR, lzw.widthW)
+	lzw.out.WriteBitR(lzw.asciiR, lzw.widthW) // write EOF  0x10,0x00
 	lzw.out.Close()
 }
 
@@ -80,7 +80,7 @@ func (lzw *LZW) Expand() {
 	val := st[codeword]
 	for {
 		//nolint:errcheck
-		lzw.out.WriteString(val)
+		lzw.out.WriteString(val) // write curent substring
 		codeword, err = lzw.in.ReadIntR(lzw.widthW)
 		if err != nil {
 			panic(err)
@@ -88,13 +88,13 @@ func (lzw *LZW) Expand() {
 		if codeword == lzw.asciiR {
 			break
 		}
-		s := st[codeword]
-		if i == codeword {
-			s = val + string(val[0]) // special case hack
+		s := st[codeword]  // get next codeword
+		if i == codeword { // if lookahead is invalid
+			s = val + string(val[0]) // special case hack, make codeword from last one
 		}
 		if i < lzw.numberL {
-			st[i] = val + string(s[0])
-			i++
+			st[i] = val + string(s[0]) // add new entry to code table
+			i++                        // update current codeword
 		}
 		val = s
 	}

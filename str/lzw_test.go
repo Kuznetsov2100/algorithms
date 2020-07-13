@@ -47,8 +47,9 @@ func TestLZWExpand(t *testing.T) {
 	lzw4 := NewLZW(bytes.NewBuffer([]byte{0x04, 0x10}), &b4)
 	assert.Panics(func() { lzw4.Expand() })
 
+	// codeword == lzw.asciiR  expanded meesage is empty string
 	var b5 bytes.Buffer
-	lzw5 := NewLZW(bytes.NewBuffer([]byte{0x10, 0x00, 0x00}), &b5)
+	lzw5 := NewLZW(bytes.NewBuffer([]byte{0x10, 0x00}), &b5)
 	lzw5.Expand()
 	assert.Equal(0, b5.Len())
 
