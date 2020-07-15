@@ -87,22 +87,23 @@ func (ford *FordFulkerson) excess(G *FlowNetwork, v int) float64 {
 }
 
 func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
+	EPSILON := 1e-11
 	for v := 0; v < G.V(); v++ {
 		for _, e := range G.Adj(v) {
-			if e.Flow() < -1e-11 || e.Flow() > e.Capacity()+1e-11 {
+			if e.Flow() < -EPSILON || e.Flow() > e.Capacity()+EPSILON {
 				fmt.Println("Edge does not satisfy capacity constraint: ", e)
 				return false
 			}
 		}
 	}
 
-	if math.Abs(ford.value+ford.excess(G, s)) > 1e-11 {
+	if math.Abs(ford.value+ford.excess(G, s)) > EPSILON {
 		fmt.Println("excess at source = ", ford.excess(G, s))
 		fmt.Println("Max flow     = ", ford.value)
 		return false
 	}
 
-	if math.Abs(ford.value-ford.excess(G, t)) > 1e-11 {
+	if math.Abs(ford.value-ford.excess(G, t)) > EPSILON {
 		fmt.Println("excess at sink = ", ford.excess(G, t))
 		fmt.Println("Max flow     = ", ford.value)
 		return false
@@ -112,7 +113,7 @@ func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
 		if v == s || v == t {
 			continue
 		}
-		if math.Abs(ford.excess(G, v)) > 1e-11 {
+		if math.Abs(ford.excess(G, v)) > EPSILON {
 			fmt.Println("Net flow out of ", v, " doesn't equal zero")
 			return false
 		}
