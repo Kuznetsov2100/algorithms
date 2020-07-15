@@ -8,10 +8,10 @@ import (
 )
 
 type FordFulkerson struct {
-	v      int
-	marked []bool
-	edgeTo []*FlowEdge
-	value  float64
+	v      int         // number of vertices
+	marked []bool      // marked[v] = true iff s->v path in residual graph
+	edgeTo []*FlowEdge // edgeTo[v] = last edge on shortest residual s->v path
+	value  float64     // current value of max flow
 }
 
 func NewFordFulkerson(G *FlowNetwork, s, t int) *FordFulkerson {
@@ -88,6 +88,7 @@ func (ford *FordFulkerson) excess(G *FlowNetwork, v int) float64 {
 
 func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
 	EPSILON := 1e-11
+	// check that capacity constraints are satisfied
 	for v := 0; v < G.V(); v++ {
 		for _, e := range G.Adj(v) {
 			if e.Flow() < -EPSILON || e.Flow() > e.Capacity()+EPSILON {
@@ -97,6 +98,7 @@ func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
 		}
 	}
 
+	// check that net flow into a vertex equals zero, except at source and sink
 	if math.Abs(ford.value+ford.excess(G, s)) > EPSILON {
 		fmt.Println("excess at source = ", ford.excess(G, s))
 		fmt.Println("Max flow     = ", ford.value)
