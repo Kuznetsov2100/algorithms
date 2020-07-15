@@ -68,6 +68,25 @@ func NewFlowNetworkIn(in *stdin.In) *FlowNetwork {
 	return fn
 }
 
+// NewFlowNetworkInF initializes a flow network from an input stream.
+func NewFlowNetworkInF(in *stdin.In) *FlowNetwork {
+	fn := NewFlowNetwork(in.ReadInt())
+	E := in.ReadInt()
+	if E < 0 {
+		panic("number of edges must be non-negative")
+	}
+	for i := 0; i < E; i++ {
+		v := in.ReadInt()
+		w := in.ReadInt()
+		fn.validateVertex(v)
+		fn.validateVertex(w)
+		capacity := in.ReadFloat64()
+		flow := in.ReadFloat64()
+		fn.AddEdge(NewFlowEdgeF(v, w, capacity, flow))
+	}
+	return fn
+}
+
 // AddEdge adds the edge e to the network.
 func (fn *FlowNetwork) AddEdge(e *FlowEdge) {
 	v := e.From()

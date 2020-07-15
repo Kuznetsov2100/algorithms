@@ -82,7 +82,21 @@ func TestFlowNetWork(t *testing.T) {
 	s1 := bufio.NewScanner(buf1)
 	s1.Split(bufio.ScanWords)
 	in1 := &stdin.In{Scanner: s1}
-
 	assert.PanicsWithValue("number of edges must be non-negative", func() { NewFlowNetworkIn(in1) })
 
+	tinyfn2 := "6\n" +
+		"-2\n" +
+		"0 1 2.0 0.0\n" +
+		"0 2 3.0 0.0\n" +
+		"1 3 3.0 0.0\n" +
+		"1 4 1.0 0.0\n" +
+		"2 3 1.0 0.0\n" +
+		"2 4 1.0 0.0\n" +
+		"3 5 2.0 1.0\n" +
+		"4 5 3.0 0.8\n"
+	buf2 := strings.NewReader(tinyfn2)
+	s2 := bufio.NewScanner(buf2)
+	s2.Split(bufio.ScanWords)
+	in2 := &stdin.In{Scanner: s2}
+	assert.PanicsWithValue("number of edges must be non-negative", func() { NewFlowNetworkInF(in2) })
 }

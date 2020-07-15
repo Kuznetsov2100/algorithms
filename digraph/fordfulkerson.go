@@ -7,6 +7,11 @@ import (
 	"github.com/handane123/algorithms/dataStructure/queue/arrayqueue"
 )
 
+// FordFulkerson struct represents a data type for computing a maximum st-flow and minimum st-cut
+// in a flow network. This implementation uses the Ford-Fulkerson algorithm with the shortest
+// augmenting path heuristic. The constructor takes O(E V (E + V)) time, where V is the number
+// of vertices and E is the number of edges. In practice, the algorithm will run much faster.
+// The inCut() and value() methods take O(1) time. It uses O(V) extra space (not including the network).
 type FordFulkerson struct {
 	v      int         // number of vertices
 	marked []bool      // marked[v] = true iff s->v path in residual graph
@@ -14,6 +19,7 @@ type FordFulkerson struct {
 	value  float64     // current value of max flow
 }
 
+// NewFordFulkerson compute a maximum flow and minimum cut in the network G from vertex s to vertex t.
 func NewFordFulkerson(G *FlowNetwork, s, t int) *FordFulkerson {
 	ford := &FordFulkerson{v: G.V()}
 	ford.validate(s)
@@ -25,13 +31,15 @@ func NewFordFulkerson(G *FlowNetwork, s, t int) *FordFulkerson {
 		panic("initial flow is infeasible")
 	}
 
+	// while there exists an augmenting path, use it
 	ford.value = ford.excess(G, t)
 	for ford.hasAugmentingPath(G, s, t) {
+		// compute bottleneck capacity
 		bottle := math.Inf(1)
 		for v := t; v != s; v = ford.edgeTo[v].Other(v) {
 			bottle = math.Min(bottle, ford.edgeTo[v].ResidualCapacityTo(v))
 		}
-
+		// augment flow
 		for v := t; v != s; v = ford.edgeTo[v].Other(v) {
 			ford.edgeTo[v].AddResidualFlowTo(v, bottle)
 		}
@@ -41,15 +49,21 @@ func NewFordFulkerson(G *FlowNetwork, s, t int) *FordFulkerson {
 	return ford
 }
 
+// Value returns the value of the maximum flow.
 func (ford *FordFulkerson) Value() float64 {
 	return ford.value
 }
 
+// InCut returns true if the specified vertex is on the s side of the mincut.
 func (ford *FordFulkerson) InCut(v int) bool {
 	ford.validate(v)
 	return ford.marked[v]
 }
 
+// is there an augmenting path?
+// if so, upon termination edgeTo[] will contain a parent-link representation of such a path
+// this implementation finds a shortest augmenting path (fewest number of edges),
+// which performs well both in theory and in practice
 func (ford *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
 	ford.edgeTo = make([]*FlowEdge, G.V())
 	ford.marked = make([]bool, G.V())
@@ -57,12 +71,12 @@ func (ford *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
 	queue := arrayqueue.New()
 	queue.Enqueue(s)
 	ford.marked[s] = true
-	for !queue.IsEmpty() && !ford.marked[t] {
+	for !queue.IsEmpty() && !ford.marked[t] { // bfs search
 		val, _ := queue.Dequeue()
 		v := val.(int)
 		for _, e := range G.Adj(v) {
 			w := e.Other(v)
-			if e.ResidualCapacityTo(w) > 0 {
+			if e.ResidualCapacityTo(w) > 0 { // if residual capacity from v to w
 				if !ford.marked[w] {
 					ford.edgeTo[w] = e
 					ford.marked[w] = true
@@ -71,9 +85,10 @@ func (ford *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
 			}
 		}
 	}
-	return ford.marked[t]
+	return ford.marked[t] // is there an augmenting path?
 }
 
+// return excess flow at vertex v
 func (ford *FordFulkerson) excess(G *FlowNetwork, v int) float64 {
 	excess := 0.0
 	for _, e := range G.Adj(v) {
@@ -88,15 +103,6 @@ func (ford *FordFulkerson) excess(G *FlowNetwork, v int) float64 {
 
 func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
 	EPSILON := 1e-11
-	// check that capacity constraints are satisfied
-	for v := 0; v < G.V(); v++ {
-		for _, e := range G.Adj(v) {
-			if e.Flow() < -EPSILON || e.Flow() > e.Capacity()+EPSILON {
-				fmt.Println("Edge does not satisfy capacity constraint: ", e)
-				return false
-			}
-		}
-	}
 
 	// check that net flow into a vertex equals zero, except at source and sink
 	if math.Abs(ford.value+ford.excess(G, s)) > EPSILON {
