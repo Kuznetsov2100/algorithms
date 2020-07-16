@@ -88,13 +88,14 @@ func NewFlowNetworkInF(in *stdin.In) *FlowNetwork {
 }
 
 // AddEdge adds the edge e to the network.
+// Augmenting paths in original network are in 1-1 correspondence with directed paths in residual network.
 func (fn *FlowNetwork) AddEdge(e *FlowEdge) {
 	v := e.From()
 	w := e.To()
 	fn.validateVertex(v)
 	fn.validateVertex(w)
-	fn.adj[v].Add(e)
-	fn.adj[w].Add(e)
+	fn.adj[v].Add(e) // add forward edge
+	fn.adj[w].Add(e) // add backward edge
 	fn.e++
 }
 
