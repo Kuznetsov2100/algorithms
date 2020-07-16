@@ -7,11 +7,11 @@ const cutOFF = 15  // cutoff to insertion sort
 func MsdSort(a []string) {
 	n := len(a)
 	aux := make([]string, n)
-	sort(a, 0, n-1, 0, aux)
+	msdsort(a, 0, n-1, 0, aux)
 }
 
-// sort from a[lo] to a[hi], starting at the dth character
-func sort(a []string, lo, hi, d int, aux []string) {
+// msdsort from a[lo] to a[hi], starting at the dth character
+func msdsort(a []string, lo, hi, d int, aux []string) {
 	// cutoff to insertion sort for small subarrays
 	if hi <= lo+cutOFF {
 		insertion(a, lo, hi, d)
@@ -44,7 +44,7 @@ func sort(a []string, lo, hi, d int, aux []string) {
 
 	// recursively sort for each character (excludes sentinel -1)
 	for r := 0; r < asciiR; r++ {
-		sort(a, lo+count[r], lo+count[r+1]-1, d+1, aux)
+		msdsort(a, lo+count[r], lo+count[r+1]-1, d+1, aux)
 	}
 }
 
