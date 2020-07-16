@@ -21,81 +21,81 @@ type FordFulkerson struct {
 
 // NewFordFulkerson compute a maximum flow and minimum cut in the network G from vertex s to vertex t.
 func NewFordFulkerson(G *FlowNetwork, s, t int) *FordFulkerson {
-	ford := &FordFulkerson{v: G.V()}
-	ford.validate(s)
-	ford.validate(t)
+	maxflow := &FordFulkerson{v: G.V()}
+	maxflow.validate(s)
+	maxflow.validate(t)
 	if s == t {
 		panic("source equals sink")
 	}
-	if !ford.isFeasible(G, s, t) {
+	if !maxflow.isFeasible(G, s, t) {
 		panic("initial flow is infeasible")
 	}
 
 	// while there exists an augmenting path, use it
-	ford.value = ford.excess(G, t)
-	for ford.hasAugmentingPath(G, s, t) {
+	maxflow.value = maxflow.excess(G, t)
+	for maxflow.hasAugmentingPath(G, s, t) {
 		// compute bottleneck capacity
 		bottle := math.Inf(1)
-		for v := t; v != s; v = ford.edgeTo[v].Other(v) {
-			bottle = math.Min(bottle, ford.edgeTo[v].ResidualCapacityTo(v))
+		for v := t; v != s; v = maxflow.edgeTo[v].Other(v) {
+			bottle = math.Min(bottle, maxflow.edgeTo[v].ResidualCapacityTo(v))
 		}
 		// augment flow
-		for v := t; v != s; v = ford.edgeTo[v].Other(v) {
+		for v := t; v != s; v = maxflow.edgeTo[v].Other(v) {
 			// increase flow on forward edge(not full) or
 			// decrease flow on backward edge(not empty)
-			ford.edgeTo[v].AddResidualFlowTo(v, bottle)
+			maxflow.edgeTo[v].AddResidualFlowTo(v, bottle)
 		}
-		ford.value += bottle
+		maxflow.value += bottle
 	}
 
-	return ford
+	return maxflow
 }
 
 // Value returns the value of the maximum flow.
-func (ford *FordFulkerson) Value() float64 {
-	return ford.value
+func (maxflow *FordFulkerson) Value() float64 {
+	return maxflow.value
 }
 
 // InCut returns true if the specified vertex is on the s side of the mincut.
-func (ford *FordFulkerson) InCut(v int) bool {
-	ford.validate(v)
-	return ford.marked[v]
+func (maxflow *FordFulkerson) InCut(v int) bool {
+	maxflow.validate(v)
+	return maxflow.marked[v]
 }
 
 // is there an augmenting path?
 // if so, upon termination edgeTo[] will contain a parent-link representation of such a path
 // this implementation finds a shortest augmenting path (fewest number of edges),
 // which performs well both in theory and in practice
-func (ford *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
-	ford.edgeTo = make([]*FlowEdge, G.V())
-	ford.marked = make([]bool, G.V())
+func (maxflow *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
+	maxflow.edgeTo = make([]*FlowEdge, G.V())
+	maxflow.marked = make([]bool, G.V())
 
 	queue := arrayqueue.New()
 	queue.Enqueue(s)
-	ford.marked[s] = true
-	for !queue.IsEmpty() && !ford.marked[t] { // bfs search
+	maxflow.marked[s] = true
+	for !queue.IsEmpty() && !maxflow.marked[t] { // bfs search
 		val, _ := queue.Dequeue()
 		v := val.(int)
 		for _, e := range G.Adj(v) {
 			w := e.Other(v)
-			if !ford.marked[w] && e.ResidualCapacityTo(w) > 0 {
+			if !maxflow.marked[w] && e.ResidualCapacityTo(w) > 0 {
 				// found path from s to w in the residual network
 				// ResidualCapacity(w) > 0 means either backward edge not empty or forward edge not full
-				ford.edgeTo[w] = e
-				ford.marked[w] = true
+				maxflow.edgeTo[w] = e
+				maxflow.marked[w] = true
 				queue.Enqueue(w)
 			}
 		}
 	}
-	// ford.marked[t] == true: there is an augmenting path
-	// ford.marked[t] == false: there is no more augmenting path,
+	// maxflow.marked[t] == true: there is an augmenting path
+	// maxflow.marked[t] == false: there is no more augmenting path,
 	// which means all paths from s to t are blocked by either a
 	// full forward edge or an empty backward edge.
-	return ford.marked[t]
+	return maxflow.marked[t]
 }
 
 // return excess flow at vertex v
-func (ford *FordFulkerson) excess(G *FlowNetwork, v int) float64 {
+func (maxflow *FordFulkerson) excess(G *FlowNetwork, v int) float64 {
 	excess := 0.0
 	for _, e := range G.Adj(v) {
 		if v == e.From() {
@@ -107,19 +107,19 @@ func (ford *FordFulkerson) excess(G *FlowNetwork, v int) float64 {
 	return excess
 }
 
-func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
+func (maxflow *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
 	EPSILON := 1e-11
 
 	// check that net flow into a vertex equals zero, except at source and sink
-	if math.Abs(ford.value+ford.excess(G, s)) > EPSILON {
-		fmt.Println("excess at source = ", ford.excess(G, s))
-		fmt.Println("Max flow     = ", ford.value)
+	if math.Abs(maxflow.value+maxflow.excess(G, s)) > EPSILON {
+		fmt.Println("excess at source = ", maxflow.excess(G, s))
+		fmt.Println("Max flow     = ", maxflow.value)
 		return false
 	}
 
-	if math.Abs(ford.value-ford.excess(G, t)) > EPSILON {
-		fmt.Println("excess at sink = ", ford.excess(G, t))
-		fmt.Println("Max flow     = ", ford.value)
+	if math.Abs(maxflow.value-maxflow.excess(G, t)) > EPSILON {
+		fmt.Println("excess at sink = ", maxflow.excess(G, t))
+		fmt.Println("Max flow     = ", maxflow.value)
 		return false
 	}
 
@@ -127,7 +127,7 @@ func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
 		if v == s || v == t {
 			continue
 		}
-		if math.Abs(ford.excess(G, v)) > EPSILON {
+		if math.Abs(maxflow.excess(G, v)) > EPSILON {
 			fmt.Println("Net flow out of ", v, " doesn't equal zero")
 			return false
 		}
@@ -135,8 +135,8 @@ func (ford *FordFulkerson) isFeasible(G *FlowNetwork, s, t int) bool {
 	return true
 }
 
-func (ford *FordFulkerson) validate(v int) {
-	if v < 0 || v >= ford.v {
-		panic(fmt.Sprintln("vertex ", v, " is not between 0 and ", ford.v-1))
+func (maxflow *FordFulkerson) validate(v int) {
+	if v < 0 || v >= maxflow.v {
+		panic(fmt.Sprintln("vertex ", v, " is not between 0 and ", maxflow.v-1))
 	}
 }
