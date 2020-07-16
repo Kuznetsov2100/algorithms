@@ -41,6 +41,8 @@ func NewFordFulkerson(G *FlowNetwork, s, t int) *FordFulkerson {
 		}
 		// augment flow
 		for v := t; v != s; v = ford.edgeTo[v].Other(v) {
+			// increase flow on forward edge(not full) or
+			// decrease flow on backward edge(not empty)
 			ford.edgeTo[v].AddResidualFlowTo(v, bottle)
 		}
 		ford.value += bottle
@@ -76,7 +78,7 @@ func (ford *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
 		v := val.(int)
 		for _, e := range G.Adj(v) {
 			w := e.Other(v)
-			if e.ResidualCapacityTo(w) > 0 { // if residual capacity from v to w
+			if e.ResidualCapacityTo(w) > 0 { //  backward edge not empty or forward edge not full
 				if !ford.marked[w] {
 					ford.edgeTo[w] = e
 					ford.marked[w] = true
