@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // StdIn wraps the scanner
@@ -51,4 +52,13 @@ func ReadAllStrings() (words []string) {
 		words = append(words, scanner.Text())
 	}
 	return words
+}
+
+func ReadAll() string {
+	var s strings.Builder
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		s.WriteString(scanner.Text())
+	}
+	return s.String()
 }
