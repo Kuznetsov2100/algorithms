@@ -87,7 +87,11 @@ func (ford *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
 			}
 		}
 	}
-	return ford.marked[t] // is there an augmenting path?
+	// ford.marked[t] == true: there is an augmenting path
+	// ford.marked[t] == false: there is no more augmenting path,
+	// which means all paths from s to t are blocked by either a
+	// full forward edge or an empty backward edge.
+	return ford.marked[t]
 }
 
 // return excess flow at vertex v
