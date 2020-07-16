@@ -123,5 +123,5 @@ func (fe *FlowEdge) AddResidualFlowTo(vertex int, delta float64) {
 
 // String returns a string representation of the edge.
 func (fe *FlowEdge) String() string {
-	return fmt.Sprintf("%d->%d %f/%f", fe.v, fe.w, fe.flow, fe.capacity)
+	return fmt.Sprintf("%d->%d %.2f/%.2f", fe.v, fe.w, fe.flow, fe.capacity)
 }

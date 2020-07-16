@@ -17,7 +17,7 @@ func TestFlowEdge(t *testing.T) {
 	assert.Equal(0.0, edge.Flow())
 	assert.Equal(2, edge.Other(1))
 	assert.Equal(1, edge.Other(2))
-	assert.Equal("1->2 0.000000/1.240000", edge.String())
+	assert.Equal("1->2 0.00/1.24", edge.String())
 	assert.PanicsWithValue("invalid endpoint", func() { edge.Other(3) })
 
 	assert.PanicsWithValue("vertex index must be a non-negative integer", func() { NewFlowEdge(-1, 2, 1.24) })
