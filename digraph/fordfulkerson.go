@@ -78,12 +78,12 @@ func (ford *FordFulkerson) hasAugmentingPath(G *FlowNetwork, s, t int) bool {
 		v := val.(int)
 		for _, e := range G.Adj(v) {
 			w := e.Other(v)
-			if e.ResidualCapacityTo(w) > 0 { //  backward edge not empty or forward edge not full
-				if !ford.marked[w] {
-					ford.edgeTo[w] = e
-					ford.marked[w] = true
-					queue.Enqueue(w)
-				}
+			if !ford.marked[w] && e.ResidualCapacityTo(w) > 0 {
+				// found path from s to w in the residual network
+				// ResidualCapacity(w) > 0 means either backward edge not empty or forward edge not full
+				ford.edgeTo[w] = e
+				ford.marked[w] = true
+				queue.Enqueue(w)
 			}
 		}
 	}
