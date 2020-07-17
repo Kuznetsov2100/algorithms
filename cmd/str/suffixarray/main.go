@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"regexp"
 
 	"github.com/handane123/algorithms/io/stdin"
 	"github.com/handane123/algorithms/str"
 )
 
 func main() {
-	s := strings.TrimSpace(stdin.ReadAll())
+	space := regexp.MustCompile(`\s+`)
+	s := space.ReplaceAllString(stdin.ReadAll(), " ")
 	suffix := str.NewSuffixArray(s)
 
 	fmt.Println("  i ind lcp rnk select")
