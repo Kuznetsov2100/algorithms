@@ -1,5 +1,6 @@
 package str
 
+// Lrs returns the longest repeated substring of the specified string.
 func Lrs(text string) string {
 	n := len(text)
 	sa := NewSuffixArray(text)
