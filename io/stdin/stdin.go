@@ -2,6 +2,7 @@ package stdin
 
 import (
 	"bufio"
+	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -54,11 +55,16 @@ func ReadAllStrings() (words []string) {
 	return words
 }
 
+// ReadAll reads and returns the remainder of the input, as a string.
 func ReadAll() string {
 	var s strings.Builder
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		s.WriteString(scanner.Text())
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil || err == io.EOF {
+			break
+		}
+		s.WriteString(line)
 	}
 	return s.String()
 }
