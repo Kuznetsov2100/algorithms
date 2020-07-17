@@ -7,6 +7,7 @@ func Lrs(text string) string {
 	for i := 1; i < n; i++ {
 		length := sa.Lcp(i)
 		if length > len(lrs) {
+			// lrs = sa.Select(i)[:length]
 			lrs = text[sa.Index(i) : sa.Index(i)+length]
 		}
 	}
