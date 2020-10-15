@@ -8,7 +8,7 @@ package str
 type KMP struct {
 	radixR int     // the radix
 	m      int     // length of pattern
-	dfa    [][]int // the KMP automoton
+	dfa    [][]int // the KMP automaton
 }
 
 // NewKMP preprocesses the pattern string.
